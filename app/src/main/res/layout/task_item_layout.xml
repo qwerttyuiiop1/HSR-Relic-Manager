@@ -12,7 +12,7 @@
         android:layout_width="@dimen/task_ic_size"
         android:layout_height="@dimen/task_ic_size"
         android:layout_centerHorizontal="true"
-        tools:src="@drawable/ic_pause"
+        tools:src="@drawable/ic_close_bubble"
         tools:ignore="ContentDescription" />
 
     <TextView
