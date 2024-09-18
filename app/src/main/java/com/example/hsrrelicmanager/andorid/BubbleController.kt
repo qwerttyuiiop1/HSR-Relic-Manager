@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.andorid.ui
+package com.example.hsrrelicmanager.andorid
 
 
 import android.content.ComponentName
@@ -10,12 +10,12 @@ import android.os.IBinder
 import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.hsrrelicmanager.core.AutoclickService
+import com.example.hsrrelicmanager.core.android.SharedForegroundNotif
 import com.example.hsrrelicmanager.core.components.Task
 import com.example.hsrrelicmanager.core.exe.TaskResult
-import com.example.hsrrelicmanager.core.AutoclickService
 import com.example.hsrrelicmanager.core.io.IBubbleController
 import com.example.hsrrelicmanager.core.io.IBubbleController.Companion.UI_MILLIS_DELAY
-import com.example.hsrrelicmanager.core.android.SharedForegroundNotif
 
 
 /**
@@ -56,7 +56,7 @@ class BubbleController(
     private var hasSelected = false
 
     private val onHidden = Runnable {
-        this@BubbleController.onHideListener?.invoke()
+        this.onHideListener?.invoke()
         if (hasSelected)
             onConfirmTaskListener?.invoke(selectedTask.value!!)
     }
@@ -74,8 +74,8 @@ class BubbleController(
         _selectedTask.value = task
         hideView()
     }
-    fun getTasks() {
-        throw NotImplementedError()
+    fun getTasks(): List<Task> {
+        return listOf(Task.NONE, Task.CLOSE, Task.SCREENSHOT)
     }
 
     //service part
@@ -109,7 +109,7 @@ class BubbleController(
     }
     override fun hideView() = bubbleMenu.hide()
     override fun showView() = bubbleMenu.show()
-    override fun getOverlaysToHide() = listOf(bubbleMenu.bubble)
+    override fun getOverlaysToHide() = listOf(bubbleMenu.bubbleView)
     override fun alert(res: TaskResult) {
         SharedForegroundNotif.alert(svc, res)
     }

@@ -1,4 +1,4 @@
-package com.example.arknightsautoclicker.andorid.ui
+package com.example.hsrrelicmanager.andorid
 
 
 import android.content.Context
@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import com.example.arknightsautoclicker.R
-import com.example.hsrrelicmanager.core.components.Task
-import com.example.arknightsautoclicker.databinding.TaskItemLayoutBinding
-import com.example.hsrrelicmanager.andorid.ui.BubbleController
+import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.core.android.SharedForegroundNotif
+import com.example.hsrrelicmanager.core.components.Task
+import com.example.hsrrelicmanager.databinding.TaskItemLayoutBinding
 
 /**
  * adapter for the bubble recycler view
