@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">HSR Relic Manager</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="pause">pause</string>
+    <string name="close">close</string>
+    <string name="take_screenshot">screenshot</string>
+    <string name="github">github</string>
+    <string name="open_bubble">open menu</string>
+    <string name="foreground_desc">app_name is running</string>
+    <string name="confirm">confirm</string>
+    <string name="cancel">cancel</string>
+    <string name="confirm_exit">Are you sure you want to exit?</string>
+</resources>
