@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pf_din_text_pro_regular"
-                android:text="Relic Set: <placeholder>"
+                android:text="Relic Set: &lt;placeholder&gt;"
                 android:textSize="16sp" />
 
             <TextView
