@@ -30,7 +30,7 @@
             android:id="@+id/rule_button_circle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/outer_circle_icon" />
+            android:src="@drawable/icon_outer_circle_icon" />
 
         <ImageView
             android:id="@+id/rule_button"
@@ -53,7 +53,7 @@
             android:id="@+id/play_button_circle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/outer_circle_icon" />
+            android:src="@drawable/icon_outer_circle_icon" />
 
         <ImageView
             android:id="@+id/play_button"
@@ -77,7 +77,7 @@
             android:id="@+id/inventory_button_circle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/outer_circle_icon" />
+            android:src="@drawable/icon_outer_circle_icon" />
 
         <ImageView
             android:id="@+id/inventory_button"

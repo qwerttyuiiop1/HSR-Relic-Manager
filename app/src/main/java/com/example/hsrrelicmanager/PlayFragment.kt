@@ -1,4 +1,3 @@
-// RuleFragment.kt
 package com.example.hsrrelicmanager
 
 import android.os.Bundle
