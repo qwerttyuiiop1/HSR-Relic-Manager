@@ -27,6 +27,10 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".RuleFragment"/>
+        <activity android:name=".PlayFragment" />
+        <activity android:name=".InventoryFragment"/>
+
         <activity
             android:name=".core.android.PermissionLauncher"
             android:exported="true"
