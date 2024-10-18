@@ -190,12 +190,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="6dp"
+                android:layout_marginStart="4dp"
                 android:orientation="vertical">
                 <LinearLayout
                     android:id="@+id/relic_substat_container_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="4dp"
                     android:gravity="center_vertical">
                     <ImageView
                         android:id="@+id/img_relic_substat_1"
@@ -224,7 +224,6 @@
                     android:id="@+id/relic_substat_container_2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="4dp"
                     android:gravity="center_vertical">
                     <ImageView
                         android:id="@+id/img_relic_substat_2"
@@ -253,7 +252,6 @@
                     android:id="@+id/relic_substat_container_3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="4dp"
                     android:gravity="center_vertical">
                     <ImageView
                         android:id="@+id/img_relic_substat_3"
@@ -282,7 +280,6 @@
                     android:id="@+id/relic_substat_container_4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="4dp"
                     android:gravity="center_vertical">
                     <ImageView
                         android:id="@+id/img_relic_substat_4"

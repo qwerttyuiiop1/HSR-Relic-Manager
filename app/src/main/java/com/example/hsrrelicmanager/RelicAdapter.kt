@@ -1,178 +1,104 @@
-package com.example.hsrrelicmanager;
+package com.example.hsrrelicmanager
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.example.hsrrelicmanager.databinding.InventoryRelicItemBinding
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-public class RelicAdapter extends RecyclerView.Adapter<RelicAdapter.ViewHolder> {
-
-    private List<Relic> relicData;
-
-    public RelicAdapter(List<Relic> relicData) {
-        this.relicData = relicData;
+class RelicAdapter(private val relicData: List<Relic>) :
+    RecyclerView.Adapter<RelicAdapter.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = InventoryRelicItemBinding.inflate(LayoutInflater.from(parent.context))
+        return ViewHolder(binding)
     }
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.inventory_relic_item, parent, false);
-
-        return new ViewHolder(view);
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val relic = relicData[position]
+        holder.bind(relic)
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Relic relic = relicData.get(position);
+    override fun getItemCount(): Int {
+        return relicData.size
+    }
 
-        holder.getTvSet().setText(relic.getSet());
-        holder.getTvMainstat().setText(relic.getMainstat());
-        holder.getTvMainstatVal().setText(relic.getMainstatVal().toString());
-        holder.getIvMainstat().setImageResource(getStatResource(relic.getMainstat()));
+    private fun getRarityResource(relic: Relic): Int {
+        val rarity = relic.rarity
 
-        holder.getImgSet().setImageResource(relic.getImage());
-        holder.getTvLevel().setText("+" + relic.getLevel());
-
-        int backgroundResource = getRarityResource(relic);
-        holder.getImgSet().setBackgroundResource(backgroundResource);
-
-        Iterator<Map.Entry<String, Double>> itSubstat = relic.getSubstats().entrySet().iterator();
-        Iterator<TextView> itTextView = holder.getTvSubstats().iterator();
-        Iterator<TextView> itTextViewVal= holder.getTvSubstatVals().iterator();
-        Iterator<ImageView> itImageView= holder.getIvSubstats().iterator();
-
-        while (itSubstat.hasNext() && itTextView.hasNext() && itTextViewVal.hasNext() && itImageView.hasNext()) {
-            Map.Entry<String, Double> substat = itSubstat.next();
-            TextView textView = itTextView.next();
-            TextView textViewVal = itTextViewVal.next();
-            ImageView imageView = itImageView.next();
-
-            textView.setText(substat.getKey());
-            textViewVal.setText(substat.getValue().toString());
-
-            imageView.setImageResource(getStatResource(substat.getKey()));
+        return when (rarity) {
+            1 -> R.drawable.bg_1_star
+            2 -> R.drawable.bg_2_star
+            3 -> R.drawable.bg_3_star
+            4 -> R.drawable.bg_4_star
+            5 -> R.drawable.bg_5_star
+            else -> R.drawable.playfrag_test
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return relicData.size();
-    }
-
-    private int getRarityResource(Relic relic) {
-        int rarity = relic.getRarity();
-
-        switch(rarity) {
-            case 1:
-                return R.drawable.bg_1_star;
-            case 2:
-                return R.drawable.bg_2_star;
-            case 3:
-                return R.drawable.bg_3_star;
-            case 4:
-                return R.drawable.bg_4_star;
-            case 5:
-                return R.drawable.bg_5_star;
-            default:
-                return R.drawable.playfrag_test;
+    private fun getStatResource(stat: String): Int {
+        return when (stat) {
+            "ATK", "ATK%" -> R.drawable.icon_atk
+            "DEF" -> R.drawable.icon_def
+            "SPD" -> R.drawable.icon_spd
+            "CRIT Rate" -> R.drawable.icon_crit_rate
+            else -> R.drawable.playfrag_test
         }
     }
 
-    private int getStatResource(String stat) {
-        switch(stat) {
-            case "ATK":
-            case "ATK%":
-                return R.drawable.icon_atk;
-            case "DEF":
-                return R.drawable.icon_def;
-            case "SPD":
-                return R.drawable.icon_spd;
-            case "CRIT Rate":
-                return R.drawable.icon_crit_rate;
-            default:
-                return R.drawable.playfrag_test;
-        }
-    }
+    inner class ViewHolder(val binding: InventoryRelicItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(relic: Relic) {
+            binding.apply {
+                lblRelicName.text = relic.set
+                lblRelicMainStatType.text = relic.mainstat
+                lblRelicMainStatValue.text = relic.mainstatVal
+                imgRelicMainStat.setImageResource(getStatResource(relic.mainstat))
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView tvSet, tvMainstat, tvSubstat1, tvSubstat2, tvSubstat3, tvSubstat4,
-                tvMainstatVal, tvSubstat1Val, tvSubstat2Val, tvSubstat3Val, tvSubstat4Val;
+                imgRelic.setImageResource(relic.image)
+                lblRelicLevel.text = "+${relic.level}"
 
-        private ImageView imgSet,
-                ivMainstat, ivSubstat1, ivSubstat2, ivSubstat3, ivSubstat4;
+                val backgroundResource = getRarityResource(relic)
+                imgRelic.setBackgroundResource(backgroundResource)
 
-        private TextView tvLevel;
+                val icons = listOf(
+                    imgRelicSubStat1,
+                    imgRelicSubStat2,
+                    imgRelicSubStat3,
+                    imgRelicSubStat4
+                )
+                val types = listOf(
+                    lblRelicSubStatType1,
+                    lblRelicSubStatType2,
+                    lblRelicSubStatType3,
+                    lblRelicSubStatType4
+                )
+                val values = listOf(
+                    lblRelicSubStatValue1,
+                    lblRelicSubStatValue2,
+                    lblRelicSubStatValue3,
+                    lblRelicSubStatValue4
+                )
+                val containers = listOf(
+                    relicSubstatContainer1,
+                    relicSubstatContainer2,
+                    relicSubstatContainer3,
+                    relicSubstatContainer4
+                )
 
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
+                for (i in containers.indices) {
+                    if (i < relic.substats.size)
+                        containers[i].visibility = View.VISIBLE
+                    else
+                        containers[i].visibility = View.GONE
+                }
 
-            tvSet = itemView.findViewById(R.id.tvSet);
-            tvMainstat = itemView.findViewById(R.id.tvMainstat);
-            tvSubstat1 = itemView.findViewById(R.id.tvSubstat1);
-            tvSubstat2 = itemView.findViewById(R.id.tvSubstat2);
-            tvSubstat3 = itemView.findViewById(R.id.tvSubstat3);
-            tvSubstat4 = itemView.findViewById(R.id.tvSubstat4);
-
-            tvMainstatVal = itemView.findViewById(R.id.tvMainstatVal);
-            tvSubstat1Val = itemView.findViewById(R.id.tvSubstat1Val);
-            tvSubstat2Val = itemView.findViewById(R.id.tvSubstat2Val);
-            tvSubstat3Val = itemView.findViewById(R.id.tvSubstat3Val);
-            tvSubstat4Val = itemView.findViewById(R.id.tvSubstat4Val);
-
-            ivMainstat = itemView.findViewById(R.id.ivMainstat);
-            ivSubstat1 = itemView.findViewById(R.id.ivSubstat1);
-            ivSubstat2 = itemView.findViewById(R.id.ivSubstat2);
-            ivSubstat3 = itemView.findViewById(R.id.ivSubstat3);
-            ivSubstat4 = itemView.findViewById(R.id.ivSubstat4);
-
-            imgSet = itemView.findViewById(R.id.imgSet);
-            tvLevel = itemView.findViewById(R.id.tvLevel);
-        }
-
-        public TextView getTvSet() {
-            return tvSet;
-        }
-
-        public TextView getTvMainstat() {
-            return tvMainstat;
-        }
-
-        public TextView getTvMainstatVal() {
-            return tvMainstatVal;
-        }
-
-        public List<TextView> getTvSubstats() {
-            return Arrays.asList(tvSubstat1, tvSubstat2, tvSubstat3, tvSubstat4);
-        }
-
-        public List<TextView> getTvSubstatVals() {
-            return Arrays.asList(tvSubstat1Val, tvSubstat2Val, tvSubstat3Val, tvSubstat4Val);
-        }
-
-        public ImageView getIvMainstat() {
-            return ivMainstat;
-        }
-
-        public List<ImageView> getIvSubstats() {
-            return Arrays.asList(ivSubstat1, ivSubstat2, ivSubstat3, ivSubstat4);
-        }
-
-        public ImageView getImgSet() {
-            return imgSet;
-        }
-
-        public TextView getTvLevel() {
-            return tvLevel;
+                val entries = relic.substats.entries
+                for (i in entries.indices) {
+                    val substat = entries.elementAt(i)
+                    icons[i].setImageResource(getStatResource(substat.key))
+                    types[i].text = substat.key
+                    values[i].text = substat.value.toString()
+                }
+            }
         }
     }
 }
