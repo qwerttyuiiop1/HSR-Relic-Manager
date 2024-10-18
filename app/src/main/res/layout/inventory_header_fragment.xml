@@ -10,15 +10,17 @@
         android:id="@+id/inventory_title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/pf_din_text_pro_regular"
+        android:letterSpacing="0.02"
         android:text="Inventory"
         android:textColor="#FFC65C"
         android:textSize="40sp"
         android:textStyle="bold"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/inventory_spinner_frame"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/inventory_spinner_frame" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
         android:id="@+id/inventory_spinner_frame"

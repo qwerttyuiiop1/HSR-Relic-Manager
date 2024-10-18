@@ -33,7 +33,7 @@ class InventoryBodyFragment : Fragment() {
                     "ATK" to 2.0,
                     "SPD" to 5.0,
                     "DEF" to 8.5,
-                    "CRIT RATE" to 12.1
+                    "CRIT Rate" to 12.1
                 ),
                 Relic.Status.LOCK,
                 R.drawable.musketeer_of_wild_wheat
