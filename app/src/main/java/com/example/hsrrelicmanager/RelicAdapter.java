@@ -38,6 +38,8 @@ public class RelicAdapter extends RecyclerView.Adapter<RelicAdapter.ViewHolder> 
         holder.getTvSet().setText(relic.getSet());
         holder.getTvMainstat().setText(relic.getMainstat());
         holder.getTvMainstatVal().setText(relic.getMainstatVal().toString());
+        holder.getIvMainstat().setImageResource(getStatResource(relic.getMainstat()));
+
         holder.getImgSet().setImageResource(relic.getImage());
 
         int backgroundResource = getRarityResource(relic);
@@ -151,6 +153,10 @@ public class RelicAdapter extends RecyclerView.Adapter<RelicAdapter.ViewHolder> 
 
         public List<TextView> getTvSubstatVals() {
             return Arrays.asList(tvSubstat1Val, tvSubstat2Val, tvSubstat3Val, tvSubstat4Val);
+        }
+
+        public ImageView getIvMainstat() {
+            return ivMainstat;
         }
 
         public List<ImageView> getIvSubstats() {
