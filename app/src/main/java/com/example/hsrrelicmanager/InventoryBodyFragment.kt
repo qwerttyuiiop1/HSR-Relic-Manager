@@ -28,7 +28,7 @@ class InventoryBodyFragment : Fragment() {
                 5,
                 15,
                 "ATK%",
-                40.0,
+                "40.0",
                 mapOf(
                     "ATK" to 2.0,
                     "SPD" to 5.0,
@@ -44,7 +44,7 @@ class InventoryBodyFragment : Fragment() {
                 2,
                 12,
                 "DEF",
-                12.3,
+                "12.3",
                 mapOf(
                     "ATK" to 2.0,
                     "SPD" to 5.0,

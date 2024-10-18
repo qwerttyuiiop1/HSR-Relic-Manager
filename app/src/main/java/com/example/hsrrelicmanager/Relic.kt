@@ -6,6 +6,7 @@ data class Relic (
     val rarity: Int,
     val level: Int,
     val mainstat: String,
+    val mainstatVal: String,
     val substats: Map<String, Double>,
     val status: List<Status>,
     val image: Int
