@@ -12,6 +12,6 @@ data class Relic (
     val image: Int
 ) {
     enum class Status {
-        LOCK, TRASH, UPGRADE
+        LOCK, TRASH, UPGRADE, DEFAULT
     }
 }
