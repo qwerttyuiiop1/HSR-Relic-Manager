@@ -21,22 +21,49 @@
             android:paddingTop="6dp"
             android:paddingBottom="14dp">
 
-            <ImageView
-                android:id="@+id/imgSet"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/bg_5_star"
-                android:elevation="4dp"
-                android:padding="6dp"
-                app:srcCompat="@drawable/thief_of_shooting_meteor" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imgSet"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/bg_5_star"
+                    android:elevation="4dp"
+                    android:padding="6dp"
+                    app:srcCompat="@drawable/thief_of_shooting_meteor" />
+
+                <View
+                    android:id="@+id/overlay"
+                    android:layout_width="80dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:background="@drawable/overlay_relic_level"
+                    android:elevation="4dp"
+                    android:padding="6dp" />
+
+                <TextView
+                    android:id="@+id/tvLevel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:elevation="4dp"
+                    android:fontFamily="@font/pf_din_text_pro_regular"
+                    android:gravity="center_horizontal"
+                    android:text="+12  >  +15"
+                    android:textColor="@color/white"
+                    android:textSize="10sp" />
+
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/tvSet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginBottom="4dp"
                 android:fontFamily="@font/pf_din_text_pro_regular"
                 android:paddingLeft="14dp"
                 android:text="TextView"
@@ -51,12 +78,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingLeft="20dp"
+                    android:paddingLeft="16dp"
                     android:paddingRight="20dp">
+
+                    <ImageView
+                        android:id="@+id/ivMainstat"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_weight="0"
+                        app:srcCompat="@drawable/icon_atk"
+                        app:tint="#FFC65C" />
 
                     <TextView
                         android:id="@+id/tvMainstat"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/pf_din_text_pro_regular"
@@ -91,8 +127,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:paddingLeft="20dp"
+                android:paddingLeft="16dp"
                 android:paddingRight="20dp">
+
+                <ImageView
+                    android:id="@+id/ivSubstat1"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_weight="0"
+                    app:srcCompat="@drawable/icon_atk" />
 
                 <TextView
                     android:id="@+id/tvSubstat1"
@@ -119,8 +163,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:paddingLeft="20dp"
+                android:paddingLeft="16dp"
                 android:paddingRight="20dp">
+
+                <ImageView
+                    android:id="@+id/ivSubstat2"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_weight="0"
+                    app:srcCompat="@drawable/icon_atk" />
 
                 <TextView
                     android:id="@+id/tvSubstat2"
@@ -146,12 +198,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:paddingLeft="20dp"
+                android:paddingLeft="16dp"
                 android:paddingRight="20dp">
+
+                <ImageView
+                    android:id="@+id/ivSubstat3"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_weight="0"
+                    app:srcCompat="@drawable/icon_atk" />
 
                 <TextView
                     android:id="@+id/tvSubstat3"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/pf_din_text_pro_regular"
@@ -173,12 +233,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:paddingLeft="20dp"
+                android:paddingLeft="16dp"
                 android:paddingRight="20dp">
+
+                <ImageView
+                    android:id="@+id/ivSubstat4"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_weight="0" />
 
                 <TextView
                     android:id="@+id/tvSubstat4"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/pf_din_text_pro_regular"

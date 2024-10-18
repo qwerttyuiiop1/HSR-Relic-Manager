@@ -28,11 +28,12 @@ class InventoryBodyFragment : Fragment() {
                 5,
                 15,
                 "ATK%",
+                40.0,
                 mapOf(
                     "ATK" to 2.0,
                     "SPD" to 5.0,
                     "DEF" to 8.5,
-                    "CRIT RATE" to 12.1
+                    "CRIT Rate" to 12.1
                 ),
                 listOf(Relic.Status.LOCK),
                 R.drawable.musketeer_of_wild_wheat
@@ -43,6 +44,7 @@ class InventoryBodyFragment : Fragment() {
                 2,
                 12,
                 "DEF",
+                12.3,
                 mapOf(
                     "ATK" to 2.0,
                     "SPD" to 5.0,
