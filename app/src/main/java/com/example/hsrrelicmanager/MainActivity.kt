@@ -33,31 +33,33 @@ open class MainActivity : AppCompatActivity() {
     // navigation
     private fun setupClickListeners() {
         navbarBinding.ruleButtonFrame.setOnClickListener {
-            handleFrameClick(navbarBinding.ruleButtonFrame, RuleFragment())
+            handleFrameClick(navbarBinding.ruleButtonFrame, RuleHeaderFragment(), RuleBodyFragment())
         }
 
+        //placeholder only
         navbarBinding.playButtonFrame.setOnClickListener {
-            handleFrameClick(navbarBinding.playButtonFrame, PlayFragment())
+           handleFrameClick(navbarBinding.playButtonFrame, RuleHeaderFragment(), InventoryHeaderFragment())
         }
 
         navbarBinding.inventoryButtonFrame.setOnClickListener {
-            handleFrameClick(navbarBinding.inventoryButtonFrame, InventoryFragment())
+            handleFrameClick(navbarBinding.inventoryButtonFrame, InventoryHeaderFragment(), InventoryBodyFragment())
         }
     }
 
-    private fun loadFragment(fragment: Fragment) {
+    private fun loadFragment(header: Fragment, body: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, fragment)
+        transaction.replace(R.id.header_fragment_container, header)
+        transaction.replace(R.id.body_fragment_container, body)
         transaction.commit()
     }
 
-    private fun handleFrameClick(selectedFrame: View, fragment: Fragment) {
+    private fun handleFrameClick(selectedFrame: View, header: Fragment, body: Fragment) {
         if (this.selectedFrame == selectedFrame) {
             return
         } else {
             this.selectedFrame?.let { resetFrameColors() }
             this.selectedFrame = selectedFrame
-            loadFragment(fragment)
+            loadFragment(header, body)
         }
 
         val outerCircleIconId = when (selectedFrame.id) {

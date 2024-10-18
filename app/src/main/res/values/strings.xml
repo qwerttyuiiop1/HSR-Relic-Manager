@@ -12,10 +12,14 @@
     <string name="confirm">confirm</string>
     <string name="cancel">cancel</string>
     <string name="confirm_exit">Are you sure you want to exit?</string>
-    <string-array name="spinner_choices">
+    <string-array name="rule_spinner_choices">
         <item>Ordered</item>
         <item>Trash</item>
         <item>Enhance</item>
         <item>Filter Group</item>
+    </string-array>
+    <string-array name="inventory_spinner_choices">
+        <item>All</item>
+        <item>Something</item>
     </string-array>
 </resources>

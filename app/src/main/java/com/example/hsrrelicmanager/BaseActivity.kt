@@ -31,7 +31,7 @@ open class BaseActivity : AppCompatActivity() {
     private fun setupClickListeners() {
         navbarBinding.ruleButtonFrame.setOnClickListener {
             handleFrameClick(navbarBinding.ruleButtonFrame)
-            navigateTo(RuleFragment::class.java)
+            navigateTo(RuleHeaderFragment::class.java)
         }
 
         navbarBinding.playButtonFrame.setOnClickListener {
