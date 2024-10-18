@@ -41,6 +41,7 @@ public class RelicAdapter extends RecyclerView.Adapter<RelicAdapter.ViewHolder> 
         holder.getIvMainstat().setImageResource(getStatResource(relic.getMainstat()));
 
         holder.getImgSet().setImageResource(relic.getImage());
+        holder.getTvLevel().setText("+" + relic.getLevel());
 
         int backgroundResource = getRarityResource(relic);
         holder.getImgSet().setBackgroundResource(backgroundResource);
@@ -110,6 +111,8 @@ public class RelicAdapter extends RecyclerView.Adapter<RelicAdapter.ViewHolder> 
         private ImageView imgSet,
                 ivMainstat, ivSubstat1, ivSubstat2, ivSubstat3, ivSubstat4;
 
+        private TextView tvLevel;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -133,6 +136,7 @@ public class RelicAdapter extends RecyclerView.Adapter<RelicAdapter.ViewHolder> 
             ivSubstat4 = itemView.findViewById(R.id.ivSubstat4);
 
             imgSet = itemView.findViewById(R.id.imgSet);
+            tvLevel = itemView.findViewById(R.id.tvLevel);
         }
 
         public TextView getTvSet() {
@@ -165,6 +169,10 @@ public class RelicAdapter extends RecyclerView.Adapter<RelicAdapter.ViewHolder> 
 
         public ImageView getImgSet() {
             return imgSet;
+        }
+
+        public TextView getTvLevel() {
+            return tvLevel;
         }
     }
 }

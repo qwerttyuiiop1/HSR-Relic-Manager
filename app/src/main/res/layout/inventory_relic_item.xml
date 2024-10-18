@@ -21,22 +21,49 @@
             android:paddingTop="6dp"
             android:paddingBottom="14dp">
 
-            <ImageView
-                android:id="@+id/imgSet"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/bg_5_star"
-                android:elevation="4dp"
-                android:padding="6dp"
-                app:srcCompat="@drawable/thief_of_shooting_meteor" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imgSet"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/bg_5_star"
+                    android:elevation="4dp"
+                    android:padding="6dp"
+                    app:srcCompat="@drawable/thief_of_shooting_meteor" />
+
+                <View
+                    android:id="@+id/overlay"
+                    android:layout_width="80dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:background="@drawable/overlay_relic_level"
+                    android:elevation="4dp"
+                    android:padding="6dp" />
+
+                <TextView
+                    android:id="@+id/tvLevel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:elevation="4dp"
+                    android:fontFamily="@font/pf_din_text_pro_regular"
+                    android:gravity="center_horizontal"
+                    android:text="+12  >  +15"
+                    android:textColor="@color/white"
+                    android:textSize="10sp" />
+
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/tvSet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginBottom="4dp"
                 android:fontFamily="@font/pf_din_text_pro_regular"
                 android:paddingLeft="14dp"
                 android:text="TextView"
