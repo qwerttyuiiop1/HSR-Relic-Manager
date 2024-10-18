@@ -28,14 +28,14 @@ class InventoryBodyFragment : Fragment() {
                 5,
                 15,
                 "ATK%",
-                40.0,
+                "40.0",
                 mapOf(
                     "ATK" to 2.0,
                     "SPD" to 5.0,
                     "DEF" to 8.5,
                     "CRIT Rate" to 12.1
                 ),
-                Relic.Status.LOCK,
+                listOf(Relic.Status.LOCK),
                 R.drawable.musketeer_of_wild_wheat
             ))
             relicData.add(Relic(
@@ -44,13 +44,13 @@ class InventoryBodyFragment : Fragment() {
                 2,
                 12,
                 "DEF",
-                12.3,
+                "12.3",
                 mapOf(
                     "ATK" to 2.0,
                     "SPD" to 5.0,
                     "DEF" to 8.5,
                 ),
-                Relic.Status.TRASH,
+                listOf(Relic.Status.TRASH),
                 R.drawable.thief_of_shooting_meteor
             ))
         }
@@ -59,5 +59,8 @@ class InventoryBodyFragment : Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.inventoryRecyclerView)
         recyclerView.layoutManager = GridLayoutManager(context, 2)
         recyclerView.adapter = relicAdapter
+
+        val relicBottomSheetFragment = RelicBottomSheetFragment()
+        relicBottomSheetFragment.show(childFragmentManager, relicBottomSheetFragment.tag)
     }
 }
