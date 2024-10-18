@@ -6,7 +6,8 @@
     android:gravity="center"
     android:layout_width="@dimen/task_item_width"
     android:layout_height="wrap_content">
-
+<!-- TODO: delete this file -->
+    <!-- Old code copied from the reference project -->
     <ImageView
         android:id="@+id/task_icon"
         android:layout_width="@dimen/task_ic_size"

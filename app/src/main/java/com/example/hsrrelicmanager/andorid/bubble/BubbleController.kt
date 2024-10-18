@@ -1,6 +1,7 @@
-package com.example.hsrrelicmanager.andorid
+package com.example.hsrrelicmanager.andorid.bubble
 
 
+import android.app.Service
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -8,9 +9,7 @@ import android.content.ServiceConnection
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.example.hsrrelicmanager.core.AutoclickService
+import androidx.databinding.ObservableField
 import com.example.hsrrelicmanager.core.android.SharedForegroundNotif
 import com.example.hsrrelicmanager.core.components.Task
 import com.example.hsrrelicmanager.core.exe.TaskResult
@@ -23,7 +22,7 @@ import com.example.hsrrelicmanager.core.io.IBubbleController.Companion.UI_MILLIS
  * is responsible for controlling the bubble
  */
 class BubbleController(
-    private val svc: AutoclickService
+    private val svc: Service
 ) : IBubbleController {
     /**
      * when the view is added to the window manager,
@@ -39,7 +38,7 @@ class BubbleController(
      * The task is confirmed when the user clicks
      * on a task and after the view is hidden
      */
-    override var onConfirmTaskListener: ((Task)->Unit)? = null
+    override var onConfirmTaskListener: ((String)->Unit)? = null
     /**
      * when the overlay is available
      */
@@ -50,43 +49,40 @@ class BubbleController(
 
 
     //Bubble menu part
-    private val _selectedTask = MutableLiveData(Task.NONE)
-    val selectedTask: LiveData<Task>
-        get() = _selectedTask
-    private var hasSelected = false
+    override val selectedTask = ObservableField(Task.NONE.name)
 
+    private var hasSelected = false
     private val onHidden = Runnable {
         this.onHideListener?.invoke()
-        if (hasSelected)
-            onConfirmTaskListener?.invoke(selectedTask.value!!)
+        // TODO: not listening to tasks for now
+        if (hasSelected && selectedTask.get()!! == Task.CLOSE.name)
+            onConfirmTaskListener?.invoke(selectedTask.get()!!)
     }
-    fun onVisible() {
-        hasSelected = false
-        onShowListener?.invoke()
-        handler.removeCallbacks(onHidden)
+    override fun setVisibility(visible: Boolean) {
+        if (visible) {
+            hasSelected = false
+            onShowListener?.invoke()
+            handler.removeCallbacks(onHidden)
+        } else {
+            handler.removeCallbacks(onHidden)
+            handler.postDelayed(onHidden, UI_MILLIS_DELAY)
+        }
     }
-    fun onHidden() {
-        handler.removeCallbacks(onHidden)
-        handler.postDelayed(onHidden, UI_MILLIS_DELAY)
-    }
-    override fun setSelectedTask(task: Task) {
+    override fun setSelectedTask(task: String) {
         hasSelected = true
-        _selectedTask.value = task
-        hideView()
-    }
-    fun getTasks(): List<Task> {
-        return listOf(Task.NONE, Task.CLOSE, Task.SCREENSHOT)
+        selectedTask.set(task)
+        if (task == Task.CLOSE.name)
+            hideView()
     }
 
     //service part
-    private var _bubbleMenu: BubbleMenu? = null
-    private val bubbleMenu: BubbleMenu
-        get() = _bubbleMenu!!
+    private var _bubbleMenu: HSRBubbleService? = null
+    private val bubbleMenu get() = _bubbleMenu!!
 
     private val connection = object: ServiceConnection {
         override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
-            _bubbleMenu = (p1 as BubbleMenu.Binder).getService()
-            bubbleMenu.setController(this@BubbleController)
+            _bubbleMenu = (p1 as HSRBubbleService.Binder).getService()
+            bubbleMenu.setBubbleController(this@BubbleController)
             handler.postDelayed({
                 onBindListener?.invoke()
             }, UI_MILLIS_DELAY)
@@ -98,7 +94,7 @@ class BubbleController(
 
     override fun start() =
         svc.bindService(
-            Intent(svc, BubbleMenu::class.java),
+            Intent(svc, HSRBubbleService::class.java),
             connection, Context.BIND_AUTO_CREATE
         )
     override fun close() {
@@ -107,9 +103,9 @@ class BubbleController(
         _bubbleMenu = null
         svc.unbindService(connection)
     }
-    override fun hideView() = bubbleMenu.hide()
-    override fun showView() = bubbleMenu.show()
-    override fun getOverlaysToHide() = listOf(bubbleMenu.bubbleView)
+    override fun hideView() = bubbleMenu.hideBubble()
+    override fun showView() = bubbleMenu.showBubble()
+    override fun getBubble() = bubbleMenu.bubbleView
     override fun alert(res: TaskResult) {
         SharedForegroundNotif.alert(svc, res)
     }

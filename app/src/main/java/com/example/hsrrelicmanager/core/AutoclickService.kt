@@ -5,9 +5,11 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Looper
 import android.view.accessibility.AccessibilityEvent
-import com.example.hsrrelicmanager.core.android.PermissionLauncher
-import com.example.hsrrelicmanager.core.io.IBubbleController
 import com.example.hsrrelicmanager.core.android.SharedForegroundNotif
+import com.example.hsrrelicmanager.core.components.Task
+import com.example.hsrrelicmanager.core.components.UIContext
+import com.example.hsrrelicmanager.core.exe.TaskRunner
+import com.example.hsrrelicmanager.core.io.IBubbleController
 
 
 /**
@@ -20,7 +22,7 @@ import com.example.hsrrelicmanager.core.android.SharedForegroundNotif
  *                          and enters a sleep state where it will not be executing tasks
  * ELSE:                    forwards the task to AppController
  */
-open class AutoclickService : AccessibilityService() {
+abstract class AutoclickService : AccessibilityService() {
     companion object {
         const val ACTION_INIT = "action_init"
         const val ACTION_CLOSE = "action_close"
@@ -51,30 +53,28 @@ open class AutoclickService : AccessibilityService() {
     }
 
     open fun setupBubbleController(): IBubbleController {
-        throw NotImplementedError("Not implemented")
+        throw NotImplementedError("BubbleController is required")
+    }
+    open fun startWithPermissions(intent: Intent?) {
+        throw NotImplementedError("AutoclickService was not started with permissions. Implement this method or start a new launcher")
     }
 
+    protected open fun setupNotif(hasBubble: Boolean) {
+        startForeground(
+            SharedForegroundNotif.NOTIFICATION_ID,
+            SharedForegroundNotif.build(this, hasBubble)
+        )
+    }
     open fun handleAction(action: String, intent: Intent? = null) {
         when (action) {
             ACTION_CLOSE -> close()
             ACTION_INIT -> {
-                startForeground(
-                    SharedForegroundNotif.NOTIFICATION_ID,
-                    SharedForegroundNotif.build(this, false)
-                )
                 if (appController == null) {
                     if (cached != null) {
+                        setupNotif(false)
                         handleAction(ACTION_INIT_PERMISSION, cached)
                     } else {
-                        startActivity(
-                            Intent(
-                                this,
-                                PermissionLauncher::class.java
-                            ).apply {
-                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                if (intent != null) putExtras(intent)
-                            }
-                        )
+                        startWithPermissions(intent)
                     }
                 } else {
                     appController!!.handleAction(AppController.ACTION_BUBBLE)
@@ -82,15 +82,12 @@ open class AutoclickService : AccessibilityService() {
             }
             ACTION_INIT_PERMISSION -> {
                 if (appController == null) {
-                    cached = intent!!.clone() as Intent
                     val resultCode =
-                        intent.getIntExtra(EXTRA_RESULT_CODE, Activity.RESULT_CANCELED)
+                        intent!!.getIntExtra(EXTRA_RESULT_CODE, Activity.RESULT_CANCELED)
                     if (resultCode == Activity.RESULT_OK) {
+                        cached = intent.clone() as Intent
                         val hasBubble = intent.getBooleanExtra(EXTRA_HAS_BUBBLE, true)
-                        startForeground(
-                            SharedForegroundNotif.NOTIFICATION_ID,
-                            SharedForegroundNotif.build(this, hasBubble)
-                        )
+                        setupNotif(hasBubble)
                         appController = AppController(this, setupBubbleController(), intent)
                     }
                 }
@@ -103,5 +100,9 @@ open class AutoclickService : AccessibilityService() {
         appController?.close()
         appController = null
         stopForeground(STOP_FOREGROUND_REMOVE)
+    }
+
+    protected fun addHandler(task: Task, factory: (UIContext)-> TaskRunner) {
+        appController?.taskHandler?.setHandler(task, factory)
     }
 }

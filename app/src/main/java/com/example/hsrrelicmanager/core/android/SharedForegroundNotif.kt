@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.view.WindowManager
+import com.example.hsrrelicmanager.HSRAutoClickService
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.core.AppController
 import com.example.hsrrelicmanager.core.AutoclickService
@@ -21,7 +22,8 @@ class SharedForegroundNotif(
             val PendingIntent: (String) -> PendingIntent = {
                 PendingIntent.getService(
                     ctx, AutoclickService.INTENT_REQUEST_CODE,
-                    Intent(ctx, AutoclickService::class.java).setAction(it),
+                    // TODO: fix this hack
+                    Intent(ctx, HSRAutoClickService::class.java).setAction(it),
                     PendingIntent.FLAG_IMMUTABLE
                 )
             }

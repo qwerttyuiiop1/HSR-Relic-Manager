@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.hsrrelicmanager.core.AutoclickService
 import com.example.hsrrelicmanager.databinding.ActivityMainBinding
 import com.example.hsrrelicmanager.databinding.NavbarBinding
 
@@ -38,7 +39,10 @@ open class MainActivity : AppCompatActivity() {
 
         //placeholder only
         navbarBinding.playButtonFrame.setOnClickListener {
-           handleFrameClick(navbarBinding.playButtonFrame, RuleHeaderFragment(), InventoryHeaderFragment())
+            handleFrameClick(navbarBinding.playButtonFrame)
+            val i = Intent(this, HSRAutoClickService::class.java)
+            i.setAction(AutoclickService.ACTION_INIT)
+            startService(i)
         }
 
         navbarBinding.inventoryButtonFrame.setOnClickListener {
