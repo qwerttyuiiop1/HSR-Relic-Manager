@@ -39,7 +39,7 @@
                 tools:srcCompat="@drawable/lock" />
 
             <TextView
-                android:id="@+id/groupName"
+                android:id="@+id/tvGroupName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -58,7 +58,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/groupFilter1"
+                android:id="@+id/tvGroupFilter1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pf_din_text_pro_regular"
@@ -66,7 +66,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/groupFilter2"
+                android:id="@+id/tvGroupFilter2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pf_din_text_pro_regular"
@@ -74,7 +74,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/groupFilter3"
+                android:id="@+id/tvGroupFilter3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pf_din_text_pro_regular"
