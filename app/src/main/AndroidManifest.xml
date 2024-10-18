@@ -28,7 +28,8 @@
             android:name=".andorid.bubble.HSRBubbleService"
             android:enabled="true"
             android:exported="false"
-            android:foregroundServiceType="specialUse"/>
+            android:foregroundServiceType="specialUse"
+            android:configChanges="orientation|screenSize|keyboardHidden|locale"/>
 
         <activity
             android:name=".MainActivity"
@@ -43,12 +44,6 @@
         <activity android:name=".RuleHeaderFragment"/>
         <activity android:name=".PlayFragment" />
         <activity android:name=".InventoryBodyFragment"/>
-
-        <activity
-            android:name=".core.android.PermissionLauncher"
-            android:exported="true"
-            android:launchMode="singleTop">
-        </activity>
 
         <service
             android:name=".HSRAutoClickService"

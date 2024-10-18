@@ -57,13 +57,12 @@ open class MainActivity : AppCompatActivity() {
         transaction.commit()
     }
 
-    private fun handleFrameClick(selectedFrame: View, header: Fragment, body: Fragment) {
+    private fun handleFrameClick(selectedFrame: View) {
         if (this.selectedFrame == selectedFrame) {
             return
         } else {
             this.selectedFrame?.let { resetFrameColors() }
             this.selectedFrame = selectedFrame
-            loadFragment(header, body)
         }
 
         val outerCircleIconId = when (selectedFrame.id) {
@@ -76,6 +75,14 @@ open class MainActivity : AppCompatActivity() {
         outerCircleIconId?.let {
             val outerCircleIcon = findViewById<ImageView>(it)
             outerCircleIcon.setColorFilter(Color.WHITE)
+        }
+    }
+    private fun handleFrameClick(selectedFrame: View, header: Fragment, body: Fragment) {
+        if (this.selectedFrame == selectedFrame) {
+            return
+        } else {
+            loadFragment(header, body)
+            handleFrameClick(selectedFrame)
         }
     }
 

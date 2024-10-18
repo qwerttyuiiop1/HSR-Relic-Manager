@@ -1,6 +1,7 @@
 package com.example.hsrrelicmanager.andorid.bubble
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
@@ -44,21 +45,20 @@ class HSRBubbleService: ExpandableBubbleService() {
             layoutParams = FrameLayout.LayoutParams(bubbleSizePx, bubbleSizePx)
         }
     }
-    private val closeBubbleView by lazy {
-        ImageView(this).apply {
-            setImageResource(R.drawable.ic_bubble_close)
-            layoutParams = FrameLayout.LayoutParams(bubbleSizePx, bubbleSizePx)
-        }
-    }
 
     val handler = Handler(Looper.getMainLooper())
     val runImageAlpha = Runnable {
         bubbleView.imageAlpha = 255/2
     }
+
+    private var isVisible = false
     fun showBubble() {
-        bubbleView.imageAlpha = 255
-        handler.removeCallbacks(runImageAlpha)
-        controller!!.setVisibility(true)
+        if (!isVisible) {
+            isVisible = true
+            bubbleView.imageAlpha = 255
+            handler.removeCallbacks(runImageAlpha)
+            controller!!.setVisibility(true)
+        }
 
         // library specific hack >:(
         expandedBubble!!.layoutParams.apply {
@@ -85,6 +85,7 @@ class HSRBubbleService: ExpandableBubbleService() {
         expand()
     }
     fun hideBubble() {
+        isVisible = false
         handler.postDelayed(runImageAlpha, 1000)
         controller!!.setVisibility(false)
         minimize()
@@ -92,6 +93,14 @@ class HSRBubbleService: ExpandableBubbleService() {
 
 
     override fun configBubble(): BubbleBuilder {
+        val closeBubbleView =
+            ImageView(this).apply {
+                setImageResource(R.drawable.ic_bubble_close)
+                layoutParams = FrameLayout.LayoutParams(bubbleSizePx, bubbleSizePx)
+            }
+        bubbleView.parent?.let {
+            (it as ViewGroup).removeView(bubbleView)
+        }
         return BubbleBuilder(this)
             .bubbleView(bubbleView)
             .bubbleStyle(null)
@@ -145,5 +154,12 @@ class HSRBubbleService: ExpandableBubbleService() {
             SharedForegroundNotif.NOTIFICATION_ID,
             SharedForegroundNotif.build(this, true)
         )
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        if (isVisible) {
+            showBubble()
+        }
     }
 }
