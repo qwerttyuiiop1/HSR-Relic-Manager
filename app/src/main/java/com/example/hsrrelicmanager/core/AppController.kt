@@ -21,8 +21,8 @@ open class AppController (
     companion object {
         const val ACTION_BUBBLE = "action_bubble"
     }
-    protected val uiCtx: UIContext
-    protected val taskHandler: TaskHandler
+    val uiCtx: UIContext
+    val taskHandler: TaskHandler
 
     init {
         val hasBubble = intent.getBooleanExtra(
@@ -35,7 +35,7 @@ open class AppController (
         taskHandler = TaskHandler(uiCtx).apply {
             onTaskChangeListener = { task ->
                 uiCtx.uiHandler.post {
-                    uiController?.setSelectedTask(task)
+                    uiController?.setSelectedTask(task.name)
                 }
             }
             onCompleteListener = { res ->
@@ -49,9 +49,12 @@ open class AppController (
             uiController!!.apply {
                 onShowListener = { taskHandler.pause() }
                 onHideListener = { taskHandler.resume() }
-                onConfirmTaskListener = { handleTask(it.name) }
+                onConfirmTaskListener = { handleAction(it) }
                 onBindListener = {
-                    screenshot.preprocess = Overlay(getOverlaysToHide()[0])
+                    val bubble = getBubble()
+                    bubble.post {
+                        screenshot.preprocess = Overlay(bubble)
+                    }
                 }
                 start()
             }

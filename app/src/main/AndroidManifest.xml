@@ -5,7 +5,8 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
 
     <application
         android:allowBackup="true"
@@ -17,6 +18,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HSRRelicManager"
         tools:targetApi="31">
+
+        <activity
+            android:name=".andorid.bubble.PermissionLauncher"
+            android:exported="true"
+            android:launchMode="singleTop" />
+
+        <service
+            android:name=".andorid.bubble.HSRBubbleService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="specialUse"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -27,19 +40,15 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".core.android.PermissionLauncher"
-            android:exported="true"
-            android:launchMode="singleTop">
-        </activity>
-
-        <service android:name=".core.AutoclickService"
+        <service
+            android:name=".HSRAutoClickService"
             android:exported="false"
-            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
-            android:foregroundServiceType="mediaProjection">
+            android:foregroundServiceType="mediaProjection"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
-                <action android:name="android.accessibilityservice.AccessibilityService"/>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accessibilityservice"
                 android:resource="@xml/metadata" />

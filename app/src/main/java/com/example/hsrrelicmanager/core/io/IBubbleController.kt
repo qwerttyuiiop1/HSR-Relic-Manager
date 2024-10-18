@@ -1,7 +1,7 @@
 package com.example.hsrrelicmanager.core.io
 
 import android.view.View
-import com.example.hsrrelicmanager.core.components.Task
+import androidx.databinding.ObservableField
 import com.example.hsrrelicmanager.core.exe.TaskResult
 
 interface IBubbleController {
@@ -24,18 +24,23 @@ interface IBubbleController {
      * The task is confirmed when the user clicks
      * on a task and after the view is hidden
      */
-    var onConfirmTaskListener: ((Task) -> Unit)?
+    var onConfirmTaskListener: ((String) -> Unit)?
 
     /**
      * when the overlay is available
      */
     var onBindListener: (() -> Unit)?
 
-    fun setSelectedTask(task: Task)
+    // bubble methods
+    val selectedTask: ObservableField<String>
+    fun setVisibility(visible: Boolean)
+    fun setSelectedTask(task: String)
+
+
     fun start(): Boolean
     fun close()
     fun hideView()
     fun showView()
-    fun getOverlaysToHide(): List<View>
+    fun getBubble(): View
     fun alert(res: TaskResult)
 }
