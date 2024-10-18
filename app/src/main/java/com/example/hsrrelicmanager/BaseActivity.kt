@@ -6,11 +6,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.example.hsrrelicmanager.databinding.ActivityMainBinding
 import com.example.hsrrelicmanager.databinding.NavbarBinding
 
-open class MainActivity : AppCompatActivity() {
+open class BaseActivity : AppCompatActivity() {
 
     //not sure if dapat protected
     protected lateinit var binding: ActivityMainBinding
@@ -29,29 +28,20 @@ open class MainActivity : AppCompatActivity() {
         setupClickListeners()
     }
 
-    // navigation
     private fun setupClickListeners() {
         navbarBinding.ruleButtonFrame.setOnClickListener {
             handleFrameClick(navbarBinding.ruleButtonFrame)
-            loadFragment(RuleFragment())
+            navigateTo(RuleFragment::class.java)
         }
 
         navbarBinding.playButtonFrame.setOnClickListener {
             handleFrameClick(navbarBinding.playButtonFrame)
-            loadFragment(PlayFragment())
+            navigateTo(PlayFragment::class.java)
         }
 
         navbarBinding.inventoryButtonFrame.setOnClickListener {
             handleFrameClick(navbarBinding.inventoryButtonFrame)
-            loadFragment(InventoryFragment())
         }
-    }
-
-    // loading of fragments
-    private fun loadFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, fragment)
-        transaction.commit()
     }
 
     private fun handleFrameClick(selectedFrame: View) {
@@ -71,10 +61,14 @@ open class MainActivity : AppCompatActivity() {
         }
     }
 
-    //resets outer circle to orig
     private fun resetFrameColors() {
         navbarBinding.ruleButtonCircle.setColorFilter(Color.parseColor("#1C243B"))
         navbarBinding.playButtonCircle.setColorFilter(Color.parseColor("#1C243B"))
         navbarBinding.inventoryButtonCircle.setColorFilter(Color.parseColor("#1C243B"))
+    }
+
+    private fun navigateTo(activityClass: Class<*>) {
+        val intent = Intent(this, activityClass)
+        startActivity(intent)
     }
 }

@@ -40,6 +40,16 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".RuleFragment"/>
+        <activity android:name=".PlayFragment" />
+        <activity android:name=".InventoryFragment"/>
+
+        <activity
+            android:name=".core.android.PermissionLauncher"
+            android:exported="true"
+            android:launchMode="singleTop">
+        </activity>
+
         <service
             android:name=".HSRAutoClickService"
             android:exported="false"
