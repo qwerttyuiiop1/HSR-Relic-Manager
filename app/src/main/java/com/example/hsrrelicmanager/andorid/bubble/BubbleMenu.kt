@@ -86,4 +86,5 @@ class BubbleMenu(
     fun builder() = ExpandedBubbleBuilder(ctx)
         .expandedView(view.root)
         .startLocation(0, 0)
+        .dimAmount(0.75F)
 }

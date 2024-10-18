@@ -22,4 +22,8 @@ class HSRAutoClickService : AutoclickService() {
             }
         )
     }
+
+    override fun onCreate() {
+        super.onCreate()
+    }
 }
