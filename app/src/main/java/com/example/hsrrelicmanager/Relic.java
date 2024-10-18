@@ -8,6 +8,7 @@ public class Relic {
     private int rarity;
     private int level;
     private String mainstat;
+    private Double mainstatVal;
     private Map<String, Double> substats;
     private Status status;
     private int image;
@@ -18,12 +19,13 @@ public class Relic {
         TRASH
     }
 
-    public Relic(String set, String slot, int rarity, int level, String mainstat, Map<String, Double> substats, Status status, int image) {
+    public Relic(String set, String slot, int rarity, int level, String mainstat, Double mainstatVal, Map<String, Double> substats, Status status, int image) {
         this.set = set;
         this.slot = slot;
         this.rarity = rarity;
         this.level = level;
         this.mainstat = mainstat;
+        this.mainstatVal = mainstatVal;
         this.substats = substats;
         this.status = status;
         this.image = image;
@@ -67,6 +69,14 @@ public class Relic {
 
     public void setMainstat(String mainstat) {
         this.mainstat = mainstat;
+    }
+
+    public Double getMainstatVal() {
+        return mainstatVal;
+    }
+
+    public void setMainstatVal(Double mainstatVal) {
+        this.mainstatVal = mainstatVal;
     }
 
     public Map<String, Double> getSubstats() {

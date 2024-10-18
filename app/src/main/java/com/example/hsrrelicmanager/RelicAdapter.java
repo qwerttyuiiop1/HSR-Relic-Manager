@@ -37,6 +37,7 @@ public class RelicAdapter extends RecyclerView.Adapter<RelicAdapter.ViewHolder> 
 
         holder.getTvSet().setText(relic.getSet());
         holder.getTvMainstat().setText(relic.getMainstat());
+        holder.getTvMainstatVal().setText(relic.getMainstatVal().toString());
         holder.getImgSet().setImageResource(relic.getImage());
 
         int backgroundResource = getBackgroundResource(relic);
