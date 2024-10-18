@@ -40,9 +40,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".RuleFragment"/>
+        <activity android:name=".RuleHeaderFragment"/>
         <activity android:name=".PlayFragment" />
-        <activity android:name=".InventoryFragment"/>
+        <activity android:name=".InventoryBodyFragment"/>
 
         <activity
             android:name=".core.android.PermissionLauncher"

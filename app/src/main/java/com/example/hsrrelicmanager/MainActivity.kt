@@ -16,6 +16,7 @@ open class MainActivity : AppCompatActivity() {
     //not sure if dapat protected
     protected lateinit var binding: ActivityMainBinding
     protected lateinit var navbarBinding: NavbarBinding
+    private var selectedFrame: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,35 +34,38 @@ open class MainActivity : AppCompatActivity() {
     // navigation
     private fun setupClickListeners() {
         navbarBinding.ruleButtonFrame.setOnClickListener {
-            handleFrameClick(navbarBinding.ruleButtonFrame)
-            loadFragment(RuleFragment())
+            handleFrameClick(navbarBinding.ruleButtonFrame, RuleHeaderFragment(), RuleBodyFragment())
         }
 
+        //placeholder only
         navbarBinding.playButtonFrame.setOnClickListener {
             handleFrameClick(navbarBinding.playButtonFrame)
             val i = Intent(this, HSRAutoClickService::class.java)
             i.setAction(AutoclickService.ACTION_INIT)
-            // start foreground service
             startService(i)
         }
 
         navbarBinding.inventoryButtonFrame.setOnClickListener {
-            handleFrameClick(navbarBinding.inventoryButtonFrame)
-            loadFragment(InventoryFragment())
+            handleFrameClick(navbarBinding.inventoryButtonFrame, InventoryHeaderFragment(), InventoryBodyFragment())
         }
     }
 
-    // loading of fragments
-    private fun loadFragment(fragment: Fragment) {
+    private fun loadFragment(header: Fragment, body: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, fragment)
+        transaction.replace(R.id.header_fragment_container, header)
+        transaction.replace(R.id.body_fragment_container, body)
         transaction.commit()
     }
 
-    private fun handleFrameClick(selectedFrame: View) {
-        resetFrameColors() // resets other icons
+    private fun handleFrameClick(selectedFrame: View, header: Fragment, body: Fragment) {
+        if (this.selectedFrame == selectedFrame) {
+            return
+        } else {
+            this.selectedFrame?.let { resetFrameColors() }
+            this.selectedFrame = selectedFrame
+            loadFragment(header, body)
+        }
 
-        //adjusts icon to white
         val outerCircleIconId = when (selectedFrame.id) {
             R.id.rule_button_frame -> R.id.rule_button_circle
             R.id.play_button_frame -> R.id.play_button_circle
@@ -75,10 +79,10 @@ open class MainActivity : AppCompatActivity() {
         }
     }
 
-    //resets outer circle to orig
     private fun resetFrameColors() {
         navbarBinding.ruleButtonCircle.setColorFilter(Color.parseColor("#1C243B"))
         navbarBinding.playButtonCircle.setColorFilter(Color.parseColor("#1C243B"))
         navbarBinding.inventoryButtonCircle.setColorFilter(Color.parseColor("#1C243B"))
     }
 }
+
