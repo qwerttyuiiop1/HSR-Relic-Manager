@@ -22,13 +22,14 @@
             android:paddingBottom="14dp">
 
             <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal">
 
                 <ImageView
                     android:id="@+id/imgSet"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/bg_5_star"
                     android:elevation="4dp"
@@ -37,7 +38,7 @@
 
                 <View
                     android:id="@+id/overlay"
-                    android:layout_width="80dp"
+                    android:layout_width="match_parent"
                     android:layout_height="15dp"
                     android:layout_gravity="bottom|center_horizontal"
                     android:background="@drawable/overlay_relic_level"
@@ -55,6 +56,30 @@
                     android:text="+12  >  +15"
                     android:textColor="@color/white"
                     android:textSize="10sp" />
+
+                <ImageView
+                    android:id="@+id/statusEquip"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="right|top"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="2dp"
+                    android:background="@color/white"
+                    android:elevation="4dp"
+                    android:padding="6dp"
+                    app:srcCompat="@drawable/trash"/>
+
+                <ImageView
+                    android:id="@+id/statusMarked"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="right|bottom"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/white"
+                    android:elevation="4dp"
+                    android:padding="6dp"
+                    app:srcCompat="@drawable/trash" />
 
             </FrameLayout>
 
