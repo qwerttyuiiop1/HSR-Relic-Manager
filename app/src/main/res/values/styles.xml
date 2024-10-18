@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:fontFamily">@font/pf_din_text_pro_regular</item>
+        <item name="fontFamily">@font/pf_din_text_pro_regular</item>
+        <item name="android:textViewStyle">@style/DinTextViewStyle</item>
+        <item name="android:buttonStyle">@style/DinButtonStyle</item>
+    </style>
+    
+    <style name="DinTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/pf_din_text_pro_regular</item>
+        <item name="fontFamily">@font/pf_din_text_pro_regular</item>
+    </style>
+    <style name="DinButtonStyle" parent="android:Widget.Button">
+        <item name="android:fontFamily">@font/pf_din_text_pro_regular</item>
+        <item name="fontFamily">@font/pf_din_text_pro_regular</item>
+    </style>
+    
+</resources>
