@@ -52,22 +52,26 @@ class AddLevelDialog: DialogFragment() {
             }
 
             btnPlusAtMost.setOnClickListener{
-                maxLevel++
-                lblNumberAtMost.text = maxLevel.toString()
+                if (maxLevel < 15) {
+                    maxLevel += 3
+                    lblNumberAtMost.text = maxLevel.toString()
+                }
             }
             btnMinusAtMost.setOnClickListener{
                 if(maxLevel > 0){
-                    maxLevel--
+                    maxLevel -= 3
                     lblNumberAtMost.text = maxLevel.toString()
                 }
             }
             btnPlusAtLeast.setOnClickListener{
-                minLevel++
-                lblNumberAtLeast.text = minLevel.toString()
+                if (minLevel < 15) {
+                    minLevel += 3
+                    lblNumberAtLeast.text = minLevel.toString()
+                }
             }
             btnMinusAtLeast.setOnClickListener{
                 if(minLevel > 0){
-                    minLevel--
+                    minLevel-=3
                     lblNumberAtLeast.text = minLevel.toString()
                 }
             }

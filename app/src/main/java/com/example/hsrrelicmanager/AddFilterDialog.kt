@@ -28,7 +28,9 @@ class AddFilterDialog: DialogFragment() {
                 dismiss()
             }
             addRelicSet.setOnClickListener {
-                // TODO: start AddRelicSetFragment
+                val addSetDialog = AddSetDialog()
+                addSetDialog.show(requireActivity().supportFragmentManager, "AddSetDialog")
+                dismiss()
             }
             addSlot.setOnClickListener {
                 // TODO: start AddSlotFragment

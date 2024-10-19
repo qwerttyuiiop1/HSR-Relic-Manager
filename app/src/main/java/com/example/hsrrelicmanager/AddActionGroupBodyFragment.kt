@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hsrrelicmanager.databinding.FragmentActionGroupBodyBinding
+import com.example.hsrrelicmanager.model.relics.RelicSet
 
 class AddActionGroupBodyFragment : Fragment() {
     lateinit var binding: FragmentActionGroupBodyBinding
@@ -30,6 +31,10 @@ class AddActionGroupBodyFragment : Fragment() {
                     val maxLevel = bundle.getInt("maxLevel")
                     val isAtMost = bundle.getBoolean("isAtMost")
                     Toast.makeText(context, "minLevel: $minLevel, maxLevel: $maxLevel, isAtMost: $isAtMost", Toast.LENGTH_SHORT).show()
+                }
+                requireActivity().supportFragmentManager.setFragmentResultListener("selectedSets", viewLifecycleOwner) { _, bundle ->
+                    val relicSet = bundle.getParcelableArrayList<RelicSet>("selectedSets")
+                    Toast.makeText(context, "relicSet: $relicSet", Toast.LENGTH_SHORT).show()
                 }
             }
             adapter = ActionItemAdapter(actionItems)

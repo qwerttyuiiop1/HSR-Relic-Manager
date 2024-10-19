@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_vertical"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:background="@drawable/rule_add_rectangle_button"
+    android:elevation="5dp"
+    android:translationY="-5dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:gravity="center_vertical">
+
+        <CheckBox
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:id="@+id/checkbox"
+            android:layout_gravity="center_vertical"
+            android:buttonTint="@color/gold"
+            />
+
+        <ImageView
+            android:layout_marginStart="4dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:id="@+id/icon"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/musketeer_of_wild_wheat" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/name"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:text="Musketeer of Wild Wheat"
+            android:textSize="16sp"
+            android:textColor="#4A4A4A"
+            android:fontFamily="@font/pf_din_text_pro_regular"
+            android:layout_marginStart="4dp" />
+
+        <ImageView
+            android:id="@+id/btn_minimize"
+            android:layout_width="9dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_minimized"
+            android:layout_marginStart="4dp"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone"
+            />
+        <ImageView
+            android:id="@+id/btn_maximize"
+            android:layout_width="20dp"
+            android:layout_height="9dp"
+            android:src="@drawable/ic_expanded"
+            android:layout_marginStart="4dp"
+            android:layout_gravity="center_vertical"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="18dp"
+        android:id="@+id/description"
+        android:text="@string/lorem_ipsum"
+        android:textSize="14sp"
+        android:textColor="#4A4A4A"
+        android:fontFamily="@font/pf_din_text_pro_regular" />
+</LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
