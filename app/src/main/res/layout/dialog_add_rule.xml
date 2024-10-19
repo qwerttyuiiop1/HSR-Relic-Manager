@@ -1,0 +1,145 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/right_corner_rounded_rect"
+    android:orientation="vertical"
+    android:padding="0dp">
+
+    <!-- header -->
+    <LinearLayout
+        android:id="@+id/dialog_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="16dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp">
+
+        <!-- Title , close -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/title_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Add"
+                android:letterSpacing="0.03"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/pf_din_text_pro_regular"
+                android:textColor="#4A4A4A"
+                android:layout_marginEnd="8dp" />
+
+            <ImageView
+                android:id="@+id/close_dialog_button"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_gravity="end"
+                android:src="@drawable/ic_rule_close" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider_line"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#BCBEC1"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
+
+    <!-- body -->
+    <LinearLayout
+        android:id="@+id/dialog_body"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp">
+
+        <LinearLayout
+            android:id="@+id/add_action_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="@drawable/rule_add_rectangle_button">
+
+            <ImageView
+                android:id="@+id/add_action_group_button"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_add"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="Action Group"
+                android:fontFamily="@font/pf_din_text_pro_regular"
+                android:textColor="#4A4A4A"
+                android:textSize="24sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/filter_action_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="@drawable/rule_add_rectangle_button">
+
+            <ImageView
+                android:id="@+id/filter_action_group_button"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_add"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Filter Group"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:fontFamily="@font/pf_din_text_pro_regular"
+                android:textColor="#4A4A4A"
+                android:textSize="24sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- footer -->
+    <LinearLayout
+        android:id="@+id/dialog_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp">
+
+        <ImageView
+            android:id="@+id/bottom_image"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:scaleType="centerCrop"
+            android:cropToPadding="true"
+            android:src="@drawable/modal_background" />
+    </LinearLayout>
+
+
+</LinearLayout>
