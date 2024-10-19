@@ -35,7 +35,6 @@ class RuleHeaderFragment : Fragment() {
             rulesSpinner.adapter = adapter
         }
 
-        // Set up the add button click listener
         val addButtonFrame: View = view.findViewById(R.id.rule_add_button_frame)
         addButtonFrame.setOnClickListener {
             blurBackground()
@@ -49,7 +48,6 @@ class RuleHeaderFragment : Fragment() {
     private fun blurBackground() {
         val bgView = requireActivity().findViewById<View>(R.id.activity_main_layout)
 
-        // Apply the blur effect directly to the background view
         val blurEffect = RenderEffect.createBlurEffect(20f, 20f, Shader.TileMode.CLAMP)
         bgView.setRenderEffect(blurEffect)
     }
