@@ -127,7 +127,13 @@ class RuleBodyFragment : Fragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val index = viewHolder.adapterPosition;
                 groupAdapter.groupData.removeAt(index);
+
+                for (i in index..<groupData.size) {
+                    groupData.get(i).position = i;
+                }
+
                 groupAdapter.notifyItemRemoved(index);
+                groupAdapter.notifyItemRangeChanged(index, groupData.size-index);
             }
         })
         itemTouchHelper.attachToRecyclerView(recyclerView)
