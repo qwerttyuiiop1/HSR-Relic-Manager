@@ -11,7 +11,7 @@ class AddActionGroupBodyFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_add_action_group_body, container, false)
+        return inflater.inflate(R.layout.fragment_action_group_body, container, false)
     }
 
 }

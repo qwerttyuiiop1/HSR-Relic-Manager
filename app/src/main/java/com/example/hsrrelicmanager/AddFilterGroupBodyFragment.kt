@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 
-class PlayFragment : Fragment() {
+class AddFilterGroupBodyFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.play_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_filter_group_body, container, false)
     }
 }

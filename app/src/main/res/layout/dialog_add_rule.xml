@@ -138,7 +138,7 @@
             android:layout_height="30dp"
             android:scaleType="centerCrop"
             android:cropToPadding="true"
-            android:src="@drawable/modal_background" />
+            android:src="@drawable/background" />
     </LinearLayout>
 
 
