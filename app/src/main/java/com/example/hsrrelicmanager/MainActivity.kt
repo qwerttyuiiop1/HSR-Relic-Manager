@@ -28,6 +28,14 @@ open class MainActivity : AppCompatActivity() {
         // Hide the action bar
         supportActionBar?.hide()
 
+        // Inventory tab by default
+        if (savedInstanceState == null) {
+            loadFragment(InventoryHeaderFragment(), InventoryBodyFragment())
+
+            selectedFrame = navbarBinding.inventoryButtonFrame
+            navbarBinding.inventoryButtonCircle.setColorFilter(Color.WHITE)
+        }
+
         setupClickListeners()
     }
 
