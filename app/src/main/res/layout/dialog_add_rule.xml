@@ -17,7 +17,6 @@
         android:paddingEnd="16dp"
         android:paddingStart="16dp"
         android:paddingTop="20dp"
-        android:paddingBottom="16dp"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp">
 
@@ -59,12 +58,12 @@
 
     <!-- body -->
     <LinearLayout
-        android:id="@+id/dialog_body"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp">
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp">
 
         <LinearLayout
             android:id="@+id/add_action_group"
@@ -72,10 +71,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="16dp"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:background="@drawable/rule_add_rectangle_button">
+            android:background="@drawable/rule_add_rectangle_button"
+            android:elevation="5dp"
+            android:translationY="-5dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
 
             <ImageView
                 android:id="@+id/add_action_group_button"
@@ -101,10 +104,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="16dp"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:background="@drawable/rule_add_rectangle_button">
+            android:background="@drawable/rule_add_rectangle_button"
+            android:elevation="5dp"
+            android:translationY="-5dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
 
             <ImageView
                 android:id="@+id/filter_action_group_button"
@@ -126,20 +133,14 @@
     </LinearLayout>
 
     <!-- footer -->
-    <LinearLayout
-        android:id="@+id/dialog_footer"
+    <ImageView
+        android:id="@+id/bottom_image"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp">
-
-        <ImageView
-            android:id="@+id/bottom_image"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:scaleType="centerCrop"
-            android:cropToPadding="true"
-            android:src="@drawable/background" />
-    </LinearLayout>
+        android:layout_height="30dp"
+        android:scaleType="centerCrop"
+        android:cropToPadding="true"
+        android:background="@drawable/background"
+        android:src="#66191919"/>
 
 
 </LinearLayout>
