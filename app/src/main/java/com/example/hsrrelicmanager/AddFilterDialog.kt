@@ -2,7 +2,6 @@ package com.example.hsrrelicmanager
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
@@ -13,9 +12,7 @@ class AddFilterDialog: DialogFragment() {
 
     val binding: DialogSelectFilterBinding by lazy {
         DialogSelectFilterBinding.inflate(
-            LayoutInflater.from(requireContext()),
-            null,
-            false
+            layoutInflater, null, false
         )
     }
 
@@ -31,7 +28,9 @@ class AddFilterDialog: DialogFragment() {
                 dismiss()
             }
             addRelicSet.setOnClickListener {
-                // TODO: start AddRelicSetFragment
+                val addSetDialog = AddSetDialog()
+                addSetDialog.show(requireActivity().supportFragmentManager, "AddSetDialog")
+                dismiss()
             }
             addSlot.setOnClickListener {
                 // TODO: start AddSlotFragment
@@ -46,7 +45,9 @@ class AddFilterDialog: DialogFragment() {
                 // TODO: start AddRarityFragment
             }
             addLevel.setOnClickListener {
-                // TODO: start AddLevelFragment
+                val addLevelDialog = AddLevelDialog();
+                addLevelDialog.show(requireActivity().supportFragmentManager, "AddLevelDialog")
+                dismiss()
             }
             addStatus.setOnClickListener {
                 // TODO: start AddStatusFragment
