@@ -1,10 +1,7 @@
 package com.example.hsrrelicmanager
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.RenderEffect
 import android.graphics.Shader
-import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -26,14 +23,10 @@ class RuleHeaderFragment : Fragment() {
 
         val rulesSpinner: Spinner = view.findViewById(R.id.rule_spinner)
 
-        ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.rule_spinner_choices,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            rulesSpinner.adapter = adapter
-        }
+        val arr = resources.getStringArray(R.array.rule_spinner_choices)
+        val adapter = ArrayAdapter(requireContext(), R.layout.spinner_item, arr)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        rulesSpinner.adapter = adapter
 
         val addButtonFrame: View = view.findViewById(R.id.rule_add_button_frame)
         addButtonFrame.setOnClickListener {

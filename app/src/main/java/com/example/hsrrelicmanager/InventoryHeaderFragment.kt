@@ -17,15 +17,10 @@ class InventoryHeaderFragment : Fragment() {
         val view = inflater.inflate(R.layout.inventory_header_fragment, container, false)
 
         val rulesSpinner: Spinner = view.findViewById(R.id.inventory_spinner)
-
-        ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.inventory_spinner_choices,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            rulesSpinner.adapter = adapter
-        }
+        val arr = resources.getStringArray(R.array.inventory_spinner_choices)
+        val adapter = ArrayAdapter(requireContext(), R.layout.spinner_item, arr)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        rulesSpinner.adapter = adapter
 
         return view
     }
