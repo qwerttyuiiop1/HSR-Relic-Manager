@@ -22,7 +22,8 @@
         android:layout_marginTop="5dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center_vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,8 +35,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:maxWidth="40dp"
-                android:maxHeight="40dp"
+                android:maxWidth="50dp"
+                android:maxHeight="50dp"
                 tools:srcCompat="@drawable/lock" />
 
             <TextView
@@ -55,31 +56,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:id="@+id/filter_container">
 
-            <TextView
-                android:id="@+id/tvGroupFilter1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/pf_din_text_pro_regular"
-                android:text="Relic Set: &lt;placeholder&gt;"
-                android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/tvGroupFilter2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/pf_din_text_pro_regular"
-                android:text="TextView"
-                android:textSize="16sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/tvGroupFilter1"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fontFamily="@font/pf_din_text_pro_regular"-->
+<!--                android:text="Relic Set: &lt;placeholder&gt;"-->
+<!--                android:textSize="16sp" />-->
 
-            <TextView
-                android:id="@+id/tvGroupFilter3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/pf_din_text_pro_regular"
-                android:text="TextView"
-                android:textSize="16sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/tvGroupFilter2"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fontFamily="@font/pf_din_text_pro_regular"-->
+<!--                android:text="TextView"-->
+<!--                android:textSize="16sp" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tvGroupFilter3"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="TextView"-->
+<!--                android:textSize="16sp" />-->
 
         </LinearLayout>
 

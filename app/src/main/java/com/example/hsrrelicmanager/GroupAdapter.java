@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.hsrrelicmanager.databinding.GroupCardDescriptionBinding;
+import com.example.hsrrelicmanager.model.rules.Filter;
 import com.example.hsrrelicmanager.model.rules.group.Group;
 
 import java.util.List;
@@ -32,10 +34,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull GroupAdapter.ViewHolder holder, int position) {
         Group group = groupData.get(position);
-
-        holder.getTvGroupName().setText(group.getViewName());
-
-        // TODO: Set Filter text
+        holder.bind(group);
     }
 
     @Override
@@ -45,16 +44,15 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView groupIcon;
-        private TextView tvGroupName, tvGroupFilter1, tvGroupFilter2, tvGroupFilter3;
+        private TextView tvGroupName;
+        private ViewGroup filterContainer;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             groupIcon = itemView.findViewById(R.id.groupIcon);
             tvGroupName = itemView.findViewById(R.id.tvGroupName);
-            tvGroupFilter1 = itemView.findViewById(R.id.tvGroupFilter1);
-            tvGroupFilter2 = itemView.findViewById(R.id.tvGroupFilter2);
-            tvGroupFilter3 = itemView.findViewById(R.id.tvGroupFilter3);
+            filterContainer = itemView.findViewById(R.id.filter_container);
         }
 
         public ImageView getGroupIcon() {
@@ -63,6 +61,36 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
         public TextView getTvGroupName() {
             return tvGroupName;
+        }
+
+        public void bind(Group group) {
+            tvGroupName.setText(group.getViewName());
+            filterContainer.removeAllViews();
+            // check class of group is filter / action group
+            for (Filter filter : group.getFilters().values()) {
+                GroupCardDescriptionBinding binding = GroupCardDescriptionBinding.inflate(LayoutInflater.from(filterContainer.getContext()), filterContainer, false);
+                binding.rowName.setText(filter.getName() + ':');
+                binding.rowValue.setText(filter.getDescription());
+                filterContainer.addView(binding.getRoot());
+
+                switch (group.getViewName().replaceAll(" .*", "")) {
+                    case "Filter":
+                        groupIcon.setImageResource(R.drawable.filter_group);
+                        break;
+                    case "Lock":
+                        groupIcon.setImageResource(R.drawable.lock);
+                        break;
+                    case "Reset":
+                        groupIcon.setImageResource(R.drawable.reset);
+                        break;
+                    case "Enhance":
+                        groupIcon.setImageResource(R.drawable.enhance);
+                        break;
+                    case "Trash":
+                        groupIcon.setImageResource(R.drawable.trash);
+                        break;
+                }
+            }
         }
     }
 }
