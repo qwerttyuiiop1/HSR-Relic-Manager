@@ -10,7 +10,6 @@
     <color name="selected">#CCCCCCCC</color>
     <color name="darkGold">#B28F50</color>
     <color name="gold">#FFC65C</color>
-    <color name="lightGold">#ebe686</color>
     <color name="red">#DB5856</color>
     <color name="transparent">#00000000</color>
 </resources>

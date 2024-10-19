@@ -50,7 +50,8 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="28dp"
                     android:layout_height="28dp"
-                    app:cardCornerRadius="14dp">
+                    app:cardCornerRadius="14dp"
+                    app:cardBackgroundColor="@color/transparent">
 
                     <ImageView
                         android:id="@+id/btn_relic_lock"
@@ -58,14 +59,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/ic_lock"
-                        android:background="@color/white"
+                        android:background="@drawable/bg_status"
                         app:tint="@color/black" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="28dp"
                     android:layout_height="28dp"
-                    app:cardCornerRadius="14dp">
+                    app:cardCornerRadius="14dp"
+                    app:cardBackgroundColor="@color/transparent">
 
                     <ImageView
                         android:id="@+id/btn_relic_upgrade"
@@ -73,13 +75,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/enhance"
-                        android:background="@color/white"/>
+                        android:background="@drawable/bg_status"/>
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="28dp"
                     android:layout_height="28dp"
-                    app:cardCornerRadius="14dp">
+                    app:cardCornerRadius="14dp"
+                    app:cardBackgroundColor="@color/transparent">
 
                     <ImageView
                         android:id="@+id/btn_relic_trash"
@@ -87,7 +90,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/ic_trash"
-                        android:background="@color/white"
+                        android:background="@drawable/bg_status"
                         app:tint="@color/red"/>
                 </androidx.cardview.widget.CardView>
             </com.google.android.flexbox.FlexboxLayout>
@@ -175,7 +178,7 @@
                     android:layout_height="24dp"
                     android:layout_marginRight="3dp"
                     android:src="@drawable/ic_substat_atk"
-                    app:tint="#FFC65C" />
+                    app:tint="@color/gold" />
                 <TextView
                 android:fontFamily="@font/pf_din_text_pro_regular"
                     android:id="@+id/lbl_relic_main_stat_type"
@@ -184,7 +187,7 @@
                     android:text="ATK"
                     android:textSize="20dp"
                     android:layout_weight="1"
-                    android:textColor="#FFC65C" />
+                    android:textColor="@color/gold" />
                 <TextView
                 android:fontFamily="@font/pf_din_text_pro_regular"
                     android:id="@+id/lbl_relic_main_stat_value"
@@ -193,7 +196,7 @@
                     android:text="+20%"
                     android:textSize="20dp"
                     android:layout_marginEnd="6dp"
-                    android:textColor="#FFC65C" />
+                    android:textColor="@color/gold" />
             </LinearLayout>
             <!-- HEHE -->
             <!-- What are loops? -->
@@ -363,5 +366,5 @@
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:textSize="16dp"
-        android:text="2 Piece: Increases Lightning DMG by 10%.\n4 Piece: When the wearer uses their Skill, Increases the wearer’s ATK by 20% for 1 turn(s)."/>
+        android:text="2-Pc: Increases Lightning DMG by 10%.\n4-Pc: When the wearer uses their Skill, Increases the wearer’s ATK by 20% for 1 turn(s)."/>
 </LinearLayout>

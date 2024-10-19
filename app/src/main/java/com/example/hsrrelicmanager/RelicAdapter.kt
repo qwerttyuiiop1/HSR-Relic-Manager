@@ -36,7 +36,7 @@ class RelicAdapter(
 
                 imgRelic.setImageResource(relic.set.icon)
                 if (relic.prev != null && relic.level != relic.prev!!.level) {
-                    lblRelicLevel.text = "+${relic.prev!!.level} → +${relic.level}"
+                    lblRelicLevel.text = "+${relic.prev!!.level}  >  +${relic.level}"
                 } else {
                     lblRelicLevel.text = "+${relic.level}"
                 }
