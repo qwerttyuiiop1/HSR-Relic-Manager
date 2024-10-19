@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,6 +42,9 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         Group group = groupData.get(position);
         holder.updatePosition(position);
         holder.bind(group);
+
+        holder.card.setBackgroundResource(R.drawable.bg_dark);
+        holder.ivTrash.setVisibility(View.GONE);
     }
 
     @Override
@@ -81,6 +85,8 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         private ImageView groupIcon;
         private TextView tvGroupName, tvPosition;
         private ViewGroup filterContainer;
+        private LinearLayout card;
+        private ImageView ivTrash;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -89,6 +95,8 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             tvGroupName = itemView.findViewById(R.id.tvGroupName);
             tvPosition = itemView.findViewById(R.id.tvPosition);
             filterContainer = itemView.findViewById(R.id.filter_container);
+            card = itemView.findViewById(R.id.group_card);
+            ivTrash = itemView.findViewById(R.id.trash_icon);
         }
 
         public void bind(Group group) {

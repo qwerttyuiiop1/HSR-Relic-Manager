@@ -1,9 +1,12 @@
 package com.example.hsrrelicmanager
 
+import android.graphics.Canvas
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -133,6 +136,34 @@ class RuleBodyFragment : Fragment() {
 
                 groupAdapter.notifyItemRemoved(index);
                 groupAdapter.notifyItemRangeChanged(index, groupAdapter.groupData.size-index);
+            }
+
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                val itemView = viewHolder.itemView
+                val card: LinearLayout = itemView.findViewById(R.id.group_card)
+
+                val trash: ImageView = itemView.findViewById(R.id.trash_icon)
+
+                // Swiping horizontally
+                if (Math.abs(dX) > Math.abs(dY)) {
+                    card.setBackgroundResource(R.drawable.bg_delete)
+                    trash.visibility = View.VISIBLE
+                } else {
+                    card.setBackgroundResource(R.drawable.bg_dark)
+                    trash.visibility = View.GONE
+                }
+
+                itemView.translationX = dX
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
             }
         })
         itemTouchHelper.attachToRecyclerView(recyclerView)
