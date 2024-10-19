@@ -18,8 +18,8 @@ public class StatusAction implements Action {
     }
 
     @Override
-    public void apply(Relic relic) {
-        // TODO: Do stuff
+    public Relic apply(Relic relic) {
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
