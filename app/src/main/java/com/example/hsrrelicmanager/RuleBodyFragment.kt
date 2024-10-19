@@ -95,5 +95,34 @@ class RuleBodyFragment : Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = groupAdapter
+
+        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
+            override fun getMovementFlags(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
+            ): Int {
+                return makeMovementFlags(
+                    ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+                    ItemTouchHelper.LEFT
+                )
+            }
+
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                Collections.swap(groupAdapter.groupData, viewHolder.adapterPosition, target.adapterPosition);
+                groupAdapter.notifyItemMoved(viewHolder.adapterPosition, target.adapterPosition);
+                return true;
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val index = viewHolder.adapterPosition;
+                groupAdapter.groupData.removeAt(index);
+                groupAdapter.notifyItemRemoved(index);
+            }
+        })
+        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 }

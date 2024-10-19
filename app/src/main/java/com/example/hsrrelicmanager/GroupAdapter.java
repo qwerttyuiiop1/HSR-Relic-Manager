@@ -74,6 +74,10 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         return -1;
     }
 
+    public List<Group> getGroupData() {
+        return groupData;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView groupIcon;
         private TextView tvGroupName, tvGroupFilter1, tvGroupFilter2, tvGroupFilter3;
