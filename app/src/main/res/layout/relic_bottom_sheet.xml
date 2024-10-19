@@ -42,56 +42,56 @@
             android:layout_marginEnd="16dp">
 
             <com.google.android.flexbox.FlexboxLayout
-                app:justifyContent="space_around"
-                android:padding="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                app:justifyContent="space_around">
 
                 <androidx.cardview.widget.CardView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    app:cardCornerRadius="14dp"
-                    app:cardBackgroundColor="@color/transparent">
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:cardBackgroundColor="@color/transparent"
+                    app:cardCornerRadius="14dp">
 
                     <ImageView
                         android:id="@+id/btn_relic_lock"
-                        android:padding="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_lock"
                         android:background="@drawable/bg_status"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_lock"
                         app:tint="@color/black" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    app:cardCornerRadius="14dp"
-                    app:cardBackgroundColor="@color/transparent">
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:cardBackgroundColor="@color/transparent"
+                    app:cardCornerRadius="14dp">
 
                     <ImageView
                         android:id="@+id/btn_relic_upgrade"
-                        android:padding="3dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/enhance"
-                        android:background="@drawable/bg_status"/>
+                        android:background="@drawable/bg_status"
+                        android:padding="4dp"
+                        android:src="@drawable/enhance" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:layout_width="28dp"
+                    android:layout_width="30dp"
                     android:layout_height="28dp"
-                    app:cardCornerRadius="14dp"
-                    app:cardBackgroundColor="@color/transparent">
+                    app:cardBackgroundColor="@color/transparent"
+                    app:cardCornerRadius="14dp">
 
                     <ImageView
                         android:id="@+id/btn_relic_trash"
-                        android:padding="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_trash"
                         android:background="@drawable/bg_status"
-                        app:tint="@color/red"/>
+                        android:padding="5dp"
+                        android:src="@drawable/ic_trash"
+                        app:tint="@color/red" />
                 </androidx.cardview.widget.CardView>
             </com.google.android.flexbox.FlexboxLayout>
 

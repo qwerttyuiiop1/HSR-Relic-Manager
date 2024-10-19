@@ -92,7 +92,7 @@
                         android:src="@drawable/ic_lock" />
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="2dp"
+                        android:layout_height="1dp"
                         android:background="#CCD9D9D9"
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
