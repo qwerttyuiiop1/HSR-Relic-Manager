@@ -5,8 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 
 class InventoryBodyFragment : Fragment() {
     override fun onCreateView(
@@ -30,10 +33,10 @@ class InventoryBodyFragment : Fragment() {
                 "ATK%",
                 "40.0",
                 mapOf(
-                    "ATK" to 2.0,
-                    "SPD" to 5.0,
-                    "DEF" to 8.5,
-                    "CRIT Rate" to 12.1
+                    "ATK" to "2.0",
+                    "SPD" to "5.0",
+                    "DEF" to "8.5",
+                    "CRIT Rate" to "12.1"
                 ),
                 listOf(Relic.Status.LOCK),
                 R.drawable.musketeer_of_wild_wheat
@@ -42,25 +45,26 @@ class InventoryBodyFragment : Fragment() {
                 "Thief of Shooting Meteor",
                 "Body",
                 2,
-                12,
+                0,
                 "DEF",
                 "12.3",
                 mapOf(
-                    "ATK" to 2.0,
-                    "SPD" to 5.0,
-                    "DEF" to 8.5,
+                    "ATK" to "2.0",
+                    "SPD" to "5.0",
+                    "DEF" to "8.5",
                 ),
                 listOf(Relic.Status.TRASH),
                 R.drawable.thief_of_shooting_meteor
             ))
         }
-        val relicAdapter = RelicAdapter(relicData)
+        val relicAdapter = RelicAdapter(relicData, this)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.inventoryRecyclerView)
-        recyclerView.layoutManager = GridLayoutManager(context, 2)
+        recyclerView.layoutManager = FlexboxLayoutManager(context).apply {
+            flexDirection = FlexDirection.ROW
+            justifyContent = JustifyContent.SPACE_AROUND
+            flexWrap = FlexWrap.WRAP
+        }
         recyclerView.adapter = relicAdapter
-
-        val relicBottomSheetFragment = RelicBottomSheetFragment()
-        relicBottomSheetFragment.show(childFragmentManager, relicBottomSheetFragment.tag)
     }
 }

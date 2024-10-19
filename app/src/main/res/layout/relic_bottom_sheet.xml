@@ -57,7 +57,9 @@
                         android:padding="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_lock" />
+                        android:src="@drawable/ic_lock"
+                        android:background="@color/white"
+                        app:tint="@color/black" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
@@ -70,7 +72,8 @@
                         android:padding="3dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/enhance" />
+                        android:src="@drawable/enhance"
+                        android:background="@color/white"/>
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
@@ -83,7 +86,9 @@
                         android:padding="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_trash" />
+                        android:src="@drawable/ic_trash"
+                        android:background="@color/white"
+                        app:tint="@color/red"/>
                 </androidx.cardview.widget.CardView>
             </com.google.android.flexbox.FlexboxLayout>
 
@@ -106,6 +111,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"/>
                     <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/container_relic_equipped"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         app:cardCornerRadius="14dp"
@@ -116,14 +122,14 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginEnd="8dp">
                         <ImageView
-                            android:id="@+id/img_relic_equipped"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:src="@drawable/ic_relic_equipped"
-                            android:scaleType="centerCrop" />
+                            android:background="@color/white"/>
                     </com.google.android.material.card.MaterialCardView>
 
                     <TextView
+                android:fontFamily="@font/pf_din_text_pro_regular"
                         android:id="@+id/lbl_relic_level"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -144,6 +150,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <TextView
+                android:fontFamily="@font/pf_din_text_pro_regular"
                 android:id="@+id/lbl_relic_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -168,6 +175,7 @@
                     android:src="@drawable/ic_substat_atk"
                     app:tint="@color/lightGold"/>
                 <TextView
+                android:fontFamily="@font/pf_din_text_pro_regular"
                     android:id="@+id/lbl_relic_main_stat_type"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -176,6 +184,7 @@
                     android:layout_weight="1"
                     android:textColor="@color/gold" />
                 <TextView
+                android:fontFamily="@font/pf_din_text_pro_regular"
                     android:id="@+id/lbl_relic_main_stat_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -198,13 +207,14 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical">
                     <ImageView
-                        android:id="@+id/img_relic_substat_1"
+                        android:id="@+id/img_relic_sub_stat1"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_substat_atk"
                         app:tint="@color/white" />
                     <TextView
-                        android:id="@+id/lbl_relic_substat_type_1"
+                android:fontFamily="@font/pf_din_text_pro_regular"
+                        android:id="@+id/lbl_relic_sub_stat_type_1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="HP"
@@ -212,7 +222,8 @@
                         android:layout_weight="1"
                         android:textColor="@color/white" />
                     <TextView
-                        android:id="@+id/lbl_relic_substat_value_1"
+                android:fontFamily="@font/pf_din_text_pro_regular"
+                        android:id="@+id/lbl_relic_sub_stat_value_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="+20%"
@@ -226,13 +237,14 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical">
                     <ImageView
-                        android:id="@+id/img_relic_substat_2"
+                        android:id="@+id/img_relic_sub_stat2"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_substat_atk"
                         app:tint="@color/white"/>
                     <TextView
-                        android:id="@+id/lbl_relic_substat_type_2"
+                android:fontFamily="@font/pf_din_text_pro_regular"
+                        android:id="@+id/lbl_relic_sub_stat_type_2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="DEF"
@@ -240,7 +252,8 @@
                         android:layout_weight="1"
                         android:textColor="@color/white" />
                     <TextView
-                        android:id="@+id/lbl_relic_substat_value_2"
+                android:fontFamily="@font/pf_din_text_pro_regular"
+                        android:id="@+id/lbl_relic_sub_stat_value_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="+15%"
@@ -254,13 +267,14 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical">
                     <ImageView
-                        android:id="@+id/img_relic_substat_3"
+                        android:id="@+id/img_relic_sub_stat3"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_substat_atk"
                         app:tint="@color/white"/>
                     <TextView
-                        android:id="@+id/lbl_relic_substat_type_3"
+                android:fontFamily="@font/pf_din_text_pro_regular"
+                        android:id="@+id/lbl_relic_sub_stat_type_3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="Crit Rate"
@@ -268,7 +282,8 @@
                         android:layout_weight="1"
                         android:textColor="@color/white" />
                     <TextView
-                        android:id="@+id/lbl_relic_substat_value_3"
+                android:fontFamily="@font/pf_din_text_pro_regular"
+                        android:id="@+id/lbl_relic_sub_stat_value_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="+12%"
@@ -282,13 +297,14 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical">
                     <ImageView
-                        android:id="@+id/img_relic_substat_4"
+                        android:id="@+id/img_relic_sub_stat4"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_substat_atk"
                         app:tint="@color/white"/>
                     <TextView
-                        android:id="@+id/lbl_relic_substat_type_4"
+                android:fontFamily="@font/pf_din_text_pro_regular"
+                        android:id="@+id/lbl_relic_sub_stat_type_4"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="Crit DMG"
@@ -296,7 +312,8 @@
                         android:layout_weight="1"
                         android:textColor="@color/white" />
                     <TextView
-                        android:id="@+id/lbl_relic_substat_value_4"
+                android:fontFamily="@font/pf_din_text_pro_regular"
+                        android:id="@+id/lbl_relic_sub_stat_value_4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="+25%"
@@ -330,6 +347,7 @@
     </LinearLayout>
 
     <TextView
+                android:fontFamily="@font/pf_din_text_pro_regular"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
