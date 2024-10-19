@@ -79,12 +79,13 @@
                 android:src="@drawable/ic_radio_button_unchecked" />
 
             <ImageView
-                android:id="@+id/enhance_action_group_button"
-                android:layout_width="32dp"
+                android:id="@+id/enhance_action_group_image"
+                android:layout_width="27dp"
                 android:layout_height="32dp"
                 android:src="@drawable/enhance" />
 
             <TextView
+                android:id="@+id/enhance_choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -119,12 +120,13 @@
                 android:src="@drawable/ic_radio_button_unchecked" />
 
             <ImageView
-                android:id="@+id/lock_action_group_button"
+                android:id="@+id/lock_action_group_image"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:src="@drawable/lock" />
 
             <TextView
+                android:id="@+id/lock_choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -159,12 +161,13 @@
                 android:src="@drawable/ic_radio_button_unchecked" />
 
             <ImageView
-                android:id="@+id/reset_action_group_button"
+                android:id="@+id/reset_action_group_image"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:src="@drawable/reset" />
 
             <TextView
+                android:id="@+id/reset_choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -198,12 +201,13 @@
                 android:src="@drawable/ic_radio_button_unchecked" />
 
             <ImageView
-                android:id="@+id/filter_action_group_button"
+                android:id="@+id/filter_action_group_image"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:src="@drawable/filter_group" />
 
             <TextView
+                android:id="@+id/filter_group_choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -237,12 +241,13 @@
                 android:src="@drawable/ic_radio_button_unchecked" />
 
             <ImageView
-                android:id="@+id/trash_action_group_button"
+                android:id="@+id/trash_action_group_image"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:src="@drawable/ic_trash" />
 
             <TextView
+                android:id="@+id/trash_choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"

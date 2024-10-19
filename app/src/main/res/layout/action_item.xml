@@ -34,7 +34,7 @@
             android:focusable="true"
             android:gravity="center"
             android:text="+"
-            android:textColor="@android:color/black"
+            android:textColor="#FFC65C"
             android:textSize="32sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
