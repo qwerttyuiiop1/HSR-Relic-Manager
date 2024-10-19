@@ -6,7 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.databinding.InventoryRelicItemBinding
 
-class RelicAdapter(private val relicData: List<Relic>) :
+class RelicAdapter(
+    private val relicData: MutableList<Relic>,
+    private val inventoryBodyFragment: InventoryBodyFragment
+) :
     RecyclerView.Adapter<RelicAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = InventoryRelicItemBinding.inflate(LayoutInflater.from(parent.context))
@@ -15,49 +18,29 @@ class RelicAdapter(private val relicData: List<Relic>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val relic = relicData[position]
-        holder.bind(relic)
+        holder.bind(relic, position)
     }
 
     override fun getItemCount(): Int {
         return relicData.size
     }
 
-    private fun getRarityResource(relic: Relic): Int {
-        val rarity = relic.rarity
-
-        return when (rarity) {
-            1 -> R.drawable.bg_1_star
-            2 -> R.drawable.bg_2_star
-            3 -> R.drawable.bg_3_star
-            4 -> R.drawable.bg_4_star
-            5 -> R.drawable.bg_5_star
-            else -> R.drawable.playfrag_test
-        }
-    }
-
-    private fun getStatResource(stat: String): Int {
-        return when (stat) {
-            "ATK", "ATK%" -> R.drawable.icon_atk
-            "DEF" -> R.drawable.icon_def
-            "SPD" -> R.drawable.icon_spd
-            "CRIT Rate" -> R.drawable.icon_crit_rate
-            else -> R.drawable.playfrag_test
-        }
-    }
-
     inner class ViewHolder(val binding: InventoryRelicItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(relic: Relic) {
+        fun bind(relic: Relic, position: Int) {
             binding.apply {
                 lblRelicName.text = relic.set
                 lblRelicMainStatType.text = relic.mainstat
                 lblRelicMainStatValue.text = relic.mainstatVal
-                imgRelicMainStat.setImageResource(getStatResource(relic.mainstat))
+                imgRelicMainStat.setImageResource(relic.mainstatResource)
 
                 imgRelic.setImageResource(relic.image)
-                lblRelicLevel.text = "+${relic.level}"
+                if (relic.prev != null && relic.level != relic.prev!!.level) {
+                    lblRelicLevel.text = "+${relic.prev!!.level} → +${relic.level}"
+                } else {
+                    lblRelicLevel.text = "+${relic.level}"
+                }
 
-                val backgroundResource = getRarityResource(relic)
-                imgRelic.setBackgroundResource(backgroundResource)
+                imgRelic.setBackgroundResource(relic.rarityResource)
 
                 val icons = listOf(
                     imgRelicSubStat1,
@@ -88,15 +71,55 @@ class RelicAdapter(private val relicData: List<Relic>) :
                     if (i < relic.substats.size)
                         containers[i].visibility = View.VISIBLE
                     else
-                        containers[i].visibility = View.GONE
+                        containers[i].visibility = View.INVISIBLE
                 }
 
                 val entries = relic.substats.entries
                 for (i in entries.indices) {
                     val substat = entries.elementAt(i)
-                    icons[i].setImageResource(getStatResource(substat.key))
+                    icons[i].setImageResource(relic.substatResource(substat.key))
                     types[i].text = substat.key
-                    values[i].text = substat.value.toString()
+                    values[i].text = substat.value
+                }
+
+                if (relic.status.contains(Relic.Status.EQUIPPED)) {
+                    containerRelicEquipped.visibility = View.VISIBLE
+                } else {
+                    containerRelicEquipped.visibility = View.INVISIBLE
+                }
+
+                val relics = relic.status.filter {
+                    it != Relic.Status.EQUIPPED
+                }.map {
+                    relic.statusResource(it)
+                }
+                when (relics.size) {
+                    0 -> {
+                        containerSingleRelicStatus.visibility = View.INVISIBLE
+                        containerDoubleRelicStatus.visibility = View.INVISIBLE
+                    }
+                    1 -> {
+                        containerSingleRelicStatus.visibility = View.VISIBLE
+                        containerDoubleRelicStatus.visibility = View.INVISIBLE
+                        imgRelicStatus.setImageResource(relics[0])
+                    }
+                    2 -> {
+                        containerSingleRelicStatus.visibility = View.INVISIBLE
+                        containerDoubleRelicStatus.visibility = View.VISIBLE
+                        imgRelicStatus1.setImageResource(relics[0])
+                        imgRelicStatus2.setImageResource(relics[1])
+
+                    }
+                }
+            }
+
+            binding.root.setOnClickListener {
+                val relicBottomSheetFragment = RelicBottomSheetFragment(relic)
+                relicBottomSheetFragment.show(inventoryBodyFragment.childFragmentManager, relicBottomSheetFragment.tag)
+                inventoryBodyFragment.requireActivity().supportFragmentManager.setFragmentResultListener("relic", inventoryBodyFragment.viewLifecycleOwner) { _, bundle ->
+                    val r = bundle.getParcelable<Relic>("relic")!!
+                    relicData[position] = r
+                    notifyItemChanged(position)
                 }
             }
         }

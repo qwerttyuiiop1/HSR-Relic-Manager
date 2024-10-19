@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+<com.google.android.material.card.MaterialCardView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="#26ffffff"
     app:cardCornerRadius="50dp"
     app:strokeColor="@color/white"
-    app:strokeWidth="1dp">
+    app:strokeWidth="1dp"
+    android:layout_marginBottom="16dp">
 <LinearLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -15,8 +19,8 @@
     android:gravity="center_horizontal">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:layout_marginTop="10dp"
@@ -38,8 +42,8 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/container_relic_equipped"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 app:cardCornerRadius="14dp"
                 app:strokeWidth="2dp"
                 app:strokeColor="#CCFFFFFF"
@@ -48,16 +52,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="8dp">
                 <ImageView
-                    android:id="@+id/img_relic_equipped"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_relic_equipped"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    android:background="#ffffff"/>
             </com.google.android.material.card.MaterialCardView>
             <androidx.cardview.widget.CardView
                 android:id="@+id/container_single_relic_status"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 app:cardCornerRadius="14dp"
                 app:layout_constraintBottom_toTopOf="@id/lbl_relic_level"
                 android:layout_marginBottom="-4dp"
@@ -69,12 +73,13 @@
                     android:padding="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_lock" />
+                    android:src="@drawable/ic_lock"
+                    android:background="#ffffff"/>
             </androidx.cardview.widget.CardView>
             
             <androidx.cardview.widget.CardView
                 android:id="@+id/container_double_relic_status"
-                android:layout_width="28dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="14dp"
                 app:layout_constraintBottom_toTopOf="@id/lbl_relic_level"
@@ -84,12 +89,13 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="#FFFFFF">
                     <ImageView
                         android:id="@+id/img_relic_status1"
                         android:padding="5dp"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:src="@drawable/ic_lock" />
                     <View
                         android:layout_width="match_parent"
@@ -102,8 +108,8 @@
                     <ImageView
                         android:id="@+id/img_relic_status2"
                         android:padding="5dp"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:src="@drawable/enhance" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -118,6 +124,7 @@
                 android:text="+12 → +15"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
+                android:textSize="12dp"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -302,3 +309,4 @@
     </LinearLayout>
 </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
+</FrameLayout>
