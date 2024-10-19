@@ -4,19 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
-<com.google.android.material.card.MaterialCardView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="#26ffffff"
-    app:cardCornerRadius="50dp"
-    app:strokeColor="@color/white"
-    app:strokeWidth="1dp"
-    android:layout_marginBottom="16dp">
 <LinearLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:gravity="center_horizontal">
+    android:gravity="center_horizontal"
+    android:background="@drawable/bg_inventory_relic_item"
+    android:layout_marginBottom="16dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="125dp"
@@ -308,5 +302,4 @@
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
-</com.google.android.material.card.MaterialCardView>
 </FrameLayout>
