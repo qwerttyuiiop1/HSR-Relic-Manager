@@ -8,7 +8,7 @@
 
     <!-- Filter Section -->
     <FrameLayout
-        android:id="@+id/action_group_filter_section"
+        android:id="@+id/filter_group_filter_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/filter_secton_title"
+                android:id="@+id/filter_group_secton_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -30,12 +30,12 @@
                 android:textColor="#D3D6DB"
                 android:textSize="32sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/filter_secton_preview"
+                app:layout_constraintEnd_toStartOf="@+id/filter_group_secton_preview"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <FrameLayout
-                android:id="@+id/filter_secton_preview"
+                android:id="@+id/filter_group_secton_preview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="100dp"
@@ -45,9 +45,9 @@
                 android:paddingTop="5dp"
                 android:paddingEnd="15dp"
                 android:paddingBottom="5dp"
-                app:layout_constraintEnd_toStartOf="@+id/filter_secton_add"
-                app:layout_constraintStart_toEndOf="@+id/filter_secton_title"
-                app:layout_constraintTop_toTopOf="@+id/filter_secton_title">
+                app:layout_constraintEnd_toStartOf="@+id/filter_group_secton_add"
+                app:layout_constraintStart_toEndOf="@+id/filter_group_secton_title"
+                app:layout_constraintTop_toTopOf="@+id/filter_group_secton_title">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -56,13 +56,13 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/filter_secton_preview_icon"
+                        android:id="@+id/filter_group_secton_preview_icon"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_preview" />
 
                     <TextView
-                        android:id="@+id/filter_secton_preview_text"
+                        android:id="@+id/filter_group_secton_preview_text"
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
                         android:layout_marginStart="8dp"
@@ -73,15 +73,15 @@
             </FrameLayout>
 
             <FrameLayout
-                android:id="@+id/filter_secton_add"
+                android:id="@+id/filter_group_secton_add"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="6dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="40dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/filter_secton_preview"
-                app:layout_constraintTop_toTopOf="@+id/filter_secton_title">
+                app:layout_constraintStart_toEndOf="@+id/filter_group_secton_preview"
+                app:layout_constraintTop_toTopOf="@+id/filter_group_secton_title">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -104,12 +104,13 @@
         android:layout_height="2dp"
         android:layout_marginTop="30dp"
         android:background="#CCD9D9D9"
-        app:layout_constraintTop_toBottomOf="@+id/action_group_filter_section"
+        app:layout_constraintTop_toBottomOf="@+id/filter_group_filter_section"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Action Group Order -->
     <FrameLayout
-        android:id="@+id/action_group_action_section"
+        android:id="@+id/action_group_order_action_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
@@ -120,19 +121,40 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/action_secton_title"
+                android:id="@+id/action_group_order_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="35dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/pf_din_text_pro_regular"
                 android:letterSpacing="0.03"
-                android:text="Action"
+                android:text="Action Group Order"
                 android:textColor="#D3D6DB"
-                android:textSize="32sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <FrameLayout
+                android:id="@+id/action_group_order_add"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="27dp"
+                app:layout_constraintBottom_toBottomOf="@+id/action_group_order_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/action_group_order_title">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="29dp"
+                    android:src="@drawable/activity_plus_outer_circle" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_add" />
+            </FrameLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>

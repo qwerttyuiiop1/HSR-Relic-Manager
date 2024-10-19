@@ -43,14 +43,14 @@ class AddRuleDialogFragment : DialogFragment() {
             dismiss()
         }
 
-//        val filterActionGroupFragment: View = dialogView.findViewById(R.id.filter_action_group)
-//        addActionGroupFragment.setOnClickListener {
-//            val addActionGroupHeaderFragment  = AddActionGroupHeaderFragment()
-//            val addActionGroupBodyFragment = AddActionGroupBodyFragment()
-//
-//            (requireActivity() as MainActivity).loadFragment(addActionGroupHeaderFragment, addActionGroupBodyFragment)
-//            dismiss()
-//        }
+        val addFilterGroupFragment: View = dialogView.findViewById(R.id.filter_action_group)
+        addFilterGroupFragment.setOnClickListener {
+            val addFilterGroupHeaderFragment  = AddFilterGroupHeaderFragment()
+            val addFilterGroupBodyFragment = AddFilterGroupBodyFragment()
+
+            (requireActivity() as MainActivity).loadFragment(addFilterGroupHeaderFragment, addFilterGroupBodyFragment)
+            dismiss()
+        }
 
         return dialog
     }
