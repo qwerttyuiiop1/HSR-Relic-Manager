@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.hsrrelicmanager.databinding.FragmentActionGroupBodyBinding
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 
 class AddActionGroupBodyFragment : Fragment() {
     lateinit var binding: FragmentActionGroupBodyBinding
