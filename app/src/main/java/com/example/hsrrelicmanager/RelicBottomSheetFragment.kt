@@ -33,7 +33,7 @@ class RelicBottomSheetFragment : BottomSheetDialogFragment() {
 
             imgRelic.setImageResource(relic.set.icon)
             if (relic.prev != null && relic.level != relic.prev!!.level) {
-                lblRelicLevel.text = "+${relic.prev!!.level} → +${relic.level}"
+                lblRelicLevel.text = "+${relic.prev!!.level}  >  +${relic.level}"
             } else {
                 lblRelicLevel.text = "+${relic.level}"
             }
@@ -144,23 +144,23 @@ class RelicBottomSheetFragment : BottomSheetDialogFragment() {
 
     private fun updateStatusIcons(relic: Relic, binding: RelicBottomSheetBinding) = binding.apply {
         if (Relic.Status.LOCK in relic.status) {
-            btnRelicLock.setBackgroundColor(resources.getColor(R.color.transparent))
+            btnRelicLock.setBackgroundResource(R.drawable.bg_status_selected)
             btnRelicLock.imageTintList = ColorStateList.valueOf(resources.getColor(R.color.white))
         } else {
-            btnRelicLock.setBackgroundColor(resources.getColor(R.color.white))
+            btnRelicLock.setBackgroundResource(R.drawable.bg_status)
             btnRelicLock.imageTintList = ColorStateList.valueOf(resources.getColor(R.color.black))
         }
         if (Relic.Status.TRASH in relic.status) {
-            btnRelicTrash.setBackgroundColor(resources.getColor(R.color.red))
+            btnRelicTrash.setBackgroundResource(R.drawable.bg_status_trash_selected)
             btnRelicTrash.imageTintList = ColorStateList.valueOf(resources.getColor(R.color.white))
         } else {
-            btnRelicTrash.setBackgroundColor(resources.getColor(R.color.white))
+            btnRelicTrash.setBackgroundResource(R.drawable.bg_status)
             btnRelicTrash.imageTintList = ColorStateList.valueOf(resources.getColor(R.color.red))
         }
         if (Relic.Status.UPGRADE in relic.status) {
-            btnRelicUpgrade.setBackgroundColor(resources.getColor(R.color.transparent))
+            btnRelicUpgrade.setBackgroundResource(R.drawable.bg_status_selected)
         } else {
-            btnRelicUpgrade.setBackgroundColor(resources.getColor(R.color.white))
+            btnRelicUpgrade.setBackgroundResource(R.drawable.bg_status)
         }
     }
 
