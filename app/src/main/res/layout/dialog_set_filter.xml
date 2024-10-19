@@ -45,7 +45,8 @@
                 android:text="Deselect All"
                 android:textSize="14dp"
                 android:paddingTop="10dp"
-                android:layout_gravity="bottom"/>
+                android:layout_gravity="bottom"
+                android:textColor="#4A4A4A"/>
 
         </LinearLayout>
 
