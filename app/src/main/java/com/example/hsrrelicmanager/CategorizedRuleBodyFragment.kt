@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hsrrelicmanager.CategorizedGroupAdapter.GroupViewHolder
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
@@ -17,7 +18,7 @@ import com.example.hsrrelicmanager.model.rules.group.FilterGroup
 import com.example.hsrrelicmanager.model.rules.group.Group
 import java.util.Collections
 
-class RuleBodyFragment : Fragment() {
+class CategorizedRuleBodyFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -92,19 +93,25 @@ class RuleBodyFragment : Fragment() {
             groupData.add(resetActionGroup)
             groupData.add(enhanceActionGroup)
         }
-        val groupAdapter = GroupAdapter(groupData)
+        for (i in 0..<groupData.size) {
+            groupData.get(i).position = i
+        }
+        val categorizedGroupAdapter = CategorizedGroupAdapter(groupData)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = groupAdapter
+        recyclerView.adapter = categorizedGroupAdapter
 
         val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
             override fun getMovementFlags(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder
             ): Int {
+                if (viewHolder !is GroupViewHolder)
+                    return makeMovementFlags(0, 0)
+
                 return makeMovementFlags(
-                    ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+                    0,
                     ItemTouchHelper.LEFT
                 )
             }
@@ -114,26 +121,23 @@ class RuleBodyFragment : Fragment() {
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
             ): Boolean {
-                Collections.swap(groupAdapter.groupData, viewHolder.adapterPosition, target.adapterPosition);
-                groupAdapter.groupData.get(viewHolder.adapterPosition).position = target.adapterPosition;
-                groupAdapter.groupData.get(target.adapterPosition).position = viewHolder.adapterPosition;
-                (viewHolder as GroupAdapter.ViewHolder).updatePosition(target.adapterPosition);
-                (target as GroupAdapter.ViewHolder).updatePosition(viewHolder.adapterPosition);
-                groupAdapter.notifyItemMoved(viewHolder.adapterPosition, target.adapterPosition);
-                return true;
+                return false;
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val index = viewHolder.adapterPosition;
-                groupAdapter.groupData.removeAt(index);
+                val itemIndex = viewHolder.adapterPosition
+                val groupIndex = (categorizedGroupAdapter.items.get(itemIndex) as CategorizedGroupAdapter.GroupItem).group.position;
 
-                for (i in index..<groupAdapter.groupData.size) {
-                    groupData.get(i).position = i;
+                categorizedGroupAdapter.items.removeAt(itemIndex)
+                categorizedGroupAdapter.groupData.removeAt(groupIndex)
+
+                for (i in groupIndex..<categorizedGroupAdapter.groupData.size) {
+                    groupData.get(i).position = i
                 }
 
-                groupAdapter.notifyItemRemoved(index);
-                groupAdapter.notifyItemRangeChanged(index, groupAdapter.groupData.size-index);
+                categorizedGroupAdapter.notifyDataSetChanged()
             }
+
         })
         itemTouchHelper.attachToRecyclerView(recyclerView)
     }
