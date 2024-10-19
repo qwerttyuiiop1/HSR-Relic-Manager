@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.hsrrelicmanager.GroupAdapter.ViewHolder
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
