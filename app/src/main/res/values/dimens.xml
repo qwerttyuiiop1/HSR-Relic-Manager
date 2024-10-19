@@ -9,4 +9,6 @@
     <dimen name="task_text_width">70dp</dimen>
     <dimen name="task_item_width">90dp</dimen>
 
+    <dimen name="dp16">16dp</dimen>
+
 </resources>

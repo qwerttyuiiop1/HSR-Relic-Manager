@@ -65,7 +65,7 @@ class RelicBottomSheetFragment : BottomSheetDialogFragment() {
                 if (i < relic.substats.size)
                     containers[i].visibility = View.VISIBLE
                 else
-                    containers[i].visibility = View.GONE
+                    containers[i].visibility = View.INVISIBLE
             }
 
             val entries = relic.substats.entries
@@ -79,7 +79,7 @@ class RelicBottomSheetFragment : BottomSheetDialogFragment() {
             if (relic.status.contains(Relic.Status.EQUIPPED)) {
                 containerRelicEquipped.visibility = View.VISIBLE
             } else {
-                containerRelicEquipped.visibility = View.GONE
+                containerRelicEquipped.visibility = View.INVISIBLE
             }
 
             updateStatusIcons(relic, binding)

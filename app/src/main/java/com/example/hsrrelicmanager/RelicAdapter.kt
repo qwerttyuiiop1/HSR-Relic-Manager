@@ -71,7 +71,7 @@ class RelicAdapter(
                     if (i < relic.substats.size)
                         containers[i].visibility = View.VISIBLE
                     else
-                        containers[i].visibility = View.GONE
+                        containers[i].visibility = View.INVISIBLE
                 }
 
                 val entries = relic.substats.entries
@@ -85,7 +85,7 @@ class RelicAdapter(
                 if (relic.status.contains(Relic.Status.EQUIPPED)) {
                     containerRelicEquipped.visibility = View.VISIBLE
                 } else {
-                    containerRelicEquipped.visibility = View.GONE
+                    containerRelicEquipped.visibility = View.INVISIBLE
                 }
 
                 val relics = relic.status.filter {
@@ -95,16 +95,16 @@ class RelicAdapter(
                 }
                 when (relics.size) {
                     0 -> {
-                        containerSingleRelicStatus.visibility = View.GONE
-                        containerDoubleRelicStatus.visibility = View.GONE
+                        containerSingleRelicStatus.visibility = View.INVISIBLE
+                        containerDoubleRelicStatus.visibility = View.INVISIBLE
                     }
                     1 -> {
                         containerSingleRelicStatus.visibility = View.VISIBLE
-                        containerDoubleRelicStatus.visibility = View.GONE
+                        containerDoubleRelicStatus.visibility = View.INVISIBLE
                         imgRelicStatus.setImageResource(relics[0])
                     }
                     2 -> {
-                        containerSingleRelicStatus.visibility = View.GONE
+                        containerSingleRelicStatus.visibility = View.INVISIBLE
                         containerDoubleRelicStatus.visibility = View.VISIBLE
                         imgRelicStatus1.setImageResource(relics[0])
                         imgRelicStatus2.setImageResource(relics[1])

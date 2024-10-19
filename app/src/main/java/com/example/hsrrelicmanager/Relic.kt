@@ -18,7 +18,8 @@ data class Relic (
     val prev: Relic? = null
 ): Parcelable {
     enum class Status {
-        LOCK, TRASH, UPGRADE, EQUIPPED
+        LOCK, TRASH, DEFAULT, // mutually exclusive
+        UPGRADE, EQUIPPED, // can be combined with others
     }
 
     val rarityResource: Int
@@ -49,6 +50,7 @@ data class Relic (
             Status.TRASH -> R.drawable.ic_trash
             Status.EQUIPPED -> R.drawable.ic_relic_equipped
             Status.UPGRADE -> R.drawable.enhance
+            Status.DEFAULT -> R.drawable.reset
         }
     }
 }
