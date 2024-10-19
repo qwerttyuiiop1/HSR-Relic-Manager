@@ -32,17 +32,23 @@ class AddFilterDialog: DialogFragment() {
                 addSetDialog.show(requireActivity().supportFragmentManager, "AddSetDialog")
                 dismiss()
             }
-            addSlot.setOnClickListener {
-                // TODO: start AddSlotFragment
-            }
+//            addSlot.setOnClickListener {
+//                // TODO: start AddSlotFragment
+//            }
             addMainStat.setOnClickListener {
-                // TODO: start AddMainStatFragment
+                val addMainStatDialog = AddMainstatDialog()
+                addMainStatDialog.show(requireActivity().supportFragmentManager, "AddMainstatDialog")
+                dismiss()
             }
             addSubStat.setOnClickListener {
-                // TODO: start AddSubStatFragment
+                val addSubStatDialog = AddSubstatDialog()
+                addSubStatDialog.show(requireActivity().supportFragmentManager, "AddSubstatDialog")
+                dismiss()
             }
             addRarity.setOnClickListener {
-                // TODO: start AddRarityFragment
+                val addRarityDialog = AddRarityDialog()
+                addRarityDialog.show(requireActivity().supportFragmentManager, "AddRarityDialog")
+                dismiss()
             }
             addLevel.setOnClickListener {
                 val addLevelDialog = AddLevelDialog();
@@ -50,7 +56,9 @@ class AddFilterDialog: DialogFragment() {
                 dismiss()
             }
             addStatus.setOnClickListener {
-                // TODO: start AddStatusFragment
+                val addStatusDialog = AddStatusDialog()
+                addStatusDialog.show(requireActivity().supportFragmentManager, "AddStatusDialog")
+                dismiss()
             }
         }
 //        val addActionGroupFragment: View = dialogView.findViewById(R.id.add_action_group)
