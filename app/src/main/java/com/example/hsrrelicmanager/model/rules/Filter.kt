@@ -44,7 +44,8 @@ abstract class Filter {
     ): Filter() {
         override val type: Type = Type.SLOT
         override val name: String = "Relic Type"
-        override val description: String = "Filter by relic type"
+        override val description
+            get() = types.joinToString(", ")
 
         override fun accepts(relic: Relic): Boolean {
             return types.contains(relic.slot)
@@ -56,7 +57,8 @@ abstract class Filter {
     ): Filter() {
         override val type: Type = Type.MAIN_STAT
         override val name: String = "Main Stat"
-        override val description: String = "Filter by main stat"
+        override val description: String
+            get() = stats.joinToString(", ")
 
         override fun accepts(relic: Relic): Boolean {
             return stats.any { it == relic.mainstat }
@@ -68,7 +70,8 @@ abstract class Filter {
     ): Filter() {
         override val type: Type = Type.SUB_STATS
         override val name: String = "Sub Stats"
-        override val description: String = "Filter by sub stats"
+        override val description: String
+            get() = stats.joinToString(", ")
 
         override fun accepts(relic: Relic): Boolean {
             return stats.any { relic.substats.containsKey(it) }
@@ -81,7 +84,16 @@ abstract class Filter {
     ): Filter() {
         override val type: Type = Type.RARITY
         override val name: String = "Rarity"
-        override val description: String = "Filter by rarity"
+        override val description: String
+            get() = if (atLeast != null && atMost != null) {
+                "$atLeast - $atMost"
+            } else if (atLeast != null) {
+                "At least $atLeast"
+            } else if (atMost != null) {
+                "At most $atMost"
+            } else {
+                "Any"
+            }
 
         override fun accepts(relic: Relic): Boolean {
             return (atLeast == null || relic.rarity >= atLeast!!) &&
@@ -95,7 +107,16 @@ abstract class Filter {
     ): Filter() {
         override val type: Type = Type.LEVEL
         override val name: String = "Level"
-        override val description: String = "Filter by level"
+        override val description: String
+            get() = if (atLeast != null && atMost != null) {
+                "$atLeast - $atMost"
+            } else if (atLeast != null) {
+                "At least $atLeast"
+            } else if (atMost != null) {
+                "At most $atMost"
+            } else {
+                "Any"
+            }
 
         override fun accepts(relic: Relic): Boolean {
             return (atLeast == null || relic.level >= atLeast!!) &&
@@ -108,7 +129,8 @@ abstract class Filter {
     ): Filter() {
         override val type: Type = Type.STATUS
         override val name: String = "Status"
-        override val description: String = "Filter by status"
+        override val description: String
+            get() = statuses.joinToString(", ")
 
         override fun accepts(relic: Relic): Boolean {
             return statuses.any { relic.status.contains(it) }
