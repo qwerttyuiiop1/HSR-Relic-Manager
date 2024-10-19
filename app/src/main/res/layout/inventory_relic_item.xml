@@ -131,7 +131,7 @@
         android:layout_marginBottom="7dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:textSize="14dp"
+        android:textSize="15dp"
         android:textColor="#FFFFFF"
         android:fontFamily="@font/pf_din_text_pro_regular"
         android:text="Musketeer of Wild Wheat"

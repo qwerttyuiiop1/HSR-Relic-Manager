@@ -1,18 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<inset xmlns:android="http://schemas.android.com/apk/res/android"
-    android:insetBottom="-5dp"
-    android:insetLeft="-5dp"
-    android:insetRight="-5dp">
-<shape android:shape="rectangle">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <solid android:color="#AA000000" />
+    <item>
+        <bitmap
+            android:src="@drawable/blur_background"
+            android:gravity="fill" />
+    </item>
 
-    <corners
-        android:topLeftRadius="50dp"
-        android:topRightRadius="50dp" />
+    <item>
+        <inset
+            android:insetBottom="-5dp"
+            android:insetLeft="-5dp"
+            android:insetRight="-5dp">
 
-    <stroke
-        android:width="5dp"
-        android:color="#33D9D9D9" />
-</shape>
-</inset>
+            <shape android:shape="rectangle">
+                <solid android:color="#80000000" />
+
+                <corners
+                    android:topLeftRadius="15dp"
+                    android:topRightRadius="15dp" />
+
+                <stroke
+                    android:width="5dp"
+                    android:color="#33D9D9D9" />
+            </shape>
+        </inset>
+    </item>
+
+</layer-list>
