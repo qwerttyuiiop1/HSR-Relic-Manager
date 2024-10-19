@@ -1,7 +1,5 @@
 package com.example.hsrrelicmanager
 
-import android.graphics.RenderEffect
-import android.graphics.Shader
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -39,10 +37,7 @@ class RuleHeaderFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.S)
     private fun blurBackground() {
-        val bgView = requireActivity().findViewById<View>(R.id.activity_main_layout)
-
-        val blurEffect = RenderEffect.createBlurEffect(20f, 20f, Shader.TileMode.CLAMP)
-        bgView.setRenderEffect(blurEffect)
+        requireActivity().findViewById<View>(R.id.activity_main_layout).blur()
     }
 
 

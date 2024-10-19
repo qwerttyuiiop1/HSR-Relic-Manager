@@ -5,10 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.hsrrelicmanager.databinding.FragmentActionGroupBodyBinding
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 
 class AddActionGroupBodyFragment : Fragment() {
+    lateinit var binding: FragmentActionGroupBodyBinding
 
     private lateinit var adapter: ActionItemAdapter
     private val actionItems = mutableListOf("")
@@ -16,15 +17,19 @@ class AddActionGroupBodyFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_action_group_body, container, false)
+    ): View {
+        return FragmentActionGroupBodyBinding.inflate(inflater, container, false).apply {
+            binding = this
+            filterSectonAdd.setOnClickListener{
+                requireActivity().findViewById<View>(R.id.activity_main_layout).blur()
+                val dialog = AddFilterDialog()
+                dialog.show(parentFragmentManager, "AddFilterDialog")
+            }
+            adapter = ActionItemAdapter(actionItems)
 
-        var recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewActionGroup)
-        adapter = ActionItemAdapter(actionItems)
-
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = adapter
-
-        return view
+            recyclerViewActionGroup.layoutManager = LinearLayoutManager(context)
+            recyclerViewActionGroup.adapter = adapter
+        }.root
     }
+
 }
