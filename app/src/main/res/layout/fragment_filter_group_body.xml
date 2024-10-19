@@ -35,6 +35,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <FrameLayout
+                android:visibility="invisible"
                 android:id="@+id/filter_group_secton_preview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -136,6 +137,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <FrameLayout
+                android:visibility="invisible"
                 android:id="@+id/action_group_order_add"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -159,5 +161,14 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewActionGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="316dp"
+        android:nestedScrollingEnabled="false"
+        app:layout_constraintTop_toBottomOf="@id/action_group_order_action_section"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
