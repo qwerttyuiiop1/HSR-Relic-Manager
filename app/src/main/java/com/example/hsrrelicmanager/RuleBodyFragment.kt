@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.model.relics.Relic
@@ -14,6 +15,7 @@ import com.example.hsrrelicmanager.model.rules.action.StatusAction
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 import com.example.hsrrelicmanager.model.rules.group.FilterGroup
 import com.example.hsrrelicmanager.model.rules.group.Group
+import java.util.Collections
 
 class RuleBodyFragment : Fragment() {
     override fun onCreateView(
