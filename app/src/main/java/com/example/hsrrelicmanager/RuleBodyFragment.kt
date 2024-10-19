@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hsrrelicmanager.GroupAdapter.ViewHolder
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
@@ -115,6 +116,10 @@ class RuleBodyFragment : Fragment() {
                 target: RecyclerView.ViewHolder
             ): Boolean {
                 Collections.swap(groupAdapter.groupData, viewHolder.adapterPosition, target.adapterPosition);
+                groupAdapter.groupData.get(viewHolder.adapterPosition).position = target.adapterPosition;
+                groupAdapter.groupData.get(target.adapterPosition).position = viewHolder.adapterPosition;
+                (viewHolder as GroupAdapter.ViewHolder).updatePosition(target.adapterPosition);
+                (target as GroupAdapter.ViewHolder).updatePosition(viewHolder.adapterPosition);
                 groupAdapter.notifyItemMoved(viewHolder.adapterPosition, target.adapterPosition);
                 return true;
             }

@@ -39,6 +39,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull GroupAdapter.ViewHolder holder, int position) {
         Group group = groupData.get(position);
+        holder.updatePosition(position);
         holder.bind(group);
     }
 
@@ -78,7 +79,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView groupIcon;
-        private TextView tvGroupName;
+        private TextView tvGroupName, tvPosition;
         private ViewGroup filterContainer;
 
         public ViewHolder(@NonNull View itemView) {
@@ -86,15 +87,8 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
             groupIcon = itemView.findViewById(R.id.groupIcon);
             tvGroupName = itemView.findViewById(R.id.tvGroupName);
+            tvPosition = itemView.findViewById(R.id.tvPosition);
             filterContainer = itemView.findViewById(R.id.filter_container);
-        }
-
-        public ImageView getGroupIcon() {
-            return groupIcon;
-        }
-
-        public TextView getTvGroupName() {
-            return tvGroupName;
         }
 
         public void bind(Group group) {
@@ -106,7 +100,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
                 binding.rowName.setText(filter.getName() + ':');
                 binding.rowValue.setText(filter.getDescription());
                 filterContainer.addView(binding.getRoot());
-                getGroupIcon().setImageResource(getGroupImageResource(group));
+                groupIcon.setImageResource(getGroupImageResource(group));
 //                switch (group.getViewName().replaceAll(" .*", "")) {
 //                    case "Filter":
 //                        groupIcon.setImageResource(R.drawable.filter_group);
@@ -125,6 +119,10 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 //                        break;
 //                }
             }
+        }
+
+        public void updatePosition(int position) {
+            tvPosition.setText(Integer.toString(position + 1));
         }
     }
 }

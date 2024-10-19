@@ -16,14 +16,13 @@
 
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="221dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
-        android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
-        android:orientation="vertical"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,41 +49,71 @@
                 android:textColor="#FFC65C"
                 android:textSize="24sp"
                 android:typeface="normal" />
+
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/filter_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:orientation="vertical"
-            android:id="@+id/filter_container">
+            android:orientation="vertical">
 
 
-<!--            <TextView-->
-<!--                android:id="@+id/tvGroupFilter1"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:fontFamily="@font/pf_din_text_pro_regular"-->
-<!--                android:text="Relic Set: &lt;placeholder&gt;"-->
-<!--                android:textSize="16sp" />-->
+            <!--            <TextView-->
+            <!--                android:id="@+id/tvGroupFilter1"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/pf_din_text_pro_regular"-->
+            <!--                android:text="Relic Set: &lt;placeholder&gt;"-->
+            <!--                android:textSize="16sp" />-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/tvGroupFilter2"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:fontFamily="@font/pf_din_text_pro_regular"-->
-<!--                android:text="TextView"-->
-<!--                android:textSize="16sp" />-->
+            <!--            <TextView-->
+            <!--                android:id="@+id/tvGroupFilter2"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/pf_din_text_pro_regular"-->
+            <!--                android:text="TextView"-->
+            <!--                android:textSize="16sp" />-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/tvGroupFilter3"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="TextView"-->
-<!--                android:textSize="16sp" />-->
+            <!--            <TextView-->
+            <!--                android:id="@+id/tvGroupFilter3"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="TextView"-->
+            <!--                android:textSize="16sp" />-->
 
         </LinearLayout>
 
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="100dp"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvPosition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pf_din_text_pro_regular"
+            android:text="TextView"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/imageView3"
+            app:layout_constraintEnd_toEndOf="@+id/imageView3"
+            app:layout_constraintStart_toStartOf="@+id/imageView3" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="20dp"
+            android:layout_height="22dp"
+            android:adjustViewBounds="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/sort_arrows_grey" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
