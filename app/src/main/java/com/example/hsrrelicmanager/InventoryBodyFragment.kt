@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hsrrelicmanager.model.relics.Relic
+import com.example.hsrrelicmanager.model.relics.relicSets
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -26,11 +28,12 @@ class InventoryBodyFragment : Fragment() {
         // Dummy relic data
         val relicData = mutableListOf<Relic>()
         for (i in 1..50) {
-            relicData.add(Relic(
-                "Musketeer of Wild Wheat",
+            relicData.add(
+                Relic(
+                relicSets.random(),
                 "Hands",
-                5,
-                15,
+                (3..5).random(),
+                (0..15).random(),
                 "ATK%",
                 "40.0",
                 mapOf(
@@ -39,14 +42,15 @@ class InventoryBodyFragment : Fragment() {
                     "DEF" to "8.5",
                     "CRIT Rate" to "12.1"
                 ),
-                listOf(Relic.Status.LOCK),
-                R.drawable.musketeer_of_wild_wheat
-            ))
-            relicData.add(Relic(
-                "Thief of Shooting Meteor",
+                listOf(Relic.Status.LOCK)
+            )
+            )
+            relicData.add(
+                Relic(
+                    relicSets.random(),
                 "Body",
-                2,
-                0,
+                    (3..5).random(),
+                    (0..15).random(),
                 "DEF",
                 "12.3",
                 mapOf(
@@ -54,9 +58,9 @@ class InventoryBodyFragment : Fragment() {
                     "SPD" to "5.0",
                     "DEF" to "8.5",
                 ),
-                listOf(Relic.Status.TRASH),
-                R.drawable.thief_of_shooting_meteor
-            ))
+                listOf(Relic.Status.TRASH)
+            )
+            )
         }
         val relicAdapter = RelicAdapter(relicData, this)
 

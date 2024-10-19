@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import com.example.hsrrelicmanager.databinding.RelicBottomSheetBinding
+import com.example.hsrrelicmanager.model.relics.Relic
+import com.example.hsrrelicmanager.model.relics.RelicBuilder
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class RelicBottomSheetFragment : BottomSheetDialogFragment() {
@@ -22,12 +24,14 @@ class RelicBottomSheetFragment : BottomSheetDialogFragment() {
     private fun updateView(binding: RelicBottomSheetBinding, r: Relic) {
         var relic = r
         binding.apply {
-            lblRelicName.text = relic.set
+            lblRelicDescription.text = relic.set.description
+
+            lblRelicName.text = relic.set.name
             lblRelicMainStatType.text = relic.mainstat
             lblRelicMainStatValue.text = relic.mainstatVal
             imgRelicMainStat.setImageResource(relic.mainstatResource)
 
-            imgRelic.setImageResource(relic.image)
+            imgRelic.setImageResource(relic.set.icon)
             if (relic.prev != null && relic.level != relic.prev!!.level) {
                 lblRelicLevel.text = "+${relic.prev!!.level} → +${relic.level}"
             } else {

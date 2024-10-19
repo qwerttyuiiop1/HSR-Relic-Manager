@@ -1,6 +1,6 @@
 package com.example.hsrrelicmanager.model.rules.action;
 
-import com.example.hsrrelicmanager.Relic;
+import com.example.hsrrelicmanager.model.relics.Relic;
 
 public class StatusAction implements Action {
     private Relic.Status targetStatus;
