@@ -17,12 +17,12 @@ class AddRuleDialogFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.add_rule_dialog, container, false)
+        return inflater.inflate(R.layout.dialog_add_rule, container, false)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
         val builder = AlertDialog.Builder(requireActivity())
-        val dialogView = requireActivity().layoutInflater.inflate(R.layout.add_rule_dialog, null)
+        val dialogView = requireActivity().layoutInflater.inflate(R.layout.dialog_add_rule, null)
 
         builder.setView(dialogView)
 
@@ -33,6 +33,24 @@ class AddRuleDialogFragment : DialogFragment() {
         closeButton.setOnClickListener {
             dismiss()
         }
+
+        val addActionGroupFragment: View = dialogView.findViewById(R.id.add_action_group)
+        addActionGroupFragment.setOnClickListener {
+            val addActionGroupHeaderFragment  = AddActionGroupHeaderFragment()
+            val addActionGroupBodyFragment = AddActionGroupBodyFragment()
+
+            (requireActivity() as MainActivity).loadFragment(addActionGroupHeaderFragment, addActionGroupBodyFragment)
+            dismiss()
+        }
+
+//        val filterActionGroupFragment: View = dialogView.findViewById(R.id.filter_action_group)
+//        addActionGroupFragment.setOnClickListener {
+//            val addActionGroupHeaderFragment  = AddActionGroupHeaderFragment()
+//            val addActionGroupBodyFragment = AddActionGroupBodyFragment()
+//
+//            (requireActivity() as MainActivity).loadFragment(addActionGroupHeaderFragment, addActionGroupBodyFragment)
+//            dismiss()
+//        }
 
         return dialog
     }

@@ -34,6 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Add"
+                android:letterSpacing="0.03"
                 android:textSize="32sp"
                 android:textStyle="bold"
                 android:fontFamily="@font/pf_din_text_pro_regular"
@@ -95,7 +96,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/add_filter_group"
+            android:id="@+id/filter_action_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -106,7 +107,7 @@
             android:background="@drawable/rule_add_rectangle_button">
 
             <ImageView
-                android:id="@+id/add_filter_group_button"
+                android:id="@+id/filter_action_group_button"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:src="@drawable/ic_add"/>
