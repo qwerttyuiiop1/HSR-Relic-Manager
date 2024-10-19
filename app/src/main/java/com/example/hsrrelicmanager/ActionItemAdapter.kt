@@ -16,10 +16,13 @@ import androidx.recyclerview.widget.RecyclerView
 class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.Adapter<ActionItemAdapter.ActionViewHolder>() {
 
     private var selectedOption: String = ""
+    private var levelNumber: Int = 3
 
     class ActionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val choiceText: TextView = itemView.findViewById(R.id.action_choice_text)
-        val actionImage: ImageView = itemView.findViewById(R.id.action_image) // Reference to the ImageView
+        val actionImage: ImageView = itemView.findViewById(R.id.action_image)
+        val levelTitle: TextView = itemView.findViewById(R.id.level_title)
+        val levelNumberText: TextView = itemView.findViewById(R.id.level_number_item)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActionViewHolder {
@@ -33,7 +36,18 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
         holder.choiceText.text = if (choice.isEmpty()) "+" else choice
         holder.actionImage.setImageResource(getImageResource(choice))
 
+        // Show or hide level information based on choice
+        if (choice == "Enhance") {
+            holder.levelTitle.visibility = View.VISIBLE
+            holder.levelNumberText.visibility = View.VISIBLE
+            holder.levelNumberText.text = levelNumber.toString()
+        } else {
+            holder.levelTitle.visibility = View.GONE
+            holder.levelNumberText.visibility = View.GONE
+        }
+
         holder.choiceText.setOnClickListener {
+            selectedOption = choice
             showDialog(it.context, holder)
         }
     }
@@ -52,6 +66,18 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
             RenderEffect.createBlurEffect(20f, 20f, Shader.TileMode.CLAMP)
         )
 
+        val levelNumberTextView = dialogView.findViewById<TextView>(R.id.level_number)
+        updateLevelNumberDisplay(levelNumberTextView)
+
+        when (selectedOption) {
+            "Enhance" -> updateRadioButtonState(dialogView, R.id.radio_button_enhance)
+            "Lock" -> updateRadioButtonState(dialogView, R.id.radio_button_lock)
+            "Reset" -> updateRadioButtonState(dialogView, R.id.radio_button_reset)
+            "Filter Group" -> updateRadioButtonState(dialogView, R.id.radio_button_filter)
+            "Trash" -> updateRadioButtonState(dialogView, R.id.radio_button_trash)
+        }
+
+        // Set up radio button click listeners
         dialogView.findViewById<ImageView>(R.id.radio_button_enhance).setOnClickListener {
             updateRadioButtonState(dialogView, R.id.radio_button_enhance)
             selectedOption = "Enhance"
@@ -73,6 +99,23 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
             selectedOption = "Trash"
         }
 
+        // Update level number
+        dialogView.findViewById<ImageView>(R.id.ic_add_level).setOnClickListener {
+            if (levelNumber < 15) {
+                levelNumber += 3
+                updateLevelNumberDisplay(levelNumberTextView)
+                holder.levelNumberText.text = levelNumber.toString()
+            }
+        }
+
+        dialogView.findViewById<ImageView>(R.id.ic_subtract_level).setOnClickListener {
+            if (levelNumber > 3) {
+                levelNumber -= 3
+                updateLevelNumberDisplay(levelNumberTextView)
+                holder.levelNumberText.text = levelNumber.toString()
+            }
+        }
+
         val cancelButton = dialogView.findViewById<View>(R.id.cancel_action_group_dialog_button)
         cancelButton.setOnClickListener {
             dialog.dismiss()
@@ -81,9 +124,7 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
         val confirmButton = dialogView.findViewById<View>(R.id.confirm_action_group_dialog_button)
         confirmButton.setOnClickListener {
             items[0] = selectedOption
-            notifyItemChanged(0)
-
-            holder.actionImage.setImageResource(getImageResource(selectedOption))
+            notifyItemChanged(holder.adapterPosition)
 
             dialog.dismiss()
         }
@@ -93,6 +134,10 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
         }
 
         dialog.show()
+    }
+
+    private fun updateLevelNumberDisplay(levelTextView: TextView) {
+        levelTextView.text = levelNumber.toString()
     }
 
     private fun getImageResource(option: String): Int {

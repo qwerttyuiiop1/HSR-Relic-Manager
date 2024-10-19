@@ -36,10 +36,38 @@
             android:text="+"
             android:textColor="#FFC65C"
             android:textSize="32sp"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/level_title"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="275dp"
+            android:layout_marginTop="48dp"
+            android:gravity="center"
+            android:text="Lvl"
+            android:textColor="#000000"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            app:layout_constraintStart_toEndOf="@id/action_choice_text"
+            app:layout_constraintTop_toBottomOf="@id/action_choice_text" />
+
+        <TextView
+            android:id="@+id/level_number_item"
+            android:layout_width="19dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="307dp"
+            android:layout_marginTop="48dp"
+            android:gravity="center"
+            android:text="3"
+            android:textColor="#000000"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            app:layout_constraintStart_toEndOf="@id/title"
+            app:layout_constraintTop_toBottomOf="@id/action_choice_text" />
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

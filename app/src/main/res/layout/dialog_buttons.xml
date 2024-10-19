@@ -92,12 +92,42 @@
                 android:fontFamily="@font/pf_din_text_pro_regular"
                 android:paddingTop="15dp"
                 android:paddingBottom="15dp"
+                android:layout_marginEnd="20dp"
                 android:text="Enhance"
                 android:textColor="#4A4A4A"
                 android:textSize="24sp" />
+
+            <ImageView
+                android:id="@+id/ic_subtract_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="0dp"
+                android:src="@drawable/ic_subtract_level" />
+
+            <TextView
+                android:id="@+id/level_number"
+                android:layout_width="19dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:text="3"
+                android:textColor="#000000"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:gravity="center" />
+
+            <ImageView
+                android:id="@+id/ic_add_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:src="@drawable/ic_add_level" />
+
+
         </LinearLayout>
 
-        <!-- Repeat similar structure for Lock, Reset, Filter, and Trash -->
         <!-- Lock Action Group -->
         <LinearLayout
             android:id="@+id/lock_action_group"
@@ -138,7 +168,6 @@
                 android:textSize="24sp" />
         </LinearLayout>
 
-        <!-- Repeat for Reset, Filter, and Trash -->
         <!-- Reset Action Group -->
         <LinearLayout
             android:id="@+id/reset_action_group"
