@@ -1,12 +1,16 @@
 package com.example.hsrrelicmanager
 
 import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -149,16 +153,54 @@ class RuleBodyFragment : Fragment() {
             ) {
                 val itemView = viewHolder.itemView
                 val card: LinearLayout = itemView.findViewById(R.id.group_card)
+                val backgroundDrawable = card.background as GradientDrawable
 
                 val trash: ImageView = itemView.findViewById(R.id.trash_icon)
+                val upArrow: ImageView = itemView.findViewById(R.id.ivUpArrow)
+                val downArrow: ImageView = itemView.findViewById(R.id.ivDownArrow)
+                val position: TextView = itemView.findViewById(R.id.tvPosition)
 
                 // Swiping horizontally
                 if (Math.abs(dX) > Math.abs(dY)) {
-                    card.setBackgroundResource(R.drawable.bg_delete)
+                    val swipeRatio = Math.abs(dX) / itemView.width * 1.6
+                    val alphaSwipeRatio = (swipeRatio * 2).coerceIn(0.0, 1.0).toFloat()
+
+                    val startColor = arrayOf(255, 255, 255)
+                    val endColor = arrayOf(219, 88, 86)
+
+                    val red = (startColor[0] + (endColor[0] - startColor[0]) * swipeRatio).toInt()
+                    val green = (startColor[1] + (endColor[1] - startColor[1]) * swipeRatio).toInt()
+                    val blue = (startColor[2] + (endColor[2] - startColor[2]) * swipeRatio).toInt()
+
+                    val strokeColor = Color.rgb(red, green, blue)
+                    backgroundDrawable.setStroke(3, strokeColor)
+
+                    trash.alpha = alphaSwipeRatio
                     trash.visibility = View.VISIBLE
+
+                // Swipe vertically
+                } else if (Math.abs(dX) < Math.abs(dY)) {
+                    card.setBackgroundResource(R.drawable.bg_inventory_relic_item_selected)
+
+                    upArrow.setColorFilter(Color.parseColor("#FFC65C"));
+                    downArrow.setColorFilter(Color.parseColor("#FFC65C"));
+                    upArrow.alpha = 1f
+                    downArrow.alpha = 1f
+
+                    position.setTextColor(Color.parseColor("#FFC65C"));
+                    position.alpha = 1f
+
                 } else {
                     card.setBackgroundResource(R.drawable.bg_dark)
                     trash.visibility = View.GONE
+
+                    upArrow.setColorFilter(Color.parseColor("#FFFFFF"));
+                    downArrow.setColorFilter(Color.parseColor("#FFFFFF"));
+                    upArrow.alpha = 0.3f
+                    downArrow.alpha = 0.3f
+
+                    position.setTextColor(Color.parseColor("#FFFFFF"));
+                    position.alpha = 0.3f
                 }
 
                 itemView.translationX = dX
