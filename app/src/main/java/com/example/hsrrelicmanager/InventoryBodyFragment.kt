@@ -28,12 +28,13 @@ class InventoryBodyFragment : Fragment() {
         // Dummy relic data
         val relicData = mutableListOf<Relic>()
         for (i in 1..50) {
+            var level = (3..5).random()
             relicData.add(
                 Relic(
                 relicSets.random(),
                 "Hands",
-                (3..5).random(),
-                (0..15).random(),
+                level,
+                (0..15).random().coerceAtMost(level * 3),
                 "ATK%",
                 "40.0",
                 mapOf(
@@ -45,12 +46,13 @@ class InventoryBodyFragment : Fragment() {
                 listOf(Relic.Status.LOCK)
             )
             )
+            level = (3..5).random()
             relicData.add(
                 Relic(
                     relicSets.random(),
                 "Body",
-                    (3..5).random(),
-                    (0..15).random(),
+                    level,
+                    (0..15).random().coerceAtMost(level * 3),
                 "DEF",
                 "12.3",
                 mapOf(
