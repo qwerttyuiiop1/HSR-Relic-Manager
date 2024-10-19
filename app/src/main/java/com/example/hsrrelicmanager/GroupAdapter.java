@@ -106,7 +106,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
                 binding.rowName.setText(filter.getName() + ':');
                 binding.rowValue.setText(filter.getDescription());
                 filterContainer.addView(binding.getRoot());
-                holder.getGroupIcon().setImageResource(getGroupImageResource(group));
+                getGroupIcon().setImageResource(getGroupImageResource(group));
 //                switch (group.getViewName().replaceAll(" .*", "")) {
 //                    case "Filter":
 //                        groupIcon.setImageResource(R.drawable.filter_group);
@@ -123,7 +123,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 //                    case "Trash":
 //                        groupIcon.setImageResource(R.drawable.trash);
 //                        break;
-                }
+//                }
             }
         }
     }
