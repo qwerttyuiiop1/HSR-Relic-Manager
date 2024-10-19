@@ -3,13 +3,15 @@ package com.example.hsrrelicmanager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.databinding.InventoryRelicItemBinding
 import com.example.hsrrelicmanager.model.relics.Relic
 
 class RelicAdapter(
     private val relicData: MutableList<Relic>,
-    private val inventoryBodyFragment: InventoryBodyFragment
+    private val inventoryBodyFragment: InventoryBodyFragment,
+    private var selectedPos: Int = RecyclerView.NO_POSITION
 ) :
     RecyclerView.Adapter<RelicAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -114,7 +116,25 @@ class RelicAdapter(
                 }
             }
 
+            val relicCard = binding.root.findViewById<LinearLayout>(R.id.relic_card)
+
+            if (position == selectedPos) {
+                relicCard.setBackgroundResource(R.drawable.bg_inventory_relic_item_selected)
+            } else {
+                relicCard.setBackgroundResource(R.drawable.bg_inventory_relic_item)
+            }
+
             binding.root.setOnClickListener {
+                notifyItemChanged(selectedPos)
+
+                selectedPos = if (selectedPos == position) {
+                    RecyclerView.NO_POSITION
+                } else {
+                    position
+                }
+
+                notifyItemChanged(selectedPos)
+
                 val relicBottomSheetFragment = RelicBottomSheetFragment(relic)
                 relicBottomSheetFragment.show(inventoryBodyFragment.childFragmentManager, relicBottomSheetFragment.tag)
                 inventoryBodyFragment.requireActivity().supportFragmentManager.setFragmentResultListener("relic", inventoryBodyFragment.viewLifecycleOwner) { _, bundle ->

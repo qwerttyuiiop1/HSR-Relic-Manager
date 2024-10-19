@@ -118,8 +118,6 @@
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         app:cardCornerRadius="14dp"
-                        app:strokeWidth="2dp"
-                        app:strokeColor="#CCFFFFFF"
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_marginTop="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -128,20 +126,21 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:src="@drawable/ic_relic_equipped"
-                            android:background="@color/white"/>
+                            android:background="@drawable/bg_status"/>
                     </com.google.android.material.card.MaterialCardView>
 
                     <TextView
-                android:fontFamily="@font/pf_din_text_pro_regular"
+                        android:fontFamily="@font/pf_din_text_pro_regular"
                         android:id="@+id/lbl_relic_level"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="+12 → +15"
+                        android:text="+12  >  +15"
                         android:textAlignment="center"
                         android:background="#66000000"
                         android:textColor="#FFFFFF"
                         android:padding="5dp"
-                        app:layout_constraintBottom_toBottomOf="parent" />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:textSize="16dp"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
@@ -176,7 +175,7 @@
                     android:id="@+id/img_relic_main_stat"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_marginRight="3dp"
+                    android:layout_marginRight="4dp"
                     android:src="@drawable/ic_substat_atk"
                     app:tint="@color/gold" />
                 <TextView
@@ -216,7 +215,7 @@
                         android:id="@+id/img_relic_sub_stat1"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:layout_marginRight="3dp"
+                        android:layout_marginRight="4dp"
                         android:src="@drawable/ic_substat_atk"
                         app:tint="@color/white" />
                     <TextView
@@ -248,7 +247,7 @@
                         android:id="@+id/img_relic_sub_stat2"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:layout_marginRight="3dp"
+                        android:layout_marginRight="4dp"
                         android:src="@drawable/ic_substat_atk"
                         app:tint="@color/white" />
                     <TextView
@@ -280,7 +279,7 @@
                         android:id="@+id/img_relic_sub_stat3"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:layout_marginRight="3dp"
+                        android:layout_marginRight="4dp"
                         android:src="@drawable/ic_substat_atk"
                         app:tint="@color/white" />
                     <TextView
@@ -312,7 +311,7 @@
                         android:id="@+id/img_relic_sub_stat4"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:layout_marginRight="3dp"
+                        android:layout_marginRight="4dp"
                         android:src="@drawable/ic_substat_atk"
                         app:tint="@color/white" />
                     <TextView

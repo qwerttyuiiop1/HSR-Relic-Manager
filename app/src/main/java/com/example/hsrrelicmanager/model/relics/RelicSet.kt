@@ -29,8 +29,8 @@ val relicSets = listOf(
     RelicSet(
         "Thief of Shooting Meteor",
         R.drawable.thief_of_shooting_meteor,
-        "2-Piece Effect\tIncreases Break Effect by 16%.\n" +
-                "4-Piece Effect\tIncreases the wearer's Break Effect by 16%. When the wearer inflicts Weakness Break on an enemy, regenerates 3 Energy."
+        "2-Piece Effect:\tIncreases Break Effect by 16%.\n" +
+                "4-Piece Effect:\tIncreases the wearer's Break Effect by 16%. When the wearer inflicts Weakness Break on an enemy, regenerates 3 Energy."
     ),
     RelicSet(
         "Guard of Wuthering Snow",
