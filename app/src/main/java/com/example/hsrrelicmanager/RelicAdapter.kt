@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.databinding.InventoryRelicItemBinding
+import com.example.hsrrelicmanager.model.relics.Relic
 
 class RelicAdapter(
     private val relicData: MutableList<Relic>,
@@ -28,12 +29,12 @@ class RelicAdapter(
     inner class ViewHolder(val binding: InventoryRelicItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(relic: Relic, position: Int) {
             binding.apply {
-                lblRelicName.text = relic.set
+                lblRelicName.text = relic.set.name
                 lblRelicMainStatType.text = relic.mainstat
                 lblRelicMainStatValue.text = relic.mainstatVal
                 imgRelicMainStat.setImageResource(relic.mainstatResource)
 
-                imgRelic.setImageResource(relic.image)
+                imgRelic.setImageResource(relic.set.icon)
                 if (relic.prev != null && relic.level != relic.prev!!.level) {
                     lblRelicLevel.text = "+${relic.prev!!.level} → +${relic.level}"
                 } else {

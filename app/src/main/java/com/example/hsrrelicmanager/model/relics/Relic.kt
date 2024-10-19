@@ -1,12 +1,13 @@
-package com.example.hsrrelicmanager
+package com.example.hsrrelicmanager.model.relics
 
 import android.os.Parcelable
+import com.example.hsrrelicmanager.R
 import kotlinx.parcelize.Parcelize
 
 
 @Parcelize
 data class Relic (
-    val set: String,
+    val set: RelicSet,
     val slot: String,
     val rarity: Int,
     val level: Int,
@@ -14,7 +15,6 @@ data class Relic (
     val mainstatVal: String,
     val substats: Map<String, String>,
     val status: List<Status>,
-    val image: Int,
     val prev: Relic? = null
 ): Parcelable {
     enum class Status {
@@ -55,8 +55,8 @@ data class Relic (
     }
 }
 
-class RelicBuilder constructor(
-    var set: String = "",
+class RelicBuilder(
+    var set: RelicSet = RelicSet("", 0, ""),
     var slot: String = "",
     var rarity: Int = 0,
     var level: Int = 0,
@@ -64,7 +64,6 @@ class RelicBuilder constructor(
     var mainstatVal: String = "",
     var msubstats: MutableMap<String, String> = mutableMapOf(),
     var mstatus: MutableList<Relic.Status> = mutableListOf(),
-    var image: Int = 0,
     prev: RelicBuilder? = null,
     private val isPrev: Boolean = false,
 ) {
@@ -77,7 +76,6 @@ class RelicBuilder constructor(
         r.mainstatVal,
         r.substats.toMutableMap(),
         r.status.toMutableList(),
-        r.image,
         if (isPrev) {
             null
         } else {
@@ -95,7 +93,6 @@ class RelicBuilder constructor(
         r.mainstatVal,
         r.msubstats.toMutableMap(),
         r.mstatus.toMutableList(),
-        r.image,
         if (isPrev) {
             null
         } else {
@@ -129,7 +126,7 @@ class RelicBuilder constructor(
         }
 
     fun build(): Relic {
-        val prev = if (isPrev) null else this.prev?.build()
-        return Relic(set, slot, rarity, level, mainstat, mainstatVal, msubstats, mstatus, image, prev)
+        val prev = if (isPrev) null else this.prev.build()
+        return Relic(set, slot, rarity, level, mainstat, mainstatVal, msubstats, mstatus, prev)
     }
 }

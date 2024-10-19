@@ -1,7 +1,7 @@
-package com.example.hsrrelicmanager.model.rules;
+package com.example.hsrrelicmanager.model.rules
 
-public class Filter {
-    public enum Type {
+abstract class Filter {
+    enum class Type {
         SET,
         TYPE,
         MAIN_STAT,
@@ -18,4 +18,13 @@ public class Filter {
     // RARITY: 1-5
     // LEVEL: 0-15
     // STATUS: based on Relic.Status
+    abstract val type: Type?
+    abstract val name: String
+    abstract val description: String
+
+    class SetFilter: Filter() {
+        override val type: Type = Type.SET
+        override val name: String = "Relic Set"
+        override val description: String = "Filter by relic set"
+    }
 }
