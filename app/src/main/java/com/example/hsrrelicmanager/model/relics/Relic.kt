@@ -53,6 +53,8 @@ data class Relic (
             Status.DEFAULT -> R.drawable.reset
         }
     }
+
+    val builder get() = RelicBuilder(this)
 }
 
 class RelicBuilder(
