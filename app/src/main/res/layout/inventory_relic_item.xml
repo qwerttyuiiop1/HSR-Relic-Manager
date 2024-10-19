@@ -39,8 +39,6 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 app:cardCornerRadius="14dp"
-                app:strokeWidth="2dp"
-                app:strokeColor="#CCFFFFFF"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -50,7 +48,7 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_relic_equipped"
                     android:scaleType="centerCrop"
-                    android:background="#ffffff"/>
+                    android:background="@drawable/bg_status"/>
             </com.google.android.material.card.MaterialCardView>
             <androidx.cardview.widget.CardView
                 android:id="@+id/container_single_relic_status"
@@ -84,7 +82,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="#FFFFFF">
+                    android:background="@drawable/bg_status">
                     <ImageView
                         android:id="@+id/img_relic_status1"
                         android:padding="5dp"
@@ -156,7 +154,7 @@
             android:layout_height="18dp"
             android:layout_marginStart="21dp"
             android:src="@drawable/ic_substat_atk"
-            app:tint="@color/lightGold"/>
+            app:tint="@color/gold"/>
         <TextView
             android:id="@+id/lbl_relic_main_stat_type"
             android:layout_width="0dp"

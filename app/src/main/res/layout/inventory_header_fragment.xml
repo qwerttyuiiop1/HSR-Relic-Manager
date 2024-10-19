@@ -15,7 +15,7 @@
         android:fontFamily="@font/pf_din_text_pro_regular"
         android:letterSpacing="0.02"
         android:text="Inventory"
-        android:textColor="#FFC65C"
+        android:textColor="@color/gold"
         android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/inventory_spinner_frame"
