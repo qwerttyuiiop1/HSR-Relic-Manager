@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.example.hsrrelicmanager.core.AutoclickService
 import com.example.hsrrelicmanager.databinding.ActivityMainBinding
@@ -37,6 +38,7 @@ open class MainActivity : AppCompatActivity() {
         }
 
         setupClickListeners()
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
     }
 
     // navigation

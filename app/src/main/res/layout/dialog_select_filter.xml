@@ -100,37 +100,37 @@
                 android:textSize="24sp"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/add_slot"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:background="@drawable/rule_add_rectangle_button"
-            android:elevation="5dp"
-            android:translationY="-5dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp">
+<!--        <LinearLayout-->
+<!--            android:id="@+id/add_slot"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:gravity="center_vertical"-->
+<!--            android:paddingStart="16dp"-->
+<!--            android:paddingEnd="16dp"-->
+<!--            android:background="@drawable/rule_add_rectangle_button"-->
+<!--            android:elevation="5dp"-->
+<!--            android:translationY="-5dp"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_marginEnd="16dp">-->
 
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/ic_add"/>
+<!--            <ImageView-->
+<!--                android:layout_width="32dp"-->
+<!--                android:layout_height="32dp"-->
+<!--                android:src="@drawable/ic_add"/>-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="Slot"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
-                android:fontFamily="@font/pf_din_text_pro_regular"
-                android:textColor="#4A4A4A"
-                android:textSize="24sp"/>
-        </LinearLayout>
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:text="Slot"-->
+<!--                android:paddingTop="15dp"-->
+<!--                android:paddingBottom="15dp"-->
+<!--                android:fontFamily="@font/pf_din_text_pro_regular"-->
+<!--                android:textColor="#4A4A4A"-->
+<!--                android:textSize="24sp"/>-->
+<!--        </LinearLayout>-->
 
         <LinearLayout
             android:id="@+id/add_main_stat"

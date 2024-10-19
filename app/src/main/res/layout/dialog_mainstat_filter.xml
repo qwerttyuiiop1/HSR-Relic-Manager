@@ -1,0 +1,326 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/right_corner_rounded_rect"
+    android:orientation="vertical"
+    android:padding="0dp">
+
+    <!-- header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Main Stat"
+            android:letterSpacing="0.03"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/pf_din_text_pro_regular"
+            android:textColor="#4A4A4A"
+            android:layout_marginEnd="8dp" />
+        <View
+            android:id="@+id/divider_line"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#BCBEC1"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
+
+    <!-- body -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp">
+
+        <!-- Action Group Card -->
+        <LinearLayout
+            android:id="@+id/container1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="@drawable/rule_add_rectangle_button"
+            android:elevation="5dp"
+            android:translationY="-5dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
+
+            <!-- Radio Button -->
+            <CheckBox
+                android:id="@+id/check1"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:buttonTint="@color/gold" />
+
+            <ImageView
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/icon_atk"
+                app:tint="#4A4A4A" />
+
+            <!-- Label -->
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="Attack"
+                android:fontFamily="@font/pf_din_text_pro_regular"
+                android:textColor="#4A4A4A"
+                android:textSize="24sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="@drawable/rule_add_rectangle_button"
+            android:elevation="5dp"
+            android:translationY="-5dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
+
+            <!-- Radio Button -->
+            <CheckBox
+                android:id="@+id/check3"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:buttonTint="@color/gold" />
+
+            <ImageView
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/icon_crit_rate"
+                app:tint="#4A4A4A" />
+
+            <!-- Label -->
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="Crit Rate"
+                android:fontFamily="@font/pf_din_text_pro_regular"
+                android:textColor="#4A4A4A"
+                android:textSize="24sp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/container2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="@drawable/rule_add_rectangle_button"
+            android:elevation="5dp"
+            android:translationY="-5dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
+
+            <!-- Radio Button -->
+            <CheckBox
+                android:id="@+id/check2"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:buttonTint="@color/gold" />
+
+            <ImageView
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/icon_def"
+                app:tint="#4A4A4A" />
+
+            <!-- Label -->
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="Defense"
+                android:fontFamily="@font/pf_din_text_pro_regular"
+                android:textColor="#4A4A4A"
+                android:textSize="24sp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/container4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="@drawable/rule_add_rectangle_button"
+            android:elevation="5dp"
+            android:translationY="-5dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
+
+            <!-- Radio Button -->
+            <CheckBox
+                android:id="@+id/check4"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:buttonTint="@color/gold" />
+
+            <ImageView
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/icon_spd"
+                app:tint="#4A4A4A" />
+
+            <!-- Label -->
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="Defense"
+                android:fontFamily="@font/pf_din_text_pro_regular"
+                android:textColor="#4A4A4A"
+                android:textSize="24sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <!-- footer -->
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/bottom_image"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:cropToPadding="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/dialog_button_bg" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="53dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:id="@+id/cancel_action_group_dialog_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="30dp"
+                    android:background="@drawable/spinner_bg"
+                    android:paddingStart="20dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/cancel_image"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_cancel" />
+
+                        <TextView
+                            android:id="@+id/cancel_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="Cancel"
+                            android:textColor="#4A4A4A" />
+                    </LinearLayout>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/confirm_action_group_dialog_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/spinner_bg"
+                    android:paddingStart="20dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/confirm_image"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_confirm" />
+
+                        <TextView
+                            android:id="@+id/confirm_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="Confirm"
+                            android:textColor="#4A4A4A" />
+                    </LinearLayout>
+
+                </FrameLayout>
+
+            </LinearLayout>
+        </FrameLayout>
+
+
+</LinearLayout>

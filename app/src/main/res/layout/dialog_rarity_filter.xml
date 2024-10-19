@@ -19,37 +19,16 @@
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp">
 
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:id="@+id/title_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Relic Set"
-                android:letterSpacing="0.03"
-                android:textSize="32sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/pf_din_text_pro_regular"
-                android:textColor="#4A4A4A"
-                android:layout_marginEnd="8dp" />
-
-            <TextView
-                android:id="@+id/btn_deselect_all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Deselect All"
-                android:textSize="14dp"
-                android:paddingTop="10dp"
-                android:layout_gravity="bottom"
-                android:textColor="#4A4A4A"/>
-
-        </LinearLayout>
-
+            android:text="Rarity"
+            android:letterSpacing="0.03"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/pf_din_text_pro_regular"
+            android:textColor="#4A4A4A"
+            android:layout_marginEnd="8dp" />
         <View
             android:id="@+id/divider_line"
             android:layout_width="match_parent"
@@ -59,15 +38,129 @@
     </LinearLayout>
 
     <!-- body -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        />
+        android:layout_marginBottom="24dp">
+
+        <!-- Action Group Card -->
+        <LinearLayout
+            android:id="@+id/container1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="@drawable/rule_add_rectangle_button"
+            android:elevation="5dp"
+            android:translationY="-5dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
+
+            <!-- Radio Button -->
+            <CheckBox
+                android:id="@+id/check1"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:buttonTint="@color/gold" />
+
+
+            <!-- Label -->
+            <TextView
+                android:layout_marginStart="15dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="3 Star"
+                android:fontFamily="@font/pf_din_text_pro_regular"
+                android:textColor="#4A4A4A"
+                android:textSize="24sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="@drawable/rule_add_rectangle_button"
+            android:elevation="5dp"
+            android:translationY="-5dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
+
+            <!-- Radio Button -->
+            <CheckBox
+                android:id="@+id/check3"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:buttonTint="@color/gold" />
+
+
+            <!-- Label -->
+            <TextView
+                android:layout_marginStart="15dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="4 Star"
+                android:fontFamily="@font/pf_din_text_pro_regular"
+                android:textColor="#4A4A4A"
+                android:textSize="24sp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/container2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="@drawable/rule_add_rectangle_button"
+            android:elevation="5dp"
+            android:translationY="-5dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
+
+            <!-- Radio Button -->
+            <CheckBox
+                android:id="@+id/check2"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:buttonTint="@color/gold" />
+
+
+
+            <!-- Label -->
+            <TextView
+                android:layout_marginStart="15dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="5 Star"
+                android:fontFamily="@font/pf_din_text_pro_regular"
+                android:textColor="#4A4A4A"
+                android:textSize="24sp"/>
+        </LinearLayout>
+    </LinearLayout>
 
 
     <!-- footer -->
