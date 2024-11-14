@@ -1,10 +1,10 @@
 package com.example.hsrrelicmanager
 
 import android.content.Intent
-import com.example.hsrrelicmanager.andorid.bubble.BubbleController
-import com.example.hsrrelicmanager.andorid.bubble.PermissionLauncher
 import com.example.hsrrelicmanager.core.AutoclickService
 import com.example.hsrrelicmanager.core.io.IBubbleController
+import com.example.hsrrelicmanager.ui.bubble.BubbleController
+import com.example.hsrrelicmanager.ui.bubble.PermissionLauncher
 
 class HSRAutoClickService : AutoclickService() {
     override fun setupBubbleController(): IBubbleController {
