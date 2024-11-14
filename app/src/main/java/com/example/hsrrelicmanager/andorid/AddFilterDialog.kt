@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager
+package com.example.hsrrelicmanager.andorid
 
 import android.content.DialogInterface
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.DialogSelectFilterBinding
 
 class AddFilterDialog: DialogFragment() {

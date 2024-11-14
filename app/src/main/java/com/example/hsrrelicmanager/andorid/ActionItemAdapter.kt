@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager
+package com.example.hsrrelicmanager.andorid
 
 import android.app.AlertDialog
 import android.content.Context
@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hsrrelicmanager.R
 
 class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.Adapter<ActionItemAdapter.ActionViewHolder>() {
 

@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager
+package com.example.hsrrelicmanager.andorid
 
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -6,12 +6,13 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.example.hsrrelicmanager.databinding.DialogMainstatFilterBinding
+import com.example.hsrrelicmanager.R
+import com.example.hsrrelicmanager.databinding.DialogStatusFilterBinding
 
-class AddMainstatDialog: DialogFragment() {
+class AddStatusDialog: DialogFragment() {
 
-    val binding: DialogMainstatFilterBinding by lazy {
-        DialogMainstatFilterBinding.inflate(
+    val binding: DialogStatusFilterBinding by lazy {
+        DialogStatusFilterBinding.inflate(
             layoutInflater, null, false
         )
     }

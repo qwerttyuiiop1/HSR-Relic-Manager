@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager
+package com.example.hsrrelicmanager.andorid
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.hsrrelicmanager.CategorizedGroupAdapter.GroupViewHolder
+import com.example.hsrrelicmanager.R
+import com.example.hsrrelicmanager.andorid.CategorizedGroupAdapter.GroupViewHolder
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
@@ -16,7 +17,6 @@ import com.example.hsrrelicmanager.model.rules.action.StatusAction
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 import com.example.hsrrelicmanager.model.rules.group.FilterGroup
 import com.example.hsrrelicmanager.model.rules.group.Group
-import java.util.Collections
 
 class CategorizedRuleBodyFragment : Fragment() {
     override fun onCreateView(

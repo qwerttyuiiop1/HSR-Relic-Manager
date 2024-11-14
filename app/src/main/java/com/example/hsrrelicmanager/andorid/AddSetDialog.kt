@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager
+package com.example.hsrrelicmanager.andorid
 
 import android.content.DialogInterface
 import android.os.Bundle
@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.DialogSetFilterBinding
 import com.example.hsrrelicmanager.databinding.ItemRelicSetRowBinding
 import com.example.hsrrelicmanager.model.relics.RelicSet

@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager;
+package com.example.hsrrelicmanager.andorid;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.hsrrelicmanager.R;
 import com.example.hsrrelicmanager.model.rules.action.Action;
 import com.example.hsrrelicmanager.model.rules.action.EnhanceAction;
 import com.example.hsrrelicmanager.model.rules.action.StatusAction;

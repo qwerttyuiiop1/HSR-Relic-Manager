@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager
+package com.example.hsrrelicmanager.andorid
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.relicSets
 import com.google.android.flexbox.FlexDirection

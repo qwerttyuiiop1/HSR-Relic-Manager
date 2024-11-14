@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager
+package com.example.hsrrelicmanager.andorid
 
 import android.content.DialogInterface
 import android.os.Build
@@ -10,6 +10,7 @@ import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import com.example.hsrrelicmanager.R
 
 class AddRuleDialogFragment : DialogFragment() {
 

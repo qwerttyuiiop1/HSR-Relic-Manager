@@ -1,10 +1,11 @@
-package com.example.hsrrelicmanager
+package com.example.hsrrelicmanager.andorid
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.InventoryRelicItemBinding
 import com.example.hsrrelicmanager.model.relics.Relic
 
