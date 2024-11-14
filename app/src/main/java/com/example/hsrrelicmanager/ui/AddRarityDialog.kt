@@ -35,6 +35,8 @@ class AddRarityDialog: DialogFragment() {
                 check3.isChecked = !check3.isChecked
             }
             cancelActionGroupDialogButton.setOnClickListener{
+                val addFilterDialog = AddFilterDialog()
+                addFilterDialog.show(requireActivity().supportFragmentManager, "AddFilterDialog")
                 dismiss()
             }
             confirmActionGroupDialogButton.setOnClickListener{

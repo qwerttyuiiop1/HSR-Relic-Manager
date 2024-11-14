@@ -80,6 +80,8 @@ class AddLevelDialog: DialogFragment() {
 
 
             cancelActionGroupDialogButton.setOnClickListener{
+                val addFilterDialog = AddFilterDialog()
+                addFilterDialog.show(requireActivity().supportFragmentManager, "AddFilterDialog")
                 dismiss()
             }
             confirmActionGroupDialogButton.setOnClickListener{

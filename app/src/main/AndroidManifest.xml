@@ -33,7 +33,7 @@
             android:configChanges="orientation|screenSize|keyboardHidden|locale"/>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,8 +42,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".RuleHeaderFragment"/>
-        <activity android:name=".InventoryBodyFragment"/>
+        <activity android:name=".ui.RuleHeaderFragment"/>
+        <activity android:name=".ui.InventoryBodyFragment"/>
 
         <service
             android:name=".HSRAutoClickService"

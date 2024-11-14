@@ -117,10 +117,14 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
             }
         }
 
-        val cancelButton = dialogView.findViewById<View>(R.id.cancel_action_group_dialog_button)
-        cancelButton.setOnClickListener {
+    val cancelButton = dialogView.findViewById<View>(R.id.cancel_action_group_dialog_button)
+    cancelButton.setOnClickListener {
+        if (activity.supportFragmentManager.backStackEntryCount > 0) {
+            activity.supportFragmentManager.popBackStack()
+        } else {
             dialog.dismiss()
         }
+    }
 
         val confirmButton = dialogView.findViewById<View>(R.id.confirm_action_group_dialog_button)
         confirmButton.setOnClickListener {

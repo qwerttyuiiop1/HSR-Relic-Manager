@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hsrrelicmanager.R
@@ -86,9 +87,11 @@ val groupData = mutableListOf<Group>().apply {
 class AddActionGroupBodyFragment : Fragment() {
     lateinit var binding: FragmentActionGroupBodyBinding
 
-//    private lateinit var adapter: ActionItemAdapter
-    private val actionItems = mutableListOf<Group>()
-    private lateinit var adapter: GroupAdapter
+    private val filterItems = mutableListOf<Group>()
+    private lateinit var adapterFilter: GroupAdapter
+
+    private lateinit var adapterAction: ActionItemAdapter
+    private val actionItems = mutableListOf("")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -104,20 +107,20 @@ class AddActionGroupBodyFragment : Fragment() {
                     val minLevel = bundle.getInt("minLevel")
                     val maxLevel = bundle.getInt("maxLevel")
                     val isAtMost = bundle.getBoolean("isAtMost")
-                    actionItems.add(groupData.random())
-                    adapter.notifyItemInserted(actionItems.size - 1)
+                    filterItems.add(groupData.random())
+                    adapterFilter.notifyItemInserted(actionItems.size - 1)
+                    Toast.makeText(context, "minLevel: $minLevel, maxLevel: $maxLevel, isAtMost: $isAtMost", Toast.LENGTH_SHORT).show()
                 }
                 requireActivity().supportFragmentManager.setFragmentResultListener("selectedSets", viewLifecycleOwner) { _, bundle ->
                     val relicSet = bundle.getParcelableArrayList<RelicSet>("selectedSets")
-                    actionItems.add(groupData.random())
-                    adapter.notifyItemInserted(actionItems.size - 1)
+                    Toast.makeText(context, "relicSet: $relicSet", Toast.LENGTH_SHORT).show()
                 }
             }
-            adapter = GroupAdapter(actionItems)
-//            adapter = ActionItemAdapter(actionItems)
+            adapterAction = ActionItemAdapter(actionItems)
             recyclerViewActionGroup.layoutManager = LinearLayoutManager(context)
-            recyclerViewActionGroup.adapter = adapter
+            recyclerViewActionGroup.adapter = adapterAction
         }.root
     }
 
 }
+
