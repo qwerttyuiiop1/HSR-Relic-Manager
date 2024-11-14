@@ -2,6 +2,7 @@ package com.example.hsrrelicmanager.core.exe
 
 import android.graphics.Bitmap
 import com.example.hsrrelicmanager.core.components.Task
+import com.example.hsrrelicmanager.core.components.UIContext
 import kotlinx.coroutines.CoroutineScope
 
 /**
@@ -73,4 +74,9 @@ interface TaskRunner: TaskInstance<String?> {
      * in the state of the game while it is not stopped
      */
     fun stop()
+
+    /**
+     * setup / reset; called when the task is started
+     */
+    suspend fun initialize(uiCtx: UIContext): TaskRunner
 }

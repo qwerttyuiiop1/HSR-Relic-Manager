@@ -52,7 +52,8 @@ open class MultiInstance<T>(
     }
 }
 /**
- * wrapper Instance running multiple instances one after another
+ * wrapper Instance running multiple instances
+ * with synchronized ticks in a single scope
  */
 fun <T> TaskInstance.Companion.multi(
     tasks: List<TaskInstance<out T>>
@@ -90,9 +91,12 @@ fun <T> TaskInstance.Companion.chained(
     vararg tasks: TaskInstance<out T>
 ) = chained(tasks.toList())
 
-private class SimpleInstance<T>(
-    private val a: suspend (Bitmap) -> MyResult<T>
-): TaskInstance<T> {
+/**
+ * For tasks that only need a single tick
+ */
+fun <T> TaskInstance.Companion.run(
+    a: suspend (Bitmap) -> MyResult<T>
+) = object: TaskInstance<T> {
     private var scope: CoroutineScope? = null
     private var res: Deferred<MyResult<T>>? = null
     override suspend fun nextTick(tick: Bitmap) {
@@ -110,26 +114,17 @@ private class SimpleInstance<T>(
         res = null
     }
 }
-/**
- * For tasks that only need a single tick
- */
-fun <T> TaskInstance.Companion.run(
-    run: suspend (Bitmap) -> MyResult<T>
-) = SimpleInstance(run) as TaskInstance<T>
 
-private class DefaultImpl<T>(
-    val a: suspend TaskScope<T>.() -> MyResult<T>
-): TaskScope<T>() {
+/**
+ * For tasks that need multiple ticks
+ */
+operator fun <T> TaskInstance.Companion.invoke(
+    a: suspend TaskScope<T>.() -> MyResult<T>
+) = object: TaskScope<T>() {
     override fun start(scope: CoroutineScope) {
         super.start(scope)
         launch {
             complete(run(a))
         }
     }
-}
-/**
- * For tasks that need multiple ticks
- */
-operator fun <T> TaskInstance.Companion.invoke(
-    run: suspend TaskScope<T>.() -> MyResult<T>
-) = DefaultImpl(run) as TaskInstance<T>
+} as TaskInstance<T>

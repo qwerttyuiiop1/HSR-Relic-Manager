@@ -10,7 +10,7 @@ class TaskHandler(private val uiCtx: UIContext) {
     private val executor = TaskExecutor(uiCtx.screenshot)
     private var currentTask = Task.NONE
 
-    private var handler = mutableMapOf<Task, (UIContext)-> TaskRunner>()
+    private var handler = mutableMapOf<Task, TaskRunner>()
     private var taskMap = mutableMapOf<String, Task>()
 
     var onTaskChangeListener: ((Task)->Unit)? = null
@@ -25,23 +25,30 @@ class TaskHandler(private val uiCtx: UIContext) {
                 setTask(Task.NONE)
             onCompleteListener?.invoke(res)
         }
-        setHandler(Task.NONE) {
-            throw IllegalStateException("Task NONE should not be handled")
-        }
     }
 
-    fun setHandler(task: Task, factory: (UIContext)-> TaskRunner) {
-        handler[task] = factory
+    fun setHandler(runner: TaskRunner) {
+        val task = runner.task
+        handler[task] = runner
         taskMap[task.name] = task
     }
 
     fun pause() {
-        isPaused = true
-        executor.stop()
+        executor.queue {
+            isPaused = true
+            executor.stop()
+        }
     }
+    private var shouldInitialize = false
     fun resume() {
-        isPaused = false
-        executor.start()
+        executor.queue {
+            isPaused = false
+            if (shouldInitialize) {
+                runner?.initialize(uiCtx)
+                shouldInitialize = false
+            }
+            executor.start()
+        }
     }
 
     private fun setTask(task: Task) {
@@ -54,17 +61,27 @@ class TaskHandler(private val uiCtx: UIContext) {
             return
 
         setTask(task)
-        val factory = handler[task] ?: throw IllegalArgumentException("Task not found")
+        val newTask = handler[task] ?: throw IllegalArgumentException("Task not found")
 
         if (task == Task.NONE) {
             // pass
         } else if (!task.isLongRunning) {
-            executor.runSingleTick(factory(uiCtx)) {
-                setTask(Task.NONE)
+            executor.queue {
+                newTask.initialize(uiCtx)
+                runSingleTick(newTask) {
+                    setTask(Task.NONE)
+                }
             }
-        } else if (!isPaused){
-            executor.runner = factory(uiCtx)
-            executor.start()
+        } else {
+            executor.queue {
+                if (!isPaused) {
+                    newTask.initialize(uiCtx)
+                    executor.runner = newTask
+                    start()
+                } else {
+                    shouldInitialize = true
+                }
+            }
         }
     }
 

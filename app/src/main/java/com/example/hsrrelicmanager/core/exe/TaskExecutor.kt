@@ -2,6 +2,7 @@ package com.example.hsrrelicmanager.core.exe
 
 import android.graphics.Bitmap
 import com.example.hsrrelicmanager.core.io.Screenshot
+import com.google.android.datatransport.runtime.logging.Logging
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -11,6 +12,7 @@ import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Semaphore
 
 /**
  * For executing tasks
@@ -28,6 +30,17 @@ class TaskExecutor(
         }
     var onTaskComplete: ((TaskResult) -> Unit)? = null
 
+    fun stop() {
+        if (job == null) return
+        job?.cancel()
+        runner?.stop()
+        job = null
+    }
+
+    fun start() {
+        if (job != null || runner == null) return
+        job = scope.launch { startLoop(runner!!) }
+    }
     private suspend fun startLoop(runner: TaskRunner) = coroutineScope {
         runner.start(this)
         while (true) {
@@ -41,13 +54,6 @@ class TaskExecutor(
             runner.nextTick(tick)
         }
     }
-
-    fun stop() {
-        if (job == null) return
-        job?.cancel()
-        runner?.stop()
-        job = null
-    }
     private suspend fun stopSync(res: TaskResult): Nothing {
         // needs to run on a separate scope since
         // the current scope is being cancelled
@@ -59,10 +65,6 @@ class TaskExecutor(
         throw CancellationException()
     }
 
-    fun start() {
-        if (job != null || runner == null) return
-        job = scope.launch { startLoop(runner!!) }
-    }
     fun runSingleTick(
         runner: TaskRunner, onComplete: ((TaskResult) -> Unit)? = null
     ) = scope.launch {
@@ -74,8 +76,14 @@ class TaskExecutor(
                 stop()
                 return@launch
             }
-            nextTick(screenshot.latestRawBitmap!!)
-            awaitResult()?.let {
+            var tick: Bitmap?
+            while (true) {
+                tick = screenshot.latestRawBitmap
+                if (tick != null) break
+                delay(tickRate)
+            }
+            nextTick(tick!!)
+            awaitResult()!!.let {
                 onTaskComplete?.invoke(it)
                 onComplete?.invoke(it)
                 stop()
@@ -89,6 +97,18 @@ class TaskExecutor(
             job?.cancelAndJoin()
             stop()
             scope.cancel()
+        }
+    }
+
+    private val queue = Semaphore(1)
+    fun queue(func: suspend TaskExecutor.() -> Unit) {
+        scope.launch {
+            try {
+                queue.acquire()
+                func()
+            } finally {
+                queue.release()
+            }
         }
     }
 }

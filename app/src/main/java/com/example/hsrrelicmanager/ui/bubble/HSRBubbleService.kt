@@ -2,12 +2,15 @@ package com.example.hsrrelicmanager.ui.bubble
 
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Outline
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import android.view.KeyEvent
 import android.view.MotionEvent
+import android.view.View
 import android.view.ViewGroup
+import android.view.ViewOutlineProvider
 import android.widget.FrameLayout
 import android.widget.ImageView
 import com.example.hsrrelicmanager.R
@@ -38,6 +41,15 @@ class HSRBubbleService: ExpandableBubbleService() {
     val bubbleView by lazy {
         ImageView(this).apply {
             setImageResource(R.drawable.ic_app)
+            setBackgroundResource(R.mipmap.ic_launcher_background)
+            // rounded corners
+            outlineProvider = object: ViewOutlineProvider() {
+                override fun getOutline(p0: View?, p1: Outline?) {
+                    p1?.setRoundRect(0, 0, p0!!.width, p0.height, 50f)
+                }
+            }
+            clipToOutline = true
+
             setOnClickListener {
                 showBubble()
             }
@@ -57,7 +69,7 @@ class HSRBubbleService: ExpandableBubbleService() {
             isVisible = true
             bubbleView.imageAlpha = 255
             handler.removeCallbacks(runImageAlpha)
-            controller!!.setVisibility(true)
+            controller!!.onSetVisibility(true)
         }
 
         // library specific hack >:(
@@ -87,7 +99,7 @@ class HSRBubbleService: ExpandableBubbleService() {
     fun hideBubble() {
         isVisible = false
         handler.postDelayed(runImageAlpha, 1000)
-        controller!!.setVisibility(false)
+        controller!!.onSetVisibility(false)
         minimize()
     }
 

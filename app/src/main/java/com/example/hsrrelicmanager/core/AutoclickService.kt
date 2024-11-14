@@ -6,8 +6,6 @@ import android.content.Intent
 import android.os.Looper
 import android.view.accessibility.AccessibilityEvent
 import com.example.hsrrelicmanager.core.android.SharedForegroundNotif
-import com.example.hsrrelicmanager.core.components.Task
-import com.example.hsrrelicmanager.core.components.UIContext
 import com.example.hsrrelicmanager.core.exe.TaskRunner
 import com.example.hsrrelicmanager.core.io.IBubbleController
 
@@ -65,6 +63,8 @@ abstract class AutoclickService : AccessibilityService() {
             SharedForegroundNotif.build(this, hasBubble)
         )
     }
+    abstract fun onInit()
+
     open fun handleAction(action: String, intent: Intent? = null) {
         when (action) {
             ACTION_CLOSE -> close()
@@ -89,6 +89,7 @@ abstract class AutoclickService : AccessibilityService() {
                         val hasBubble = intent.getBooleanExtra(EXTRA_HAS_BUBBLE, true)
                         setupNotif(hasBubble)
                         appController = AppController(this, setupBubbleController(), intent)
+                        onInit()
                     }
                 }
             }
@@ -102,7 +103,7 @@ abstract class AutoclickService : AccessibilityService() {
         stopForeground(STOP_FOREGROUND_REMOVE)
     }
 
-    protected fun addHandler(task: Task, factory: (UIContext)-> TaskRunner) {
-        appController?.taskHandler?.setHandler(task, factory)
+    protected fun addHandler(runner: TaskRunner) {
+        appController?.taskHandler?.setHandler(runner)
     }
 }

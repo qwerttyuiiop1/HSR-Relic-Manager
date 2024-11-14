@@ -35,12 +35,13 @@ open class AppController (
         taskHandler = TaskHandler(uiCtx).apply {
             onTaskChangeListener = { task ->
                 uiCtx.uiHandler.post {
-                    uiController?.setSelectedTask(task.name)
+                    uiController?.setSelectedTask(task)
                 }
             }
             onCompleteListener = { res ->
                 uiCtx.uiHandler.post {
-                    uiController?.alert(res)
+                    if (res.task.isLongRunning)
+                        uiController?.alert(res)
                 }
             }
         }
@@ -49,7 +50,7 @@ open class AppController (
             uiController!!.apply {
                 onShowListener = { taskHandler.pause() }
                 onHideListener = { taskHandler.resume() }
-                onConfirmTaskListener = { handleAction(it) }
+                onConfirmTaskListener = { handleTask(it) }
                 onBindListener = {
                     val bubble = getBubble()
                     bubble.post {
@@ -80,6 +81,9 @@ open class AppController (
     }
 
     open fun handleTask(task: String) {
+        taskHandler.performTask(task)
+    }
+    fun handleTask(task: Task) {
         taskHandler.performTask(task)
     }
 }

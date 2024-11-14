@@ -29,14 +29,14 @@ class BubbleMenu(
 
     private val view = ControllerLayoutBinding.inflate(LayoutInflater.from(ctx))
     private val tasks = mapOf(
-        "NONE" to view.btnPause,
-        "APP" to view.btnApp,
-        "AUTOBATTLE" to view.btnAutobattle,
-        "CLOSE" to view.btnClose,
-        "GITHUB" to view.btnGithub,
-        "ORGANIZE" to view.btnOrganizeInventory,
-        "SCAN" to view.btnScanInventory,
-        "SCREENSHOT" to view.btnScreenshot,
+        Task(false, "NONE") to view.btnPause,
+        Task(false, "APP") to view.btnApp,
+        Task(false, "CLOSE") to view.btnClose,
+        Task(false, "SCREENSHOT") to view.btnScreenshot,
+        Task(false, "GITHUB") to view.btnGithub,
+        Task(true, "AUTOBATTLE") to view.btnAutobattle,
+        Task(true, "ORGANIZE") to view.btnOrganizeInventory,
+        Task(true, "SCAN") to view.btnScanInventory,
     )
     private val onTaskChange = object : Observable.OnPropertyChangedCallback() {
         override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
@@ -57,18 +57,18 @@ class BubbleMenu(
 
     init {
         tasks.forEach { (name, button) ->
-            if (name == Task.CLOSE.name) {
+            if (name == Task.CLOSE) {
                 button.setOnClickListener {
                     SharedForegroundNotif.showConfirmExit(
                         ctx,
                         onConfirm = {
-                            controller.setSelectedTask(Task.CLOSE.name)
+                            controller.onTaskSelect(Task.CLOSE)
                         }
                     )
                 }
             } else {
                 button.setOnClickListener {
-                    controller.setSelectedTask(name)
+                    controller.onTaskSelect(name)
                 }
             }
         }

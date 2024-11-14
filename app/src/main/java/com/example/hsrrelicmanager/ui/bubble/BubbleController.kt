@@ -38,7 +38,7 @@ class BubbleController(
      * The task is confirmed when the user clicks
      * on a task and after the view is hidden
      */
-    override var onConfirmTaskListener: ((String)->Unit)? = null
+    override var onConfirmTaskListener: ((Task)->Unit)? = null
     /**
      * when the overlay is available
      */
@@ -49,16 +49,15 @@ class BubbleController(
 
 
     //Bubble menu part
-    override val selectedTask = ObservableField(Task.NONE.name)
+    override val selectedTask = ObservableField(Task.NONE)
 
     private var hasSelected = false
     private val onHidden = Runnable {
         this.onHideListener?.invoke()
-        // TODO: not listening to tasks for now
-        if (hasSelected && selectedTask.get()!! == Task.CLOSE.name)
+        if (hasSelected)
             onConfirmTaskListener?.invoke(selectedTask.get()!!)
     }
-    override fun setVisibility(visible: Boolean) {
+    override fun onSetVisibility(visible: Boolean) {
         if (visible) {
             hasSelected = false
             onShowListener?.invoke()
@@ -68,12 +67,16 @@ class BubbleController(
             handler.postDelayed(onHidden, UI_MILLIS_DELAY)
         }
     }
-    override fun setSelectedTask(task: String) {
+    override fun onTaskSelect(task: Task) {
         hasSelected = true
         selectedTask.set(task)
-        if (task == Task.CLOSE.name)
+        if (!task.isLongRunning)
             hideView()
     }
+    override fun setSelectedTask(task: Task) {
+        selectedTask.set(task)
+    }
+
 
     //service part
     private var _bubbleMenu: HSRBubbleService? = null

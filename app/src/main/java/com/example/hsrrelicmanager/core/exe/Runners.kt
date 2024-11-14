@@ -2,6 +2,7 @@ package com.example.hsrrelicmanager.core.exe
 
 import android.graphics.Bitmap
 import com.example.hsrrelicmanager.core.components.Task
+import com.example.hsrrelicmanager.core.components.UIContext
 import kotlinx.coroutines.CoroutineScope
 
 /**
@@ -19,6 +20,12 @@ abstract class ResetRunner: TaskRunner {
             it.asTaskResult(task)
         }
 
+    protected lateinit var uiCtx: UIContext
+    override suspend fun initialize(uiCtx: UIContext) =
+        this.apply {
+            this.uiCtx = uiCtx
+        }
+
     override fun start(scope: CoroutineScope){
         if (currTask != null) return
         currTask = newInstance().also { it.start(scope) }
@@ -30,18 +37,24 @@ abstract class ResetRunner: TaskRunner {
     override fun close() = stop()
 }
 
+fun TaskRunner.Companion.resetRunner(
+    task: Task,
+    factory: (uiCtx: UIContext) -> TaskInstance<*>,
+) = object: ResetRunner() {
+    override fun newInstance() = factory(uiCtx)
+    override val task = task
+}
+
 /**
- * Default [TaskRunner] implementation, [ResetRunner]
+ * Default [TaskRunner] implementation
  */
 operator fun TaskRunner.Companion.invoke(
     task: Task,
-    factory: () -> TaskInstance<*>,
-) = TaskRunner.resetRunner(task, factory)
-fun TaskRunner.Companion.resetRunner(
-    task: Task,
-    factory: () -> TaskInstance<*>,
+    run: suspend TaskScope<String>.(uiCtx: UIContext) -> MyResult<String>
 ) = object: ResetRunner() {
-    override fun newInstance() = factory()
+    override fun newInstance() = TaskInstance{
+        run(uiCtx)
+    }
     override val task = task
 }
 
@@ -71,6 +84,12 @@ abstract class ResumeRunner: TaskRunner {
         }
     }
 
+    protected lateinit var uiCtx: UIContext
+    override suspend fun initialize(uiCtx: UIContext) =
+        this.apply {
+            this.uiCtx = uiCtx
+        }
+
     override fun start(scope: CoroutineScope){
         isRunning = true
         if (currTask == null)
@@ -87,8 +106,8 @@ abstract class ResumeRunner: TaskRunner {
 }
 fun TaskRunner.Companion.resumeRunner(
     task: Task,
-    factory: () -> TaskInstance<*>,
+    factory: (uiCtx: UIContext) -> TaskInstance<*>,
 ) = object: ResumeRunner() {
-    override fun newInstance() = factory()
+    override fun newInstance() = factory(uiCtx)
     override val task = task
 }

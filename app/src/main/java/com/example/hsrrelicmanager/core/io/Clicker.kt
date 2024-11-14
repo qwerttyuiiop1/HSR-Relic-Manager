@@ -6,8 +6,7 @@ import android.graphics.Path
 import android.graphics.Rect
 import com.example.hsrrelicmanager.core.ext.Promise
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.sync.Semaphore
 import kotlin.math.absoluteValue
 
 open class Clicker(
@@ -43,16 +42,19 @@ open class Clicker(
         desc: GestureDescription
     ) = Promisify(desc, svc).dispatch()
 
-    private val lock = Mutex()
+    private val lock = Semaphore(1)
 
     open suspend fun click(r: Rect, duration: Long = CLICK_DURATION) = click(r.centerX(), r.centerY(), duration)
     suspend fun click(x: Int, y: Int, duration: Long = CLICK_DURATION) = click(x.toFloat(), y.toFloat(), duration)
     suspend fun click(x: Float, y: Float, duration: Long) {
-        lock.withLock {
+        try {
+            lock.acquire()
             val path = Path()
             path.moveTo(x, y)
             val stroke = GestureDescription.StrokeDescription(path, 0, duration)
             while (!doStroke(stroke)) { /* retry */ }
+        } finally {
+            lock.release()
         }
     }
 
@@ -73,7 +75,8 @@ open class Clicker(
         duration: Long,
         hold: Long
     ) {
-        lock.withLock {
+        try {
+            lock.acquire()
             val swipePath = Path()
             swipePath.moveTo(x2, y2)
             swipePath.lineTo(x1, y1)
@@ -89,6 +92,8 @@ open class Clicker(
                     .continueStroke(holdPath, 0, 1, false)
                 doStroke(holdStroke) // a short click to cancel the hold (if not cancelled already)
             }
+        } finally {
+            lock.release()
         }
     }
 

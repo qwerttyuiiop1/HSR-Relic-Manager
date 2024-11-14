@@ -7,20 +7,26 @@ import com.example.hsrrelicmanager.R
  * the tasks available on the bubble menu
  */
 data class Task(
-    @StringRes
-    val displayName: Int,
     val isLongRunning: Boolean,
-    val name: String
+    val name: String,
+    @StringRes val displayName: Int = -1
 ) {
     companion object {
         val NONE = Task(
-            R.string.pause, true, "NONE"
+            true, "NONE", R.string.pause
         )
         val CLOSE = Task(
-            R.string.close, false, "CLOSE"
+            false, "CLOSE", R.string.close,
         )
         val SCREENSHOT = Task(
-            R.string.take_screenshot,false, "SCREENSHOT"
+            false, "SCREENSHOT", R.string.take_screenshot,
         )
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return other is Task && other.name == name
+    }
+    override fun hashCode(): Int {
+        return name.hashCode()
     }
 }
