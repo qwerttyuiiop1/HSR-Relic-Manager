@@ -37,6 +37,13 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    sourceSets {
+        getByName("main") {
+            res {
+                srcDirs("src/main/res", "src/main/res/layouts/task", "src/main/res/layouts/ui")
+            }
+        }
+    }
 }
 
 dependencies {

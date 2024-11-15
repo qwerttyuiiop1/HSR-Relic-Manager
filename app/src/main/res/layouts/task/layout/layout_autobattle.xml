@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="1080px"
+    android:layout_width="2400px"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/autobattle_reference">
+
+    <View
+        android:id="@+id/footer_spacer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.2111"
+        android:layout_marginBottom="-95.17px"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="60px"
+        app:layout_constraintWidth_percent="0.359"
+        app:layout_constraintBottom_toTopOf="@id/footer_spacer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="46"
+            android:layout_marginStart="-110.5px"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_red"
+                android:text="exit"
+                />
+        </FrameLayout>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="50px"
+            android:layout_weight="8"
+            />
+
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="46"
+            android:layout_marginEnd="-110.5px"
+            >
+            <TextView
+                android:layout_width="65px"
+                android:layout_height="match_parent"
+                android:layout_marginStart="75px"
+                android:background="@drawable/border_red"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="150px"
+                android:background="@drawable/border_red"
+                />
+        </FrameLayout>
+    </LinearLayout>
+
+
+    <View
+        android:id="@+id/tb_power_spacer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.1403"
+        android:layout_marginEnd="-25.56px"
+        />
+    <TextView
+        android:id="@+id/lbl_tb_power"
+        android:layout_width="130px"
+        android:layout_height="42px"
+        android:layout_marginTop="32px"
+        app:layout_constraintEnd_toStartOf="@id/tb_power_spacer"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/border_red"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

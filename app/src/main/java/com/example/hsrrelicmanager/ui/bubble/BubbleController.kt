@@ -70,8 +70,7 @@ class BubbleController(
     override fun onTaskSelect(task: Task) {
         hasSelected = true
         selectedTask.set(task)
-        if (!task.isLongRunning)
-            hideView()
+        hideView()
     }
     override fun setSelectedTask(task: Task) {
         selectedTask.set(task)
