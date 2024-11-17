@@ -29,6 +29,6 @@ class SubFilterAdapter(private val item: MutableList<RelicSet>) : RecyclerView.A
         holder.FilterImage.setImageResource(relic.icon)
     }
     override fun getItemCount(): Int {
-        return 1
+        return item.size
     }
 }
