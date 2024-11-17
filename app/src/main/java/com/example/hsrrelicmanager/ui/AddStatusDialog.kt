@@ -43,7 +43,7 @@ class AddStatusDialog: DialogFragment() {
                 dismiss()
             }
             confirmActionGroupDialogButton.setOnClickListener{
-                requireActivity().supportFragmentManager.setFragmentResult("level", Bundle().apply {
+                requireActivity().supportFragmentManager.setFragmentResult("status", Bundle().apply {
 
                 })
                 dismiss()

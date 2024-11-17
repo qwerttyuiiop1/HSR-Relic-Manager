@@ -27,7 +27,7 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActionViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.action_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_action, parent, false)
         return ActionViewHolder(view)
     }
 

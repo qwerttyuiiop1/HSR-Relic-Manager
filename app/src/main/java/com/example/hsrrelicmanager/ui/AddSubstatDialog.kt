@@ -43,7 +43,19 @@ class AddSubstatDialog: DialogFragment() {
                 dismiss()
             }
             confirmActionGroupDialogButton.setOnClickListener{
-                requireActivity().supportFragmentManager.setFragmentResult("level", Bundle().apply {
+                requireActivity().supportFragmentManager.setFragmentResult("substat", Bundle().apply {
+                    if (check1.isChecked) {
+                        putString("substat", "Attack")
+                    }
+                    if (check2.isChecked) {
+                        putString("substat", "Crit Rate")
+                    }
+                    if (check3.isChecked) {
+                        putString("substat", "Defense")
+                    }
+                    if (check4.isChecked) {
+                        putString("substat", "Defense")
+                    }
 
                 })
                 dismiss()

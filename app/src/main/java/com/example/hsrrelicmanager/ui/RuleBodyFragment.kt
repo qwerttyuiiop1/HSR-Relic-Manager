@@ -37,7 +37,7 @@ class RuleBodyFragment : Fragment() {
 
         // Dummy group data
         val groupData = mutableListOf<Group>()
-        for (i in 1..3) {
+        for (i in 1..1) {
             val filterGroup =
                 FilterGroup().apply {
                     actionGroupList.add(
@@ -62,42 +62,9 @@ class RuleBodyFragment : Fragment() {
                         atLeast = 3
                     )
                 }
-            val trashActionGroup =
-                ActionGroup(
-                    StatusAction(
-                        Relic.Status.TRASH
-                    )
-                ).apply {
-                    filters[Filter.Type.SLOT] = Filter.SlotFilter(
-                        mutableSetOf("Boots")
-                    )
-                }
-            val resetActionGroup =
-                ActionGroup(
-                    StatusAction(
-                        Relic.Status.DEFAULT
-                    )
-                ).apply {
-                    filters[Filter.Type.LEVEL] = Filter.LevelFilter(
-                        atLeast = 10
-                    )
-                }
-            val enhanceActionGroup =
-                ActionGroup(
-                    EnhanceAction(
-                        15
-                    )
-                ).apply {
-                    filters[Filter.Type.MAIN_STAT] = Filter.MainStatFilter(
-                        mutableSetOf("SPD")
-                    )
-                }
 
             groupData.add(filterGroup)
             groupData.add(lockActionGroup)
-            groupData.add(trashActionGroup)
-            groupData.add(resetActionGroup)
-            groupData.add(enhanceActionGroup)
         }
         val groupAdapter = GroupAdapter(groupData)
 

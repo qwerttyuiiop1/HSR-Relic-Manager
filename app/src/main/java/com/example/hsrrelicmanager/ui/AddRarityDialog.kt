@@ -40,7 +40,7 @@ class AddRarityDialog: DialogFragment() {
                 dismiss()
             }
             confirmActionGroupDialogButton.setOnClickListener{
-                requireActivity().supportFragmentManager.setFragmentResult("level", Bundle().apply {
+                requireActivity().supportFragmentManager.setFragmentResult("rarity", Bundle().apply {
 
                 })
                 dismiss()

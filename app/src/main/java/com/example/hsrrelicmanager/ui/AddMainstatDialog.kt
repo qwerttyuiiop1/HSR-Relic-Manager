@@ -43,8 +43,7 @@ class AddMainstatDialog: DialogFragment() {
                 dismiss()
             }
             confirmActionGroupDialogButton.setOnClickListener{
-                requireActivity().supportFragmentManager.setFragmentResult("level", Bundle().apply {
-
+                requireActivity().supportFragmentManager.setFragmentResult("mainstat", Bundle().apply {
                 })
                 dismiss()
             }
