@@ -28,7 +28,6 @@ class FilterAdapter(private val items: MutableList<FilterItem>) : RecyclerView.A
 
     override fun onBindViewHolder(holder: FilterViewHolder, position: Int) {
         val filterItem = items[position]
-        val view = R.layout.item_filter
 
         holder.choiceText.text = filterItem.title
 
@@ -44,10 +43,18 @@ class FilterAdapter(private val items: MutableList<FilterItem>) : RecyclerView.A
 
     private fun showDialog(context: Context, filterItem: FilterItem) {
 
-        val addSetDialog = AddSetDialog()
-        val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
-        fragmentManager?.let {
-            addSetDialog.show(it, "AddSetDialog")
+        if (filterItem.title == "Relic Set") {
+            val addSetDialog = AddSetDialog()
+            val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
+            fragmentManager?.let {
+                addSetDialog.show(it, "AddSetDialog")
+            }
+        } else if (filterItem.title == "Rarity") {
+            val addRarityDialog = AddRarityDialog()
+            val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
+            fragmentManager?.let {
+                addRarityDialog.show(it, "AddRarityDialog")
+            }
         }
 
         val activity = context as MainActivity

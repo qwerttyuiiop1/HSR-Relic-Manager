@@ -2,6 +2,8 @@ package com.example.hsrrelicmanager.ui
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.graphics.RenderEffect
+import android.graphics.Shader
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -54,6 +56,11 @@ class AddRarityDialog: DialogFragment() {
                 dismiss()
             }
         }
+        val activity = context as MainActivity
+        val bgView = activity.findViewById<View>(R.id.activity_main_layout)
+        bgView.setRenderEffect(
+            RenderEffect.createBlurEffect(20f, 20f, Shader.TileMode.CLAMP)
+        )
 
         return dialog
     }

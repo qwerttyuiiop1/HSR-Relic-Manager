@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.core.components.FilterItem
@@ -22,15 +23,24 @@ class SubFilterAdapter(private val items: FilterItem) : RecyclerView.Adapter<Sub
     }
 
     override fun onBindViewHolder(holder: SubFilterViewHolder, position: Int) {
-        val relicSet = items.RelicSet[position]
+        val title = items.title
 
-        if (relicSet != null) {
+        if (title == "Relic Set") {
+            val relicSet = items.RelicSet[position]
             holder.filterText.text = relicSet.name
             holder.filterImage.setImageResource(relicSet.icon)
+        } else if (title == "Rarity") {
+            val rarity = items.rarityList[position]
+            holder.filterText.text = rarity
+//            holder.filterImage.visibility = View.GONE
         }
     }
 
     override fun getItemCount(): Int {
-        return items.RelicSet.size
+        return if (items.title == "Relic Set") {
+            items.RelicSet.size
+        } else {
+            items.rarityList.size
+        }
     }
 }

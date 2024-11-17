@@ -75,26 +75,26 @@ class AddActionGroupBodyFragment : Fragment() {
                     }
                 }
 
-//                parentFragmentManager.setFragmentResultListener("rarity", viewLifecycleOwner) { _, bundle ->
-//                    val rarity3 = bundle.getString("Star3")
-//                    val rarity4 = bundle.getString("Star4")
-//                    val rarity5 = bundle.getString("Star5")
-//
-//                    if (RarityTracker ==1){
-//                        filterItems.removeAll { it.title == "Rarity" }
-//                        RarityTracker = 0
-//                    }
-//                    if (rarity3 != null || rarity4 != null || rarity5 != null && RarityTracker == 0) {
-//                        val rarityList = mutableListOf<String>()
-//                        if (rarity3 != null) rarityList.add(rarity3)
-//                        if (rarity4 != null) rarityList.add(rarity4)
-//                        if (rarity5 != null) rarityList.add(rarity5)
-//
-//                        filterItems.add(FilterItem("Rarity",mutableListOf<RelicSet>(), 0, rarityList))
-//                        adapterFilter.notifyDataSetChanged()
-//                        RarityTracker = 1
-//                    }
-//                }
+                parentFragmentManager.setFragmentResultListener("rarity", viewLifecycleOwner) { _, bundle ->
+                    val rarity3 = bundle.getString("Star3")
+                    val rarity4 = bundle.getString("Star4")
+                    val rarity5 = bundle.getString("Star5")
+
+                    if (RarityTracker ==1){
+                        filterItems.removeAll { it.title == "Rarity" }
+                        RarityTracker = 0
+                    }
+                    if (rarity3 != null || rarity4 != null || rarity5 != null && RarityTracker == 0) {
+                        val rarityList = mutableListOf<String>()
+                        rarity3?.let { rarityList.add(it) }
+                        rarity4?.let { rarityList.add(it) }
+                        rarity5?.let { rarityList.add(it) }
+
+                        filterItems.add(FilterItem("Rarity",mutableListOf<RelicSet>(), 0, rarityList))
+                        adapterFilter.notifyDataSetChanged()
+                        RarityTracker = 1
+                    }
+                }
             }
         }
 
