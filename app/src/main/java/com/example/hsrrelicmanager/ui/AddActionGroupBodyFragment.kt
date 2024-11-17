@@ -1,5 +1,7 @@
 package com.example.hsrrelicmanager.ui
 
+import android.graphics.RenderEffect
+import android.graphics.Shader
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.core.components.FilterItem
 import com.example.hsrrelicmanager.databinding.FragmentActionGroupBodyBinding
+import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicSet
 import com.example.hsrrelicmanager.model.rules.group.FilterGroup
 
@@ -23,6 +26,8 @@ class AddActionGroupBodyFragment : Fragment() {
 
     private val actionItems = mutableListOf("")
     private lateinit var adapterAction: ActionItemAdapter
+
+    private var RelicTracker = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,18 +51,26 @@ class AddActionGroupBodyFragment : Fragment() {
                 val dialog = AddFilterDialog()
                 dialog.show(parentFragmentManager, "AddFilterDialog")
 
+                val activity = context as MainActivity
+                val bgView = activity.findViewById<View>(R.id.activity_main_layout)
+                bgView.setRenderEffect(
+                    RenderEffect.createBlurEffect(20f, 20f, Shader.TileMode.CLAMP)
+                )
+
                 // Listen for Selected Sets from Dialog
                 parentFragmentManager.setFragmentResultListener("selectedSets", viewLifecycleOwner) { _, bundle ->
                     val selectedSets = bundle.getParcelableArrayList<RelicSet>("selectedSets")
-                    if (selectedSets != null) {
+
+                    if (RelicTracker ==1){
+                        filterItems.removeAll { it.title == "Main Stat" }
+                        RelicTracker = 0
+                    }
+                    if (selectedSets != null && selectedSets.isNotEmpty() && RelicTracker == 0) {
                         val mutableSelectedSets: MutableList<RelicSet> = selectedSets.filterNotNull().toMutableList()
 
                         filterItems.add(FilterItem("Main Stat", mutableSelectedSets, 0))
                         adapterFilter.notifyDataSetChanged()
-
-                        Toast.makeText(context, "Added ${mutableSelectedSets.size} relic sets", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(context, "No relic sets selected", Toast.LENGTH_SHORT).show()
+                        RelicTracker = 1
                     }
                 }
             }

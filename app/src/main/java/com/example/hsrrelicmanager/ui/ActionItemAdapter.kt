@@ -55,7 +55,7 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
 
     @RequiresApi(Build.VERSION_CODES.S)
     private fun showDialog(context: Context, holder: ActionViewHolder) {
-        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_buttons, null)
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_action_rule, null)
         val builder = AlertDialog.Builder(context)
             .setView(dialogView)
 
