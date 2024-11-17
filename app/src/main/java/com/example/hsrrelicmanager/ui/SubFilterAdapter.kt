@@ -7,28 +7,30 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.model.relics.RelicSet
+import com.example.hsrrelicmanager.core.components.FilterItem
 
-class SubFilterAdapter(private val item: MutableList<RelicSet>) : RecyclerView.Adapter<SubFilterAdapter.SubFilterViewHolder>() {
+class SubFilterAdapter(private val items: FilterItem) : RecyclerView.Adapter<SubFilterAdapter.SubFilterViewHolder>() {
 
     class SubFilterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val FilterImage: ImageView = itemView.findViewById(R.id.chosenFilterImage)
-        val FilterText: TextView = itemView.findViewById(R.id.chosenFilterText)
+        val filterImage: ImageView = itemView.findViewById(R.id.chosenFilterImage)
+        val filterText: TextView = itemView.findViewById(R.id.chosenFilterText)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubFilterViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.relicset_chosen_filter, parent, false) // Inflate the new layout
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.relicset_chosen_filter, parent, false)
         return SubFilterViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: SubFilterViewHolder, position: Int) {
+        val relicSet = items.RelicSet[position]
 
-        val relic = item[position]
-
-        holder.FilterText.text = relic.name
-        holder.FilterImage.setImageResource(relic.icon)
+        if (relicSet != null) {
+            holder.filterText.text = relicSet.name
+            holder.filterImage.setImageResource(relicSet.icon)
+        }
     }
+
     override fun getItemCount(): Int {
-        return item.size
+        return items.RelicSet.size
     }
 }

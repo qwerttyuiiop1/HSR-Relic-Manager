@@ -41,7 +41,15 @@ class AddRarityDialog: DialogFragment() {
             }
             confirmActionGroupDialogButton.setOnClickListener{
                 requireActivity().supportFragmentManager.setFragmentResult("rarity", Bundle().apply {
-
+                    if (check1.isChecked) {
+                        putString("Star3", "3 Star")
+                    }
+                    if (check2.isChecked) {
+                        putString("Star4", "4 Star")
+                    }
+                    if (check3.isChecked) {
+                        putString("Star5", "5 Star")
+                    }
                 })
                 dismiss()
             }
