@@ -38,8 +38,8 @@ class AddSubstatDialog: DialogFragment() {
                 check4.isChecked = !check4.isChecked
             }
             cancelActionGroupDialogButton.setOnClickListener{
-                val addFilterDialog = AddFilterDialog()
-                addFilterDialog.show(requireActivity().supportFragmentManager, "AddFilterDialog")
+//                val addFilterDialog = AddFilterDialog()
+//                addFilterDialog.show(requireActivity().supportFragmentManager, "AddFilterDialog")
                 dismiss()
             }
             confirmActionGroupDialogButton.setOnClickListener{

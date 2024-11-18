@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.hsrrelicmanager.R
+import com.example.hsrrelicmanager.core.components.FilterItem
 import com.example.hsrrelicmanager.databinding.DialogSelectFilterBinding
+import java.util.logging.Filter
 
-class AddFilterDialog: DialogFragment() {
+class AddFilterDialog(private val items: MutableList<FilterItem>): DialogFragment() {
 
     val binding: DialogSelectFilterBinding by lazy {
         DialogSelectFilterBinding.inflate(
@@ -47,7 +49,7 @@ class AddFilterDialog: DialogFragment() {
                 dismiss()
             }
             addRarity.setOnClickListener {
-                val addRarityDialog = AddRarityDialog()
+                val addRarityDialog = AddRarityDialog(items)
                 addRarityDialog.show(requireActivity().supportFragmentManager, "AddRarityDialog")
                 dismiss()
             }

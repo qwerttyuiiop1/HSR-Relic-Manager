@@ -31,8 +31,8 @@ class AddFilterGroupBodyFragment : Fragment() {
             binding = this
             filterGroupSectonAdd.setOnClickListener {
                 requireActivity().findViewById<View>(R.id.activity_main_layout).blur()
-                val dialog = AddFilterDialog()
-                dialog.show(parentFragmentManager, "AddFilterDialog")
+//                val dialog = AddFilterDialog()
+//                dialog.show(parentFragmentManager, "AddFilterDialog")
                 requireActivity().supportFragmentManager.setFragmentResultListener("level", viewLifecycleOwner) { _, bundle ->
                     val minLevel = bundle.getInt("minLevel")
                     val maxLevel = bundle.getInt("maxLevel")

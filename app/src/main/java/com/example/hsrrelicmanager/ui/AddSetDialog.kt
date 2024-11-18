@@ -103,8 +103,8 @@ class AddSetDialog: DialogFragment() {
             }
 
             cancelActionGroupDialogButton.setOnClickListener {
-                val addFilterDialog = AddFilterDialog()
-                addFilterDialog.show(requireActivity().supportFragmentManager, "AddSetDialog")
+//                val addFilterDialog = AddFilterDialog()
+//                addFilterDialog.show(requireActivity().supportFragmentManager, "AddSetDialog")
                 dismiss()
             }
 

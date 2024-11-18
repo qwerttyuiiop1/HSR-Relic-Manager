@@ -7,11 +7,14 @@ import android.graphics.Shader
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.hsrrelicmanager.R
+import com.example.hsrrelicmanager.core.components.FilterItem
 import com.example.hsrrelicmanager.databinding.DialogRarityFilterBinding
+import java.util.logging.Filter
 
-class AddRarityDialog: DialogFragment() {
+class AddRarityDialog(private val items: MutableList<FilterItem>): DialogFragment() {
 
     val binding: DialogRarityFilterBinding by lazy {
         DialogRarityFilterBinding.inflate(
@@ -25,6 +28,23 @@ class AddRarityDialog: DialogFragment() {
 
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        var index = -1
+
+        index = items.indexOfFirst { it.title == "Rarity" }
+
+        if (index != -1){
+            for (item in items[index].rarityList) {
+                if (item == "3 Star") {
+                    binding.check1.isChecked = true
+                }
+                if (item == "4 Star") {
+                    binding.check2.isChecked = true
+                }
+                if (item == "5 Star") {
+                    binding.check3.isChecked = true
+                }
+            }
+        }
 
         binding.apply {
             container1.setOnClickListener {
@@ -37,7 +57,7 @@ class AddRarityDialog: DialogFragment() {
                 check3.isChecked = !check3.isChecked
             }
             cancelActionGroupDialogButton.setOnClickListener{
-                val addFilterDialog = AddFilterDialog()
+                val addFilterDialog = AddFilterDialog(items)
                 addFilterDialog.show(requireActivity().supportFragmentManager, "AddFilterDialog")
                 dismiss()
             }

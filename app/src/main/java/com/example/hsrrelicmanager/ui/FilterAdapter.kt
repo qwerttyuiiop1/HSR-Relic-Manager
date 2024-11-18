@@ -50,7 +50,7 @@ class FilterAdapter(private val items: MutableList<FilterItem>) : RecyclerView.A
                 addSetDialog.show(it, "AddSetDialog")
             }
         } else if (filterItem.title == "Rarity") {
-            val addRarityDialog = AddRarityDialog()
+            val addRarityDialog = AddRarityDialog(items)
             val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
             fragmentManager?.let {
                 addRarityDialog.show(it, "AddRarityDialog")
