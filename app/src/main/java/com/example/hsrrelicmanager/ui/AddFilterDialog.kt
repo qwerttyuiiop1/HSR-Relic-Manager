@@ -1,6 +1,8 @@
 package com.example.hsrrelicmanager.ui
 
 import android.content.DialogInterface
+import android.graphics.RenderEffect
+import android.graphics.Shader
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -72,6 +74,11 @@ class AddFilterDialog(private val items: MutableList<FilterItem>): DialogFragmen
 //            (requireActivity() as MainActivity).loadFragment(addActionGroupHeaderFragment, addActionGroupBodyFragment)
 //            dismiss()
 //        }
+        val activity = context as MainActivity
+        val bgView = activity.findViewById<View>(R.id.activity_main_layout)
+        bgView.setRenderEffect(
+            RenderEffect.createBlurEffect(20f, 20f, Shader.TileMode.CLAMP)
+        )
 
         return dialog
     }
