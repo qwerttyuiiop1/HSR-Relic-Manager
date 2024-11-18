@@ -56,6 +56,7 @@ class AddFilterDialog(private val items: MutableList<FilterItem>): DialogFragmen
                 val addMainStatDialog = AddMainstatDialog()
                 addMainStatDialog.show(requireActivity().supportFragmentManager, "AddMainstatDialog")
                 dismiss()
+            }
 
 
             addSubStat.setOnClickListener {
