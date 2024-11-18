@@ -101,8 +101,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewFilterGroup"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_height="350dp"
         android:nestedScrollingEnabled="false"
         app:layout_constraintTop_toBottomOf="@+id/action_group_filter_section"
         app:layout_constraintStart_toStartOf="parent"
@@ -139,13 +138,12 @@
         android:id="@+id/recyclerViewActionGroup"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         android:nestedScrollingEnabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/action_section_title"
-        app:layout_constraintVertical_bias="0.0" /> <!-- Disable nested scrolling -->
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

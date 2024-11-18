@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.marginStart
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.core.components.FilterItem
@@ -32,7 +33,8 @@ class SubFilterAdapter(private val items: FilterItem) : RecyclerView.Adapter<Sub
         } else if (title == "Rarity") {
             val rarity = items.rarityList[position]
             holder.filterText.text = rarity
-//            holder.filterImage.visibility = View.GONE
+            (holder.filterText.layoutParams as ViewGroup.MarginLayoutParams).marginStart = 0
+            holder.filterImage.visibility = View.GONE
         }
     }
 
