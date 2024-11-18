@@ -1,5 +1,6 @@
 package com.example.hsrrelicmanager.ui
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +24,7 @@ class SubFilterAdapter(private val items: FilterItem) : RecyclerView.Adapter<Sub
         return SubFilterViewHolder(view)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: SubFilterViewHolder, position: Int) {
         val title = items.title
 
@@ -35,14 +37,26 @@ class SubFilterAdapter(private val items: FilterItem) : RecyclerView.Adapter<Sub
             holder.filterText.text = rarity
             (holder.filterText.layoutParams as ViewGroup.MarginLayoutParams).marginStart = 0
             holder.filterImage.visibility = View.GONE
+        } else if (title == "Level") {
+            val level = items.levelNum
+            val type = items.levelType
+            if (type == true) {
+                holder.filterText.text = "At Least $level"
+            } else {
+                holder.filterText.text = "At Most $level"
+            }
+            (holder.filterText.layoutParams as ViewGroup.MarginLayoutParams).marginStart = 0
+            holder.filterImage.visibility = View.GONE
         }
     }
 
     override fun getItemCount(): Int {
         return if (items.title == "Relic Set") {
             items.RelicSet.size
-        } else {
+        } else if (items.title == "Rarity") {
             items.rarityList.size
+        } else {
+            1
         }
     }
 }

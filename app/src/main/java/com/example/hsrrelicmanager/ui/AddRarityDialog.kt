@@ -28,8 +28,8 @@ class AddRarityDialog(private val items: MutableList<FilterItem>): DialogFragmen
 
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        var index = -1
 
+        var index = -1
         index = items.indexOfFirst { it.title == "Rarity" }
 
         if (index != -1){

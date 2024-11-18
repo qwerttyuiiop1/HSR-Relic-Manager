@@ -37,7 +37,6 @@ class FilterAdapter(private val items: MutableList<FilterItem>) : RecyclerView.A
 
         holder.entireView.setOnClickListener {
             showDialog(it.context, filterItem)
-            Toast.makeText(it.context, "Clicked", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -54,6 +53,13 @@ class FilterAdapter(private val items: MutableList<FilterItem>) : RecyclerView.A
             val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
             fragmentManager?.let {
                 addRarityDialog.show(it, "AddRarityDialog")
+            }
+        }
+        else if (filterItem.title == "Level") {
+            val addLevelDialog = AddLevelDialog(items)
+            val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
+            fragmentManager?.let {
+                addLevelDialog.show(it, "AddLevelDialog")
             }
         }
 

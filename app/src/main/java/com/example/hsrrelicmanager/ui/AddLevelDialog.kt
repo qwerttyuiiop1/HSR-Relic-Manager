@@ -2,14 +2,18 @@ package com.example.hsrrelicmanager.ui
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.graphics.RenderEffect
+import android.graphics.Shader
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.hsrrelicmanager.R
+import com.example.hsrrelicmanager.core.components.FilterItem
 import com.example.hsrrelicmanager.databinding.DialogLevelFilterBinding
 
-class AddLevelDialog: DialogFragment() {
+class AddLevelDialog(private val items: MutableList<FilterItem>): DialogFragment() {
 
     val binding: DialogLevelFilterBinding by lazy {
         DialogLevelFilterBinding.inflate(
@@ -24,75 +28,114 @@ class AddLevelDialog: DialogFragment() {
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        binding.apply {
-            var minLevel = 0
-            var maxLevel = 0
-            var isAtMost = true
+        var leastLevel = 0
+        var mostLevel = 0
+        var isAtLeast = true
+        var isAtMost = false
 
-            lblNumberAtMost.text = maxLevel.toString()
-            lblNumberAtLeast.text = minLevel.toString()
+        var index = -1
+        index = items.indexOfFirst { it.title == "Level" }
 
-            val setRadio = { atMost: Boolean ->
-                isAtMost = atMost
-                radioLevelAtMost.isChecked = isAtMost
-                radioLevelAtLeast.isChecked = !isAtMost
+        if (index != -1){
+            val lvl = items[index].levelNum.toString()
+            val type = items[index].levelType
+            if (type) {
+                binding.radioLevelAtLeast.isChecked = true
+                binding.radioLevelAtMost.isChecked = false
+                leastLevel = lvl.toInt()
+                binding.lblNumberAtLeast.text = lvl
             }
-            setRadio(isAtMost)
+            else {
+                binding.radioLevelAtLeast.isChecked = false
+                binding.radioLevelAtMost.isChecked = true
+                mostLevel = lvl.toInt()
+                binding.lblNumberAtMost.text = lvl
+            }
+        }
+        else{
+            binding.radioLevelAtLeast.isChecked = true
+            binding.radioLevelAtMost.isChecked = false
+        }
+
+        binding.apply {
+
+            lblNumberAtMost.text = mostLevel.toString()
+            lblNumberAtLeast.text = leastLevel.toString()
+
+            val setRadioAtLeast = {
+                radioLevelAtLeast.isChecked = true
+                radioLevelAtMost.isChecked = false
+            }
+
+            val setRadioAtMost = {
+                radioLevelAtLeast.isChecked = false
+                radioLevelAtMost.isChecked = true
+            }
 
             containerLevelAtMost.setOnClickListener{
-                setRadio(true)
+                setRadioAtMost()
             }
             containerLevelAtLeast.setOnClickListener{
-                setRadio(false)
+                setRadioAtLeast()
             }
             radioLevelAtMost.setOnClickListener{
-                setRadio(true)
+                setRadioAtMost()
             }
             radioLevelAtLeast.setOnClickListener{
-                setRadio(false)
+                setRadioAtLeast()
             }
 
             btnPlusAtMost.setOnClickListener{
-                if (maxLevel < 15) {
-                    maxLevel += 3
-                    lblNumberAtMost.text = maxLevel.toString()
+                if (mostLevel < 15) {
+                    mostLevel += 3
+                    lblNumberAtMost.text = mostLevel.toString()
                 }
             }
             btnMinusAtMost.setOnClickListener{
-                if(maxLevel > 0){
-                    maxLevel -= 3
-                    lblNumberAtMost.text = maxLevel.toString()
+                if(mostLevel > 0){
+                    mostLevel -= 3
+                    lblNumberAtMost.text = mostLevel.toString()
                 }
             }
             btnPlusAtLeast.setOnClickListener{
-                if (minLevel < 15) {
-                    minLevel += 3
-                    lblNumberAtLeast.text = minLevel.toString()
+                if (leastLevel < 15) {
+                    leastLevel += 3
+                    lblNumberAtLeast.text = leastLevel.toString()
                 }
             }
             btnMinusAtLeast.setOnClickListener{
-                if(minLevel > 0){
-                    minLevel-=3
-                    lblNumberAtLeast.text = minLevel.toString()
+                if(leastLevel > 0){
+                    leastLevel-=3
+                    lblNumberAtLeast.text = leastLevel.toString()
                 }
             }
 
-
-
             cancelActionGroupDialogButton.setOnClickListener{
-//                val addFilterDialog = AddFilterDialog()
-//                addFilterDialog.show(requireActivity().supportFragmentManager, "AddFilterDialog")
+                val addFilterDialog = AddFilterDialog(items)
+                addFilterDialog.show(requireActivity().supportFragmentManager, "AddFilterDialog")
                 dismiss()
             }
             confirmActionGroupDialogButton.setOnClickListener{
                 requireActivity().supportFragmentManager.setFragmentResult("level", Bundle().apply {
-                    putInt("minLevel", minLevel)
-                    putInt("maxLevel", maxLevel)
-                    putBoolean("isAtMost", isAtMost)
+                    isAtLeast = radioLevelAtLeast.isChecked
+
+                    if (isAtLeast) {
+                        putInt("level", leastLevel)
+                    }
+                    else{
+                        putInt("level", mostLevel)
+                    }
+                    putBoolean("isAtLeast", isAtLeast)
                 })
                 dismiss()
             }
         }
+
+        val activity = context as MainActivity
+        val bgView = activity.findViewById<View>(R.id.activity_main_layout)
+        bgView.setRenderEffect(
+            RenderEffect.createBlurEffect(20f, 20f, Shader.TileMode.CLAMP)
+        )
 
         return dialog
     }

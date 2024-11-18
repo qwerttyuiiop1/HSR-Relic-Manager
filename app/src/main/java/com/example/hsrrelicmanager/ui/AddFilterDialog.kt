@@ -30,11 +30,13 @@ class AddFilterDialog(private val items: MutableList<FilterItem>): DialogFragmen
 
         val relicSetIndex = items.indexOfFirst { it.title == "Relic Set" }
         val rarityIndex = items.indexOfFirst { it.title == "Rarity" }
+        val levelIndex = items.indexOfFirst { it.title == "Level" }
 
         binding.apply {
             closeDialogButton.setOnClickListener {
                 dismiss()
             }
+
             if (relicSetIndex != -1) {
                 addRelicSet.isEnabled = false
                 addRelicSet.alpha = 0.5f
@@ -45,19 +47,23 @@ class AddFilterDialog(private val items: MutableList<FilterItem>): DialogFragmen
                     dismiss()
                 }
             }
+
 //            addSlot.setOnClickListener {
 //                // TODO: start AddSlotFragment
 //            }
+
             addMainStat.setOnClickListener {
                 val addMainStatDialog = AddMainstatDialog()
                 addMainStatDialog.show(requireActivity().supportFragmentManager, "AddMainstatDialog")
                 dismiss()
-            }
+
+
             addSubStat.setOnClickListener {
                 val addSubStatDialog = AddSubstatDialog()
                 addSubStatDialog.show(requireActivity().supportFragmentManager, "AddSubstatDialog")
                 dismiss()
             }
+
             if (rarityIndex != -1) {
                 addRarity.isEnabled = false
                 addRarity.alpha = 0.5f
@@ -68,11 +74,18 @@ class AddFilterDialog(private val items: MutableList<FilterItem>): DialogFragmen
                     dismiss()
                 }
             }
-            addLevel.setOnClickListener {
-                val addLevelDialog = AddLevelDialog();
-                addLevelDialog.show(requireActivity().supportFragmentManager, "AddLevelDialog")
-                dismiss()
+
+            if (levelIndex != -1) {
+                addLevel.isEnabled = false
+                addLevel.alpha = 0.5f
+            } else {
+                addLevel.setOnClickListener() {
+                    val addLevelDialog = AddLevelDialog(items);
+                    addLevelDialog.show(requireActivity().supportFragmentManager,"AddLevelDialog")
+                    dismiss()
+                }
             }
+
             addStatus.setOnClickListener {
                 val addStatusDialog = AddStatusDialog()
                 addStatusDialog.show(requireActivity().supportFragmentManager, "AddStatusDialog")
