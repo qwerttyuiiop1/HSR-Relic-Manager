@@ -28,14 +28,22 @@ class AddFilterDialog(private val items: MutableList<FilterItem>): DialogFragmen
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
+        val relicSetIndex = items.indexOfFirst { it.title == "Relic Set" }
+        val rarityIndex = items.indexOfFirst { it.title == "Rarity" }
+
         binding.apply {
             closeDialogButton.setOnClickListener {
                 dismiss()
             }
-            addRelicSet.setOnClickListener {
-                val addSetDialog = AddSetDialog(items)
-                addSetDialog.show(requireActivity().supportFragmentManager, "AddSetDialog")
-                dismiss()
+            if (relicSetIndex != -1) {
+                addRelicSet.isEnabled = false
+                addRelicSet.alpha = 0.5f
+            } else {
+                addRelicSet.setOnClickListener {
+                    val addSetDialog = AddSetDialog(items)
+                    addSetDialog.show(requireActivity().supportFragmentManager, "AddSetDialog")
+                    dismiss()
+                }
             }
 //            addSlot.setOnClickListener {
 //                // TODO: start AddSlotFragment
@@ -50,10 +58,15 @@ class AddFilterDialog(private val items: MutableList<FilterItem>): DialogFragmen
                 addSubStatDialog.show(requireActivity().supportFragmentManager, "AddSubstatDialog")
                 dismiss()
             }
-            addRarity.setOnClickListener {
-                val addRarityDialog = AddRarityDialog(items)
-                addRarityDialog.show(requireActivity().supportFragmentManager, "AddRarityDialog")
-                dismiss()
+            if (rarityIndex != -1) {
+                addRarity.isEnabled = false
+                addRarity.alpha = 0.5f
+            } else {
+                addRarity.setOnClickListener {
+                    val addRarityDialog = AddRarityDialog(items)
+                    addRarityDialog.show(requireActivity().supportFragmentManager, "AddRarityDialog")
+                    dismiss()
+                }
             }
             addLevel.setOnClickListener {
                 val addLevelDialog = AddLevelDialog();

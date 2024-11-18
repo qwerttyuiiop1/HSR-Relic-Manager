@@ -101,8 +101,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewFilterGroup"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintHeight_max="350dp"
         android:nestedScrollingEnabled="false"
+        app:layout_constrainedHeight="true"
         app:layout_constraintTop_toBottomOf="@+id/action_group_filter_section"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
