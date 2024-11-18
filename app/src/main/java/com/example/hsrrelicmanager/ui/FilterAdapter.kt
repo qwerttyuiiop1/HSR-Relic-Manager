@@ -44,7 +44,7 @@ class FilterAdapter(private val items: MutableList<FilterItem>) : RecyclerView.A
     private fun showDialog(context: Context, filterItem: FilterItem) {
 
         if (filterItem.title == "Relic Set") {
-            val addSetDialog = AddSetDialog()
+            val addSetDialog = AddSetDialog(items)
             val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
             fragmentManager?.let {
                 addSetDialog.show(it, "AddSetDialog")

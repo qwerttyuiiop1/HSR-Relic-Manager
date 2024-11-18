@@ -31,7 +31,7 @@ class AddFilterDialog(private val items: MutableList<FilterItem>): DialogFragmen
                 dismiss()
             }
             addRelicSet.setOnClickListener {
-                val addSetDialog = AddSetDialog()
+                val addSetDialog = AddSetDialog(items)
                 addSetDialog.show(requireActivity().supportFragmentManager, "AddSetDialog")
                 dismiss()
             }

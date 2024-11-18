@@ -15,6 +15,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
+import com.example.hsrrelicmanager.core.components.FilterItem
 import com.example.hsrrelicmanager.databinding.DialogSetFilterBinding
 import com.example.hsrrelicmanager.databinding.ItemRelicSetRowBinding
 import com.example.hsrrelicmanager.model.relics.RelicSet
@@ -22,14 +23,20 @@ import com.example.hsrrelicmanager.model.relics.relicSets
 
 class RelicCheckboxAdapter(
     val sets: List<RelicSet>,
-    val selectedSets: MutableSet<RelicSet>,
+    val selectedSets: MutableList<RelicSet>,
 ): RecyclerView.Adapter<RelicCheckboxAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemRelicSetRowBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(set: RelicSet, position: Int) {
+        fun bind(set: RelicSet) {
             binding.apply {
                 checkbox.setOnCheckedChangeListener{_, isChecked ->
-                    if (isChecked) selectedSets.add(set)
-                    else selectedSets.remove(set)
+                    if (isChecked) {
+                        if (!selectedSets.contains(set)){
+                            selectedSets.add(set)
+                            sortSelectedSets()
+                        }
+                    } else {
+                        selectedSets.remove(set)
+                    }
                 }
                 container.setOnClickListener {
                     checkbox.isChecked = !checkbox.isChecked
@@ -67,12 +74,16 @@ class RelicCheckboxAdapter(
 
     override fun getItemCount() = sets.size
 
+    private fun sortSelectedSets() {
+        selectedSets.sortWith(compareBy { sets.indexOf(it) })
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(sets[position], position)
+        holder.bind(sets[position])
     }
 }
 
-class AddSetDialog: DialogFragment() {
+class AddSetDialog(private val items: MutableList<FilterItem>): DialogFragment() {
 
     val binding: DialogSetFilterBinding by lazy {
         DialogSetFilterBinding.inflate(
@@ -87,8 +98,12 @@ class AddSetDialog: DialogFragment() {
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
+        var index = -1
+        index = items.indexOfFirst { it.title == "Relic Set" }
+        val relicSetList = if (index != -1) items[index].RelicSet else mutableListOf()
+
         binding.apply {
-            val adapter = RelicCheckboxAdapter(relicSets, mutableSetOf())
+            val adapter = RelicCheckboxAdapter(relicSets, relicSetList)
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -103,8 +118,8 @@ class AddSetDialog: DialogFragment() {
             }
 
             cancelActionGroupDialogButton.setOnClickListener {
-//                val addFilterDialog = AddFilterDialog()
-//                addFilterDialog.show(requireActivity().supportFragmentManager, "AddSetDialog")
+                val addFilterDialog = AddFilterDialog(items)
+                addFilterDialog.show(requireActivity().supportFragmentManager, "AddSetDialog")
                 dismiss()
             }
 
