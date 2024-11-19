@@ -111,8 +111,10 @@ class AddLevelDialog(private val items: MutableList<FilterItem>): DialogFragment
             }
 
             cancelActionGroupDialogButton.setOnClickListener{
-                val addFilterDialog = AddFilterDialog(items)
-                addFilterDialog.show(requireActivity().supportFragmentManager, "AddFilterDialog")
+                if (index == -1){
+                    val addFilterDialog = AddFilterDialog(items)
+                    addFilterDialog.show(requireActivity().supportFragmentManager, "AddFilterDialog")
+                }
                 dismiss()
             }
             confirmActionGroupDialogButton.setOnClickListener{

@@ -34,14 +34,20 @@ class AddRarityDialog(private val items: MutableList<FilterItem>): DialogFragmen
 
         if (index != -1){
             for (item in items[index].rarityList) {
-                if (item == "3 Star") {
+                if (item == "1 Star") {
                     binding.check1.isChecked = true
                 }
-                if (item == "4 Star") {
+                if (item == "2 Star") {
                     binding.check2.isChecked = true
                 }
-                if (item == "5 Star") {
+                if (item == "3 Star") {
                     binding.check3.isChecked = true
+                }
+                if (item == "4 Star") {
+                    binding.check4.isChecked = true
+                }
+                if (item == "5 Star") {
+                    binding.check5.isChecked = true
                 }
             }
         }
@@ -56,20 +62,40 @@ class AddRarityDialog(private val items: MutableList<FilterItem>): DialogFragmen
             container3.setOnClickListener {
                 check3.isChecked = !check3.isChecked
             }
+            container4.setOnClickListener {
+                check4.isChecked = !check4.isChecked
+            }
+            container5.setOnClickListener {
+                check5.isChecked = !check5.isChecked
+            }
             cancelActionGroupDialogButton.setOnClickListener{
-                val addFilterDialog = AddFilterDialog(items)
-                addFilterDialog.show(requireActivity().supportFragmentManager, "AddFilterDialog")
+                if (index == -1){
+                    val addFilterDialog = AddFilterDialog(items)
+                    addFilterDialog.show(requireActivity().supportFragmentManager, "AddFilterDialog")
+                }
                 dismiss()
             }
             confirmActionGroupDialogButton.setOnClickListener{
+                val check = check1.isChecked || check2.isChecked || check3.isChecked || check4.isChecked || check5.isChecked
+
+                if (!check){
+                    items.removeAt(index)
+                }
+
                 requireActivity().supportFragmentManager.setFragmentResult("rarity", Bundle().apply {
                     if (check1.isChecked) {
-                        putString("Star3", "3 Star")
+                        putString("Star1", "1 Star")
                     }
                     if (check2.isChecked) {
-                        putString("Star4", "4 Star")
+                        putString("Star2", "2 Star")
                     }
                     if (check3.isChecked) {
+                        putString("Star3", "3 Star")
+                    }
+                    if (check4.isChecked) {
+                        putString("Star4", "4 Star")
+                    }
+                    if (check5.isChecked) {
                         putString("Star5", "5 Star")
                     }
                 })

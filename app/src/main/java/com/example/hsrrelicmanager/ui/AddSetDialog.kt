@@ -10,6 +10,7 @@ import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -118,12 +119,18 @@ class AddSetDialog(private val items: MutableList<FilterItem>): DialogFragment()
             }
 
             cancelActionGroupDialogButton.setOnClickListener {
-                val addFilterDialog = AddFilterDialog(items)
-                addFilterDialog.show(requireActivity().supportFragmentManager, "AddSetDialog")
+                if (index == -1){
+                    val addFilterDialog = AddFilterDialog(items)
+                    addFilterDialog.show(requireActivity().supportFragmentManager, "AddSetDialog")
+                }
                 dismiss()
             }
 
             confirmActionGroupDialogButton.setOnClickListener {
+                if (adapter.selectedSets.isEmpty() && index != -1) {
+                   items.removeAt(index)
+                }
+
                 requireActivity().supportFragmentManager.setFragmentResult(
                     "selectedSets",
                     Bundle().apply {
@@ -131,7 +138,9 @@ class AddSetDialog(private val items: MutableList<FilterItem>): DialogFragment()
                     }
                 )
                 dismiss()
+                index = items.indexOfFirst { it.title == "Relic Set" }
             }
+
         }
         val activity = context as MainActivity
         val bgView = activity.findViewById<View>(R.id.activity_main_layout)

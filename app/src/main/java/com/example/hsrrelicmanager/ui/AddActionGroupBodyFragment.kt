@@ -64,6 +64,11 @@ class AddActionGroupBodyFragment : Fragment() {
                 parentFragmentManager.setFragmentResultListener("selectedSets", viewLifecycleOwner) { _, bundle ->
                     val selectedSets = bundle.getParcelableArrayList<RelicSet>("selectedSets")
 
+                    if (selectedSets == null || selectedSets.isEmpty()) {
+                        adapterFilter.notifyDataSetChanged()
+                        return@setFragmentResultListener
+                    }
+
                     if (RelicTracker == 1){
                         index = filterItems.indexOfFirst { it.title == "Relic Set" }
 
@@ -81,19 +86,27 @@ class AddActionGroupBodyFragment : Fragment() {
                         filterItems.add(FilterItem("Relic Set", mutableSelectedSets, 0, false, mutableListOf()))
                         RelicTracker = 1
                     }
-
                     adapterFilter.notifyDataSetChanged()
                 }
 
                 parentFragmentManager.setFragmentResultListener("rarity", viewLifecycleOwner) { _, bundle ->
+                    val rarity1 = bundle.getString("Star1")
+                    val rarity2 = bundle.getString("Star2")
                     val rarity3 = bundle.getString("Star3")
                     val rarity4 = bundle.getString("Star4")
                     val rarity5 = bundle.getString("Star5")
 
                     val rarityList = mutableListOf<String>()
+                    rarity1?.let { rarityList.add(it) }
+                    rarity2?.let { rarityList.add(it) }
                     rarity3?.let { rarityList.add(it) }
                     rarity4?.let { rarityList.add(it) }
                     rarity5?.let { rarityList.add(it) }
+
+                    if (rarity1 == null && rarity2 == null && rarity3 == null && rarity4 == null && rarity5 == null){
+                        adapterFilter.notifyDataSetChanged()
+                        return@setFragmentResultListener
+                    }
 
                     if (RarityTracker ==1){
                         index = filterItems.indexOfFirst { it.title == "Rarity" }
@@ -105,7 +118,7 @@ class AddActionGroupBodyFragment : Fragment() {
                         }
                         index = -1
                     }
-                    else if (rarity3 != null || rarity4 != null || rarity5 != null && RarityTracker == 0) {
+                    else if (rarity1 != null || rarity2 != null || rarity3 != null || rarity4 != null || rarity5 != null && RarityTracker == 0) {
                         filterItems.add(FilterItem("Rarity",mutableListOf<RelicSet>(), 0, false, rarityList))
                         RarityTracker = 1
                     }
