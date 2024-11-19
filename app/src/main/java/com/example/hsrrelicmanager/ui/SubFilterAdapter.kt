@@ -47,6 +47,10 @@ class SubFilterAdapter(private val items: FilterItem) : RecyclerView.Adapter<Sub
             }
             (holder.filterText.layoutParams as ViewGroup.MarginLayoutParams).marginStart = 0
             holder.filterImage.visibility = View.GONE
+        } else if (title == "Status") {
+            val status = items.statusList[position]
+            holder.filterText.text = status.name
+            holder.filterImage.setImageResource(status.image)
         }
     }
 
@@ -55,6 +59,10 @@ class SubFilterAdapter(private val items: FilterItem) : RecyclerView.Adapter<Sub
             items.RelicSet.size
         } else if (items.title == "Rarity") {
             items.rarityList.size
+        } else if (items.title == "Level") {
+            1
+        } else if (items.title == "Status") {
+            items.statusList.size
         } else {
             1
         }

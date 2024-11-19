@@ -31,6 +31,7 @@ class AddFilterDialog(private val items: MutableList<FilterItem>): DialogFragmen
         val relicSetIndex = items.indexOfFirst { it.title == "Relic Set" }
         val rarityIndex = items.indexOfFirst { it.title == "Rarity" }
         val levelIndex = items.indexOfFirst { it.title == "Level" }
+        val statusIndex = items.indexOfFirst { it.title == "Status" }
 
         binding.apply {
             closeDialogButton.setOnClickListener {
@@ -87,10 +88,15 @@ class AddFilterDialog(private val items: MutableList<FilterItem>): DialogFragmen
                 }
             }
 
-            addStatus.setOnClickListener {
-                val addStatusDialog = AddStatusDialog()
-                addStatusDialog.show(requireActivity().supportFragmentManager, "AddStatusDialog")
-                dismiss()
+            if (statusIndex != -1) {
+                addStatus.isEnabled = false
+                addStatus.alpha = 0.5f
+            } else {
+                addStatus.setOnClickListener {
+                    val addStatusDialog = AddStatusDialog(items)
+                    addStatusDialog.show(requireActivity().supportFragmentManager, "AddStatusDialog")
+                    dismiss()
+                }
             }
         }
 //        val addActionGroupFragment: View = dialogView.findViewById(R.id.add_action_group)

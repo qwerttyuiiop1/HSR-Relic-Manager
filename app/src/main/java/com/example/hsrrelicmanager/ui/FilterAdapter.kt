@@ -63,6 +63,14 @@ class FilterAdapter(private val items: MutableList<FilterItem>) : RecyclerView.A
             }
         }
 
+        else if (filterItem.title == "Status") {
+            val addStatusDialog = AddStatusDialog(items)
+            val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
+            fragmentManager?.let {
+                addStatusDialog.show(it, "AddStatusDialog")
+            }
+        }
+
         val activity = context as MainActivity
         val bgView = activity.findViewById<View>(R.id.activity_main_layout)
         bgView.setRenderEffect(
