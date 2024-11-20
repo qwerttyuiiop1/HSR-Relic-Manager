@@ -9,6 +9,7 @@ data class Substat(
     var level: Int
 ): Parcelable{}
 
+
 val substatSets = listOf(
     Substat(
         "HP",

@@ -91,20 +91,21 @@ class AddActionGroupBodyFragment : Fragment() {
                 }
 
                 parentFragmentManager.setFragmentResultListener("rarity", viewLifecycleOwner) { _, bundle ->
-                    val rarity1 = bundle.getString("Star1")
-                    val rarity2 = bundle.getString("Star2")
-                    val rarity3 = bundle.getString("Star3")
-                    val rarity4 = bundle.getString("Star4")
-                    val rarity5 = bundle.getString("Star5")
+                    val rarity1 = bundle.getInt("1 Star")
+                    val rarity2 = bundle.getInt("2 Star")
+                    val rarity3 = bundle.getInt("3 Star")
+                    val rarity4 = bundle.getInt("4 Star")
+                    val rarity5 = bundle.getInt("5 Star")
 
-                    val rarityList = mutableListOf<String>()
-                    rarity1?.let { rarityList.add(it) }
-                    rarity2?.let { rarityList.add(it) }
-                    rarity3?.let { rarityList.add(it) }
-                    rarity4?.let { rarityList.add(it) }
-                    rarity5?.let { rarityList.add(it) }
+                    val rarityList = mutableListOf<Int>()
+                    if (rarity1 != 0) rarityList.add(rarity1)
+                    if (rarity2 != 0) rarityList.add(rarity2)
+                    if (rarity3 != 0) rarityList.add(rarity3)
+                    if (rarity4 != 0) rarityList.add(rarity4)
+                    if (rarity5 != 0) rarityList.add(rarity5)
 
-                    if (rarity1 == null && rarity2 == null && rarity3 == null && rarity4 == null && rarity5 == null){
+
+                    if (rarity1 == 0 && rarity2 == 0 && rarity3 == 0 && rarity4 == 0 && rarity5 == 0){
                         adapterFilter.notifyDataSetChanged()
                         return@setFragmentResultListener
                     }
@@ -119,7 +120,7 @@ class AddActionGroupBodyFragment : Fragment() {
                         }
                         index = -1
                     }
-                    else if (rarity1 != null || rarity2 != null || rarity3 != null || rarity4 != null || rarity5 != null && RarityTracker == 0) {
+                    else if (rarity1 != 0 || rarity2 != 0 || rarity3 != 0 || rarity4 != 0 || rarity5 != 0 && RarityTracker == 0) {
                         filterItems.add(FilterItem("Rarity",mutableListOf<RelicSet>(), mutableListOf<Substat>(),0, false, rarityList, mutableListOf<Status>()))
                         RarityTracker = 1
                     }

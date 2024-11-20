@@ -34,19 +34,19 @@ class AddRarityDialog(private val items: MutableList<FilterItem>): DialogFragmen
 
         if (index != -1){
             for (item in items[index].rarityList) {
-                if (item == "1 Star") {
+                if (item == 1) {
                     binding.check1.isChecked = true
                 }
-                if (item == "2 Star") {
+                if (item == 2) {
                     binding.check2.isChecked = true
                 }
-                if (item == "3 Star") {
+                if (item == 3) {
                     binding.check3.isChecked = true
                 }
-                if (item == "4 Star") {
+                if (item == 4) {
                     binding.check4.isChecked = true
                 }
-                if (item == "5 Star") {
+                if (item == 5) {
                     binding.check5.isChecked = true
                 }
             }
@@ -84,19 +84,34 @@ class AddRarityDialog(private val items: MutableList<FilterItem>): DialogFragmen
 
                 requireActivity().supportFragmentManager.setFragmentResult("rarity", Bundle().apply {
                     if (check1.isChecked) {
-                        putString("Star1", "1 Star")
+                        putInt("1 Star", 1)
+                    }
+                    else {
+                        putInt("1 Star", 0)
                     }
                     if (check2.isChecked) {
-                        putString("Star2", "2 Star")
+                        putInt("2 Star", 2)
+                    }
+                    else {
+                        putInt("2 Star", 0)
                     }
                     if (check3.isChecked) {
-                        putString("Star3", "3 Star")
+                        putInt("3 Star", 3)
+                    }
+                    else {
+                        putInt("3 Star", 0)
                     }
                     if (check4.isChecked) {
-                        putString("Star4", "4 Star")
+                        putInt("4 Star", 4)
+                    }
+                    else {
+                        putInt("4 Star", 0)
                     }
                     if (check5.isChecked) {
-                        putString("Star5", "5 Star")
+                        putInt("5 Star", 5)
+                    }
+                    else {
+                        putInt("5 Star", 0)
                     }
                 })
                 dismiss()

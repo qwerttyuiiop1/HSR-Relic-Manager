@@ -83,7 +83,15 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
             updateRadioButtonState(dialogView, R.id.radio_button_enhance)
             selectedOption = "Enhance"
         }
+        dialogView.findViewById<View>(R.id.radio_button_enhance).setOnClickListener {
+            updateRadioButtonState(dialogView, R.id.radio_button_enhance)
+            selectedOption = "Enhance"
+        }
         dialogView.findViewById<View>(R.id.lock_action_group).setOnClickListener {
+            updateRadioButtonState(dialogView, R.id.radio_button_lock)
+            selectedOption = "Lock"
+        }
+        dialogView.findViewById<View>(R.id.radio_button_lock).setOnClickListener {
             updateRadioButtonState(dialogView, R.id.radio_button_lock)
             selectedOption = "Lock"
         }
@@ -91,11 +99,23 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
             updateRadioButtonState(dialogView, R.id.radio_button_reset)
             selectedOption = "Reset"
         }
+        dialogView.findViewById<View>(R.id.radio_button_reset).setOnClickListener {
+            updateRadioButtonState(dialogView, R.id.radio_button_reset)
+            selectedOption = "Reset"
+        }
         dialogView.findViewById<View>(R.id.filter_action_group).setOnClickListener {
             updateRadioButtonState(dialogView, R.id.radio_button_filter)
             selectedOption = "Filter Group"
         }
+        dialogView.findViewById<View>(R.id.radio_button_filter).setOnClickListener {
+            updateRadioButtonState(dialogView, R.id.radio_button_filter)
+            selectedOption = "Filter Group"
+        }
         dialogView.findViewById<View>(R.id.trash_action_group).setOnClickListener {
+            updateRadioButtonState(dialogView, R.id.radio_button_trash)
+            selectedOption = "Trash"
+        }
+        dialogView.findViewById<View>(R.id.radio_button_trash).setOnClickListener {
             updateRadioButtonState(dialogView, R.id.radio_button_trash)
             selectedOption = "Trash"
         }

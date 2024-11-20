@@ -10,6 +10,6 @@ data class FilterItem(
     val Substat: MutableList<Substat>,
     var levelNum: Int,
     var levelType: Boolean,
-    val rarityList: MutableList<String>,
+    val rarityList: MutableList<Int>,
     val statusList: MutableList<Status>
 )

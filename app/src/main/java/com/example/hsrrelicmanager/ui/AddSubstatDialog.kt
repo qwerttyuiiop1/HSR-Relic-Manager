@@ -10,6 +10,7 @@ import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -58,6 +59,8 @@ class SubstatboxAdapter(
                     levelNumber.text = level.toString()
                     set.level = level
                 }
+
+
 
                 container.setOnClickListener {
                     checkbox.isChecked = !checkbox.isChecked
@@ -112,6 +115,30 @@ class AddSubstatDialog(private val items: MutableList<FilterItem>): DialogFragme
             val adapter = SubstatboxAdapter(substatSets, selectedSubstats)
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+            var level = weightNumber.text.toString().toInt()
+            Toast.makeText(context, level.toString(), Toast.LENGTH_SHORT).show()
+
+            radioButtonExact.setOnClickListener {
+                radioButtonExact.setImageResource(R.drawable.ic_radio_button_checked)
+                radioButtonWeight.setImageResource(R.drawable.ic_radio_button_unchecked)
+            }
+
+            radioButtonWeight.setOnClickListener {
+                radioButtonExact.setImageResource(R.drawable.ic_radio_button_unchecked)
+                radioButtonWeight.setImageResource(R.drawable.ic_radio_button_checked)
+            }
+
+            weightSubtractLevel.setOnClickListener {
+                level--
+                weightNumber.text = level.toString()
+            }
+
+            weightAddLevel.setOnClickListener {
+                level++
+                weightNumber.text = level.toString()
+            }
+
 
             val content = SpannableString("Deselect All")
             content.setSpan(

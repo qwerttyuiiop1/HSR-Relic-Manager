@@ -63,13 +63,109 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="350dp"
         android:layout_weight="1"
         android:layout_marginStart="24dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
         />
+
+    <LinearLayout
+        android:id="@+id/exact_group"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="12dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <ImageView
+            android:id="@+id/radio_button_exact"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_radio_button_unchecked" />
+
+        <TextView
+            android:id="@+id/exact_choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/pf_din_text_pro_regular"
+            android:text="Is exactly"
+            android:textStyle="bold"
+            android:textColor="#4A4A4A"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/weight_group"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:layout_marginStart="24dp"
+        >
+
+        <ImageView
+            android:id="@+id/radio_button_weight"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="20dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_radio_button_unchecked" />
+
+        <TextView
+            android:id="@+id/weight_choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pf_din_text_pro_regular"
+            android:text="Weight of at least"
+            android:textStyle="bold"
+            android:textColor="#4A4A4A"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/weight_subtract_level"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="0.5dp"
+            android:src="@drawable/ic_subtract_level" />
+
+        <TextView
+            android:id="@+id/weight_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:text="3"
+            android:textColor="#000000"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <ImageView
+            android:id="@+id/weight_add_level"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:layout_marginStart="0.5dp"
+            android:layout_marginTop="0dp"
+            android:src="@drawable/ic_add_level" />
+
+
+    </LinearLayout>
 
 
     <!-- footer -->

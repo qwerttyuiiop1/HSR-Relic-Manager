@@ -32,7 +32,7 @@ class SubFilterAdapter(private val items: FilterItem) : RecyclerView.Adapter<Sub
             holder.filterImage.setImageResource(relicSet.icon)
         } else if (title == "Rarity") {
             val rarity = items.rarityList[position]
-            holder.filterText.text = rarity
+            holder.filterText.text = "${rarity} Star"
             (holder.filterText.layoutParams as ViewGroup.MarginLayoutParams).marginStart = 0
             holder.filterImage.visibility = View.GONE
         } else if (title == "Level") {
