@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.view.marginStart
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.core.components.FilterItem
@@ -51,9 +49,9 @@ class SubFilterAdapter(private val items: FilterItem) : RecyclerView.Adapter<Sub
             val status = items.statusList[position]
             holder.filterText.text = status.name
             holder.filterImage.setImageResource(status.image)
-        } else if (title == "Slot") {
-            val slot = items.Slot[position]
-            holder.filterText.text = "${slot.name}\t\t\tweight: ${slot.level}"
+        } else if (title == "Substat") {
+            val substat = items.Substat[position]
+            holder.filterText.text = "${substat.name}\t\t\tweight: ${substat.level}"
             (holder.filterText.layoutParams as ViewGroup.MarginLayoutParams).marginStart = 0
             holder.filterImage.visibility = View.GONE
         }
@@ -64,8 +62,8 @@ class SubFilterAdapter(private val items: FilterItem) : RecyclerView.Adapter<Sub
             items.RelicSet.size
         } else if (items.title == "Rarity") {
             items.rarityList.size
-        } else if (items.title == "Slot") {
-            items.Slot.size
+        } else if (items.title == "Substat") {
+            items.Substat.size
         } else if (items.title == "Level") {
             1
         } else if (items.title == "Status") {

@@ -30,7 +30,7 @@ class AddFilterDialog(private val items: MutableList<FilterItem>): DialogFragmen
 
         val relicSetIndex = items.indexOfFirst { it.title == "Relic Set" }
         val rarityIndex = items.indexOfFirst { it.title == "Rarity" }
-        val slotIndex = items.indexOfFirst { it.title == "Slot" }
+        val substatIndex = items.indexOfFirst { it.title == "Substat" }
         val levelIndex = items.indexOfFirst { it.title == "Level" }
         val statusIndex = items.indexOfFirst { it.title == "Status" }
 
@@ -50,16 +50,16 @@ class AddFilterDialog(private val items: MutableList<FilterItem>): DialogFragmen
                 }
             }
 
-            if (slotIndex != -1) {
-                addSlot.isEnabled = false
-                addSlot.alpha = 0.5f
-            } else {
-                addSlot.setOnClickListener {
-                    val addSlotDialog = AddSlotDialog(items)
-                    addSlotDialog.show(requireActivity().supportFragmentManager, "AddSlotDialog")
-                    dismiss()
-                }
-            }
+//            if (slotIndex != -1) {
+//                addSlot.isEnabled = false
+//                addSlot.alpha = 0.5f
+//            } else {
+//                addSlot.setOnClickListener {
+//                    val addSlotDialog = AddSlotDialog(items)
+//                    addSlotDialog.show(requireActivity().supportFragmentManager, "AddSlotDialog")
+//                    dismiss()
+//                }
+//            }
 
             addMainStat.setOnClickListener {
                 val addMainStatDialog = AddMainstatDialog()
@@ -67,11 +67,18 @@ class AddFilterDialog(private val items: MutableList<FilterItem>): DialogFragmen
                 dismiss()
             }
 
-
-            addSubStat.setOnClickListener {
-                val addSubStatDialog = AddSubstatDialog()
-                addSubStatDialog.show(requireActivity().supportFragmentManager, "AddSubstatDialog")
-                dismiss()
+            if (substatIndex != -1) {
+                addSubStat.isEnabled = false
+                addSubStat.alpha = 0.5f
+            } else {
+                addSubStat.setOnClickListener {
+                    val addSubStatDialog = AddSubstatDialog(items)
+                    addSubStatDialog.show(
+                        requireActivity().supportFragmentManager,
+                        "AddSubstatDialog"
+                    )
+                    dismiss()
+                }
             }
 
             if (rarityIndex != -1) {
