@@ -1,11 +1,16 @@
 package com.example.hsrrelicmanager.model.rules.group;
 
+import android.os.Parcelable;
+
 import com.example.hsrrelicmanager.model.rules.Filter;
 
 import java.util.EnumMap;
 import java.util.Map;
 
-public abstract class Group {
+import kotlinx.parcelize.Parcelize;
+
+@Parcelize
+public abstract class Group implements Parcelable {
     protected Map<Filter.Type, Filter> filters;
     protected int position;
 

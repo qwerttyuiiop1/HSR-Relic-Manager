@@ -73,6 +73,33 @@ class RuleBodyFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = groupAdapter
 
+        var swipedItemIndex: Int = -1
+
+        // Listens for action from delete dialog
+        parentFragmentManager.setFragmentResultListener("delete_rule_request", viewLifecycleOwner) { _, bundle ->
+            val index = bundle.getInt("index")
+            val action = bundle.getString("action")
+
+            // Delete confirmed
+            if (action == "confirm" && index >= 0) {
+                groupAdapter.groupData.removeAt(index)
+
+                for (i in index until groupAdapter.groupData.size) {
+                    groupData[i].position = i
+                }
+
+                groupAdapter.notifyItemRemoved(index)
+                groupAdapter.notifyItemRangeChanged(index, groupAdapter.groupData.size - index)
+
+                Toast.makeText(requireContext(), "Rule trashed.", Toast.LENGTH_SHORT).show()
+
+            // Delete cancelled
+            } else if (action == "cancel" && swipedItemIndex != -1) {
+                groupAdapter.notifyItemChanged(swipedItemIndex)
+            }
+            swipedItemIndex = -1
+        }
+
         val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
             override fun getMovementFlags(
                 recyclerView: RecyclerView,
@@ -99,17 +126,13 @@ class RuleBodyFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val index = viewHolder.adapterPosition;
-                groupAdapter.groupData.removeAt(index);
+                val index = viewHolder.adapterPosition
+                val group = groupAdapter.groupData[index]
 
-                for (i in index..<groupAdapter.groupData.size) {
-                    groupData.get(i).position = i;
-                }
+                swipedItemIndex = index
 
-                groupAdapter.notifyItemRemoved(index);
-                groupAdapter.notifyItemRangeChanged(index, groupAdapter.groupData.size-index);
-
-                Toast.makeText(requireContext(), "Rule trashed.", Toast.LENGTH_SHORT).show()
+                blurBackground()
+                showDeleteRuleDialog(index, group)
             }
 
             override fun onChildDraw(
@@ -160,6 +183,7 @@ class RuleBodyFragment : Fragment() {
                     position.setTextColor(Color.parseColor("#FFC65C"));
                     position.alpha = 1f
 
+                // Stationary
                 } else {
                     card.setBackgroundResource(R.drawable.bg_dark)
                     trash.visibility = View.GONE
@@ -179,5 +203,15 @@ class RuleBodyFragment : Fragment() {
             }
         })
         itemTouchHelper.attachToRecyclerView(recyclerView)
+    }
+
+    private fun blurBackground() {
+        requireActivity().findViewById<View>(R.id.activity_main_layout).blur()
+    }
+
+
+    private fun showDeleteRuleDialog(index: Int, group: Group) {
+        val dialog = DeleteRuleDialogFragment.newInstance(index, group)
+        dialog.show(parentFragmentManager, "DeleteRuleDialog")
     }
 }
