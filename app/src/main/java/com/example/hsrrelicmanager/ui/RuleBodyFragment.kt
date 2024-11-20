@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -107,6 +108,8 @@ class RuleBodyFragment : Fragment() {
 
                 groupAdapter.notifyItemRemoved(index);
                 groupAdapter.notifyItemRangeChanged(index, groupAdapter.groupData.size-index);
+
+                Toast.makeText(requireContext(), "Rule trashed.", Toast.LENGTH_SHORT).show()
             }
 
             override fun onChildDraw(
