@@ -62,7 +62,6 @@ class FilterAdapter(private val items: MutableList<FilterItem>) : RecyclerView.A
                 addLevelDialog.show(it, "AddLevelDialog")
             }
         }
-
         else if (filterItem.title == "Status") {
             val addStatusDialog = AddStatusDialog(items)
             val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
@@ -70,6 +69,17 @@ class FilterAdapter(private val items: MutableList<FilterItem>) : RecyclerView.A
                 addStatusDialog.show(it, "AddStatusDialog")
             }
         }
+        else if (filterItem.title == "Slot") {
+            val addSlotDialog = AddSlotDialog(items)
+            val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
+            fragmentManager?.let {
+                addSlotDialog.show(it, "AddSlotDialog")
+            }
+        }
+        else {
+            Toast.makeText(context, "Not implemented yet", Toast.LENGTH_SHORT).show()
+        }
+
 
         val activity = context as MainActivity
         val bgView = activity.findViewById<View>(R.id.activity_main_layout)

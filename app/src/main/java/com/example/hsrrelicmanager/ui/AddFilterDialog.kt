@@ -30,6 +30,7 @@ class AddFilterDialog(private val items: MutableList<FilterItem>): DialogFragmen
 
         val relicSetIndex = items.indexOfFirst { it.title == "Relic Set" }
         val rarityIndex = items.indexOfFirst { it.title == "Rarity" }
+        val slotIndex = items.indexOfFirst { it.title == "Slot" }
         val levelIndex = items.indexOfFirst { it.title == "Level" }
         val statusIndex = items.indexOfFirst { it.title == "Status" }
 
@@ -49,9 +50,16 @@ class AddFilterDialog(private val items: MutableList<FilterItem>): DialogFragmen
                 }
             }
 
-//            addSlot.setOnClickListener {
-//                // TODO: start AddSlotFragment
-//            }
+            if (slotIndex != -1) {
+                addSlot.isEnabled = false
+                addSlot.alpha = 0.5f
+            } else {
+                addSlot.setOnClickListener {
+                    val addSlotDialog = AddSlotDialog(items)
+                    addSlotDialog.show(requireActivity().supportFragmentManager, "AddSlotDialog")
+                    dismiss()
+                }
+            }
 
             addMainStat.setOnClickListener {
                 val addMainStatDialog = AddMainstatDialog()

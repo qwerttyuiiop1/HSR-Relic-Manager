@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.core.components.FilterItem
 import com.example.hsrrelicmanager.databinding.FragmentActionGroupBodyBinding
+import com.example.hsrrelicmanager.model.Slot
 import com.example.hsrrelicmanager.model.Status
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicSet
@@ -32,6 +33,7 @@ class AddActionGroupBodyFragment : Fragment() {
     private var RarityTracker = 0
     private var LevelTracker = 0
     private var StatusTracker = 0
+    private var SlotTracker = 0
     private var index = -1
 
     override fun onCreateView(
@@ -75,17 +77,17 @@ class AddActionGroupBodyFragment : Fragment() {
                         index = filterItems.indexOfFirst { it.title == "Relic Set" }
 
                         if (index != -1) {
-                            filterItems[index] = FilterItem("Relic Set", selectedSets!!, 0, false, mutableListOf(), mutableListOf<Status>())
+                            filterItems[index] = FilterItem("Relic Set", selectedSets!!, mutableListOf<Slot>(), 0, false, mutableListOf(), mutableListOf<Status>())
                         }
                         else{
-                            filterItems.add(FilterItem("Relic Set", selectedSets!!, 0, false, mutableListOf(), mutableListOf<Status>()))
+                            filterItems.add(FilterItem("Relic Set", selectedSets!!, mutableListOf<Slot>(),0, false, mutableListOf(), mutableListOf<Status>()))
                         }
                         index = -1
                     }
                     else if (selectedSets != null && selectedSets.isNotEmpty() && RelicTracker == 0) {
                         val mutableSelectedSets: MutableList<RelicSet> = selectedSets.filterNotNull().toMutableList()
 
-                        filterItems.add(FilterItem("Relic Set", mutableSelectedSets, 0, false, mutableListOf(), mutableListOf<Status>()))
+                        filterItems.add(FilterItem("Relic Set", mutableSelectedSets, mutableListOf<Slot>(),0, false, mutableListOf(), mutableListOf<Status>()))
                         RelicTracker = 1
                     }
                     adapterFilter.notifyDataSetChanged()
@@ -113,15 +115,15 @@ class AddActionGroupBodyFragment : Fragment() {
                     if (RarityTracker ==1){
                         index = filterItems.indexOfFirst { it.title == "Rarity" }
                         if (index!=-1){
-                            filterItems[index] = FilterItem("Rarity", mutableListOf<RelicSet>(), 0, false, rarityList, mutableListOf<Status>())
+                            filterItems[index] = FilterItem("Rarity", mutableListOf<RelicSet>(), mutableListOf<Slot>(),0, false, rarityList, mutableListOf<Status>())
                         }
                         else{
-                            filterItems.add(FilterItem("Rarity", mutableListOf<RelicSet>(), 0, false, rarityList, mutableListOf<Status>()))
+                            filterItems.add(FilterItem("Rarity", mutableListOf<RelicSet>(), mutableListOf<Slot>(),0, false, rarityList, mutableListOf<Status>()))
                         }
                         index = -1
                     }
                     else if (rarity1 != null || rarity2 != null || rarity3 != null || rarity4 != null || rarity5 != null && RarityTracker == 0) {
-                        filterItems.add(FilterItem("Rarity",mutableListOf<RelicSet>(), 0, false, rarityList, mutableListOf<Status>()))
+                        filterItems.add(FilterItem("Rarity",mutableListOf<RelicSet>(), mutableListOf<Slot>(),0, false, rarityList, mutableListOf<Status>()))
                         RarityTracker = 1
                     }
                     adapterFilter.notifyDataSetChanged()
@@ -138,15 +140,15 @@ class AddActionGroupBodyFragment : Fragment() {
                     if (LevelTracker == 1){
                         index = filterItems.indexOfFirst { it.title == "Level" }
                         if (index != -1){
-                            filterItems[index] = FilterItem("Level", mutableListOf<RelicSet>(), level, isAtLeast, mutableListOf(), mutableListOf<Status>())
+                            filterItems[index] = FilterItem("Level", mutableListOf<RelicSet>(), mutableListOf<Slot>(), level, isAtLeast, mutableListOf(), mutableListOf<Status>())
                         }
                         else{
-                            filterItems.add(FilterItem("Level", mutableListOf<RelicSet>(), level, isAtLeast, mutableListOf(), mutableListOf<Status>()))
+                            filterItems.add(FilterItem("Level", mutableListOf<RelicSet>(), mutableListOf<Slot>(), level, isAtLeast, mutableListOf(), mutableListOf<Status>()))
                         }
                         index = -1
                     }
                     else if (level != null && LevelTracker == 0) {
-                        filterItems.add(FilterItem("Level", mutableListOf<RelicSet>(), level, isAtLeast, mutableListOf(), mutableListOf<Status>()))
+                        filterItems.add(FilterItem("Level", mutableListOf<RelicSet>(), mutableListOf<Slot>(), level, isAtLeast, mutableListOf(), mutableListOf<Status>()))
                         LevelTracker = 1
                     }
                     adapterFilter.notifyDataSetChanged()
@@ -174,16 +176,43 @@ class AddActionGroupBodyFragment : Fragment() {
                     if (StatusTracker == 1){
                         index = filterItems.indexOfFirst { it.title == "Status" }
                         if (index != -1){
-                            filterItems[index] = FilterItem("Status", mutableListOf<RelicSet>(), 0, false, mutableListOf(), statusList)
+                            filterItems[index] = FilterItem("Status", mutableListOf<RelicSet>(), mutableListOf<Slot>(),0, false, mutableListOf(), statusList)
                         }
                         else{
-                            filterItems.add(FilterItem("Status", mutableListOf<RelicSet>(), 0, false, mutableListOf(), statusList))
+                            filterItems.add(FilterItem("Status", mutableListOf<RelicSet>(), mutableListOf<Slot>(),0, false, mutableListOf(), statusList))
                         }
                         index = -1
                     }
                     else if (lock != null || trash != null || none != null && StatusTracker == 0) {
-                        filterItems.add(FilterItem("Status", mutableListOf<RelicSet>(), 0, false, mutableListOf(), statusList))
+                        filterItems.add(FilterItem("Status", mutableListOf<RelicSet>(), mutableListOf<Slot>(),0, false, mutableListOf(), statusList))
                         StatusTracker = 1
+                    }
+                    adapterFilter.notifyDataSetChanged()
+                }
+
+                parentFragmentManager.setFragmentResultListener("slots", viewLifecycleOwner) { _, bundle ->
+                    val slot = bundle.getParcelableArrayList<Slot>("slots")
+
+                    if (slot == null || slot.isEmpty()) {
+                        adapterFilter.notifyDataSetChanged()
+                        return@setFragmentResultListener
+                    }
+
+                    if (SlotTracker == 1){
+                        index = filterItems.indexOfFirst { it.title == "Slot" }
+
+                        if (index != -1) {
+                            filterItems[index] = FilterItem("Slot", mutableListOf<RelicSet>(), slot, 0, false, mutableListOf(), mutableListOf<Status>())
+                        }
+                        else{
+                            filterItems.add(FilterItem("Slot", mutableListOf<RelicSet>(), slot, 0, false, mutableListOf(), mutableListOf<Status>()))
+                        }
+                        index = -1
+                    }
+                    else if (slot != null && slot.isNotEmpty() && SlotTracker == 0) {
+
+                        filterItems.add(FilterItem("Slot", mutableListOf<RelicSet>(), slot, 0, false, mutableListOf(), mutableListOf<Status>()))
+                        SlotTracker = 1
                     }
                     adapterFilter.notifyDataSetChanged()
                 }
