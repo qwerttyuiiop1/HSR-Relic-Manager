@@ -29,8 +29,9 @@ class AddFilterDialog(private val items: MutableList<FilterItem>): DialogFragmen
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
         val relicSetIndex = items.indexOfFirst { it.title == "Relic Set" }
-        val rarityIndex = items.indexOfFirst { it.title == "Rarity" }
+        val mainstatIndex = items.indexOfFirst { it.title == "Mainstat" }
         val substatIndex = items.indexOfFirst { it.title == "Substat" }
+        val rarityIndex = items.indexOfFirst { it.title == "Rarity" }
         val levelIndex = items.indexOfFirst { it.title == "Level" }
         val statusIndex = items.indexOfFirst { it.title == "Status" }
 
@@ -61,10 +62,18 @@ class AddFilterDialog(private val items: MutableList<FilterItem>): DialogFragmen
 //                }
 //            }
 
-            addMainStat.setOnClickListener {
-                val addMainStatDialog = AddMainstatDialog()
-                addMainStatDialog.show(requireActivity().supportFragmentManager, "AddMainstatDialog")
-                dismiss()
+            if (mainstatIndex != -1) {
+                addMainStat.isEnabled = false
+                addMainStat.alpha = 0.5f
+            } else {
+                addMainStat.setOnClickListener {
+                    val addMainStatDialog = AddMainstatDialog(items)
+                    addMainStatDialog.show(
+                        requireActivity().supportFragmentManager,
+                        "AddMainstatDialog"
+                    )
+                    dismiss()
+                }
             }
 
             if (substatIndex != -1) {

@@ -31,16 +31,7 @@ class SubstatboxAdapter(
             binding.apply {
                 var level = set.level
 
-                val invertMatrix = android.graphics.ColorMatrix(
-                    floatArrayOf(
-                        -1f,  0f,  0f,  0f,  255f, // Red
-                        0f, -1f,  0f,  0f,  255f, // Green
-                        0f,  0f, -1f,  0f,  255f, // Blue
-                        0f,  0f,  0f,  1f,    0f  // Alpha
-                    )
-                )
-                icon.colorFilter = android.graphics.ColorMatrixColorFilter(invertMatrix)
-
+                icon.setColorFilter(android.graphics.Color.parseColor("#4A4A4A"))
                 icon.setImageResource(set.image)
 
                 if (!selectedSubstats.contains(set)) {
@@ -118,17 +109,17 @@ class AddSubstatDialog(private val items: MutableList<FilterItem>): DialogFragme
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        var index = -1
         var isExact = true
-        index = items.indexOfFirst { it.title == "Substat" }
+        var index = items.indexOfFirst { it.title == "Substat" }
         val selectedSubstats = if (index != -1) items[index].Substat else mutableListOf<Substat>()
         val origWeight = if (index != -1) items[index].weightLevel else -1
         val selectedSubstatsCopy = selectedSubstats.toMutableList()
 
         if (index != -1 && origWeight != -1) {
-            binding.radioButtonWeight.setImageResource(R.drawable.ic_radio_button_checked)
             binding.radioButtonExact.setImageResource(R.drawable.ic_radio_button_unchecked)
+            binding.radioButtonWeight.setImageResource(R.drawable.ic_radio_button_checked)
             binding.weightNumber.text = origWeight.toString()
+            isExact = false
         }
 
         binding.apply {

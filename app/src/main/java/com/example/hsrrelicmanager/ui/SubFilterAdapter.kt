@@ -31,12 +31,26 @@ class SubFilterAdapter(private val items: FilterItem) : RecyclerView.Adapter<Sub
             val relicSet = items.RelicSet[position]
             holder.filterText.text = relicSet.name
             holder.filterImage.setImageResource(relicSet.icon)
-        } else if (title == "Rarity") {
+        }
+        else if (title == "Mainstat") {
+            val mainstat = items.Mainstat[position]
+            holder.filterText.text = mainstat.name
+            holder.filterImage.setImageResource(mainstat.image)
+        }
+        else if (title == "Substat") {
+            val substat = items.Substat[position]
+            holder.filterText.text = substat.name
+            holder.weightText.text = substat.level.toString()
+            holder.weightText.visibility = View.VISIBLE
+            holder.filterImage.setImageResource(substat.image)
+        }
+        else if (title == "Rarity") {
             val rarity = items.rarityList[position]
             holder.filterText.text = "${rarity} Star"
             (holder.filterText.layoutParams as ViewGroup.MarginLayoutParams).marginStart = 0
             holder.filterImage.visibility = View.GONE
-        } else if (title == "Level") {
+        }
+        else if (title == "Level") {
             val level = items.levelNum
             val type = items.levelType
             if (type == true) {
@@ -46,31 +60,34 @@ class SubFilterAdapter(private val items: FilterItem) : RecyclerView.Adapter<Sub
             }
             (holder.filterText.layoutParams as ViewGroup.MarginLayoutParams).marginStart = 0
             holder.filterImage.visibility = View.GONE
-        } else if (title == "Status") {
+        }
+        else if (title == "Status") {
             val status = items.statusList[position]
             holder.filterText.text = status.name
             holder.filterImage.setImageResource(status.image)
-        } else if (title == "Substat") {
-            val substat = items.Substat[position]
-            holder.filterText.text = substat.name
-            holder.weightText.text = substat.level.toString()
-            holder.weightText.visibility = View.VISIBLE
-            holder.filterImage.setImageResource(substat.image)
         }
     }
 
     override fun getItemCount(): Int {
         return if (items.title == "Relic Set") {
             items.RelicSet.size
-        } else if (items.title == "Rarity") {
-            items.rarityList.size
-        } else if (items.title == "Substat") {
-            items.Substat.size
-        } else if (items.title == "Level") {
-            1
-        } else if (items.title == "Status") {
+        }
+        else if (items.title == "Mainstat") {
+            items.Mainstat.size
+        }
+        else if (items.title == "Status") {
             items.statusList.size
-        } else {
+        }
+        else if (items.title == "Rarity") {
+            items.rarityList.size
+        }
+        else if (items.title == "Substat") {
+            items.Substat.size
+        }
+        else if (items.title == "Level") {
+            1
+        }
+        else {
             1
         }
     }

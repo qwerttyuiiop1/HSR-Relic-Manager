@@ -25,13 +25,14 @@ import com.example.hsrrelicmanager.model.relics.relicSets
 class RelicCheckboxAdapter(
     val sets: List<RelicSet>,
     val selectedSets: MutableList<RelicSet>,
-): RecyclerView.Adapter<RelicCheckboxAdapter.ViewHolder>() {
-    inner class ViewHolder(val binding: ItemRelicSetRowBinding) : RecyclerView.ViewHolder(binding.root) {
+) : RecyclerView.Adapter<RelicCheckboxAdapter.ViewHolder>() {
+    inner class ViewHolder(val binding: ItemRelicSetRowBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(set: RelicSet) {
             binding.apply {
-                checkbox.setOnCheckedChangeListener{_, isChecked ->
+                checkbox.setOnCheckedChangeListener { _, isChecked ->
                     if (isChecked) {
-                        if (!selectedSets.contains(set)){
+                        if (!selectedSets.contains(set)) {
                             selectedSets.add(set)
                             sortSelectedSets()
                         }
@@ -84,7 +85,7 @@ class RelicCheckboxAdapter(
     }
 }
 
-class AddSetDialog(private val items: MutableList<FilterItem>): DialogFragment() {
+class AddSetDialog(private val items: MutableList<FilterItem>) : DialogFragment() {
 
     val binding: DialogSetFilterBinding by lazy {
         DialogSetFilterBinding.inflate(
@@ -122,11 +123,10 @@ class AddSetDialog(private val items: MutableList<FilterItem>): DialogFragment()
             cancelActionGroupDialogButton.setOnClickListener {
                 adapter.selectedSets.clear()
 
-                if (index == -1){
+                if (index == -1) {
                     val addFilterDialog = AddFilterDialog(items)
                     addFilterDialog.show(requireActivity().supportFragmentManager, "AddSetDialog")
-                }
-                else{
+                } else {
                     requireActivity().supportFragmentManager.setFragmentResult(
                         "selectedSets",
                         Bundle().apply {
@@ -139,7 +139,7 @@ class AddSetDialog(private val items: MutableList<FilterItem>): DialogFragment()
 
             confirmActionGroupDialogButton.setOnClickListener {
                 if (adapter.selectedSets.isEmpty() && index != -1) {
-                   items.removeAt(index)
+                    items.removeAt(index)
                 }
 
                 requireActivity().supportFragmentManager.setFragmentResult(

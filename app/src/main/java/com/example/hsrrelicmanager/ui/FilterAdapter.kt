@@ -60,7 +60,22 @@ class FilterAdapter(private val items: MutableList<FilterItem>) : RecyclerView.A
             fragmentManager?.let {
                 addSetDialog.show(it, "AddSetDialog")
             }
-        } else if (filterItem.title == "Rarity") {
+        }
+        else if (filterItem.title == "Mainstat") {
+            val addMainstatDialog = AddMainstatDialog(items)
+            val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
+            fragmentManager?.let {
+                addMainstatDialog.show(it, "AddMainstatDialog")
+            }
+        }
+        else if (filterItem.title == "Substat") {
+            val addSubstatDialog = AddSubstatDialog(items)
+            val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
+            fragmentManager?.let {
+                addSubstatDialog.show(it, "AddSubstatDialog")
+            }
+        }
+        else if (filterItem.title == "Rarity") {
             val addRarityDialog = AddRarityDialog(items)
             val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
             fragmentManager?.let {
@@ -79,13 +94,6 @@ class FilterAdapter(private val items: MutableList<FilterItem>) : RecyclerView.A
             val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
             fragmentManager?.let {
                 addStatusDialog.show(it, "AddStatusDialog")
-            }
-        }
-        else if (filterItem.title == "Substat") {
-            val addSubstatDialog = AddSubstatDialog(items)
-            val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
-            fragmentManager?.let {
-                addSubstatDialog.show(it, "AddSubstatDialog")
             }
         }
         else {
