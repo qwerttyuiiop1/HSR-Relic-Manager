@@ -27,10 +27,12 @@ class AddActionGroupBodyFragment : Fragment() {
     private lateinit var adapterAction: ActionItemAdapter
 
     private var RelicTracker = 0
+    private var SlotTracker = 0
+    private var MainstatTracker = 0
+    private var SubstatTracker = 0
     private var RarityTracker = 0
     private var LevelTracker = 0
     private var StatusTracker = 0
-    private var SubstatTracker = 0
     private var index = -1
 
     override fun onCreateView(
@@ -89,6 +91,63 @@ class AddActionGroupBodyFragment : Fragment() {
                     }
                     adapterFilter.notifyDataSetChanged()
                 }
+
+//                parentFragmentManager.setFragmentResultListener("slot", viewLifecycleOwner) { _, bundle ->
+//                    val substat = bundle.getParcelableArrayList<Substat>("substat")
+//                    val weightLevel = bundle.getInt("weightLevel")
+//
+//                    if (substat == null || substat.isEmpty()) {
+//                        adapterFilter.notifyDataSetChanged()
+//                        return@setFragmentResultListener
+//                    }
+//
+//                    if (SubstatTracker == 1){
+//                        index = filterItems.indexOfFirst { it.title == "Substat" }
+//
+//                        if (index != -1) {
+//                            filterItems[index] = FilterItem("Substat", mutableListOf<RelicSet>(), substat, weightLevel, 0, false, mutableListOf(), mutableListOf<Status>())
+//                        }
+//                        else{
+//                            filterItems.add(FilterItem("Substat", mutableListOf<RelicSet>(), substat, weightLevel, 0, false, mutableListOf(), mutableListOf<Status>()))
+//                        }
+//                        index = -1
+//                    }
+//                    else if (substat != null && substat.isNotEmpty() && SubstatTracker == 0) {
+//
+//                        filterItems.add(FilterItem("Substat", mutableListOf<RelicSet>(), substat, weightLevel, 0, false, mutableListOf(), mutableListOf<Status>()))
+//                        SubstatTracker = 1
+//                    }
+//                    adapterFilter.notifyDataSetChanged()
+//                }
+//
+//                parentFragmentManager.setFragmentResultListener("mainstat", viewLifecycleOwner) { _, bundle ->
+//                    val substat = bundle.getParcelableArrayList<Substat>("substat")
+//                    val weightLevel = bundle.getInt("weightLevel")
+//
+//                    if (substat == null || substat.isEmpty()) {
+//                        adapterFilter.notifyDataSetChanged()
+//                        return@setFragmentResultListener
+//                    }
+//
+//                    if (SubstatTracker == 1){
+//                        index = filterItems.indexOfFirst { it.title == "Substat" }
+//
+//                        if (index != -1) {
+//                            filterItems[index] = FilterItem("Substat", mutableListOf<RelicSet>(), substat, weightLevel, 0, false, mutableListOf(), mutableListOf<Status>())
+//                        }
+//                        else{
+//                            filterItems.add(FilterItem("Substat", mutableListOf<RelicSet>(), substat, weightLevel, 0, false, mutableListOf(), mutableListOf<Status>()))
+//                        }
+//                        index = -1
+//                    }
+//                    else if (substat != null && substat.isNotEmpty() && SubstatTracker == 0) {
+//
+//                        filterItems.add(FilterItem("Substat", mutableListOf<RelicSet>(), substat, weightLevel, 0, false, mutableListOf(), mutableListOf<Status>()))
+//                        SubstatTracker = 1
+//                    }
+//                    adapterFilter.notifyDataSetChanged()
+//                }
+//
 
                 parentFragmentManager.setFragmentResultListener("substat", viewLifecycleOwner) { _, bundle ->
                     val substat = bundle.getParcelableArrayList<Substat>("substat")
