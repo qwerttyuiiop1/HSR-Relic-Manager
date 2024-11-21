@@ -31,7 +31,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Relic Set"
+                android:text="Sub Stats"
                 android:letterSpacing="0.03"
                 android:textSize="32sp"
                 android:textStyle="bold"

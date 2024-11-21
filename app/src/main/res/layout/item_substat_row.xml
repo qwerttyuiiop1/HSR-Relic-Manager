@@ -26,6 +26,14 @@
             android:layout_gravity="center_vertical"
             android:buttonTint="@color/gold" />
 
+        <ImageView
+            android:layout_marginStart="4dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:id="@+id/icon"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/musketeer_of_wild_wheat" />
+
         <TextView
             android:id="@+id/name"
             android:layout_width="120dp"
@@ -39,12 +47,6 @@
             android:text="Enhance"
             android:textColor="#4A4A4A"
             android:textSize="16sp" />
-
-        <!-- Add a Spacer to push the remaining items to the right -->
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
 
         <ImageView
             android:id="@+id/subtract_level"

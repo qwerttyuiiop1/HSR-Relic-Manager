@@ -31,6 +31,18 @@ class SubstatboxAdapter(
             binding.apply {
                 var level = set.level
 
+                val invertMatrix = android.graphics.ColorMatrix(
+                    floatArrayOf(
+                        -1f,  0f,  0f,  0f,  255f, // Red
+                        0f, -1f,  0f,  0f,  255f, // Green
+                        0f,  0f, -1f,  0f,  255f, // Blue
+                        0f,  0f,  0f,  1f,    0f  // Alpha
+                    )
+                )
+                icon.colorFilter = android.graphics.ColorMatrixColorFilter(invertMatrix)
+
+                icon.setImageResource(set.image)
+
                 if (!selectedSubstats.contains(set)) {
                     set.level = 1
                 }
