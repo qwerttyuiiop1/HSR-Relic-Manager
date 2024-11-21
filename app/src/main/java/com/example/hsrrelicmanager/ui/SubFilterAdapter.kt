@@ -15,6 +15,7 @@ class SubFilterAdapter(private val items: FilterItem) : RecyclerView.Adapter<Sub
     class SubFilterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val filterImage: ImageView = itemView.findViewById(R.id.chosenFilterImage)
         val filterText: TextView = itemView.findViewById(R.id.chosenFilterText)
+        val weightText: TextView = itemView.findViewById(R.id.weightFilterText)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubFilterViewHolder {
@@ -51,9 +52,10 @@ class SubFilterAdapter(private val items: FilterItem) : RecyclerView.Adapter<Sub
             holder.filterImage.setImageResource(status.image)
         } else if (title == "Substat") {
             val substat = items.Substat[position]
-            holder.filterText.text = "${substat.name}\t\t\tweight: ${substat.level}"
-            (holder.filterText.layoutParams as ViewGroup.MarginLayoutParams).marginStart = 0
-            holder.filterImage.visibility = View.GONE
+            holder.filterText.text = substat.name
+            holder.weightText.text = substat.level.toString()
+            holder.weightText.visibility = View.VISIBLE
+            holder.filterImage.setImageResource(substat.image)
         }
     }
 

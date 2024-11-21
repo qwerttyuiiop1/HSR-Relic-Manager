@@ -107,9 +107,17 @@ class AddSubstatDialog(private val items: MutableList<FilterItem>): DialogFragme
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
         var index = -1
+        var isExact = true
         index = items.indexOfFirst { it.title == "Substat" }
         val selectedSubstats = if (index != -1) items[index].Substat else mutableListOf<Substat>()
+        val origWeight = if (index != -1) items[index].weightLevel else -1
         val selectedSubstatsCopy = selectedSubstats.toMutableList()
+
+        if (index != -1 && origWeight != -1) {
+            binding.radioButtonWeight.setImageResource(R.drawable.ic_radio_button_checked)
+            binding.radioButtonExact.setImageResource(R.drawable.ic_radio_button_unchecked)
+            binding.weightNumber.text = origWeight.toString()
+        }
 
         binding.apply {
             val adapter = SubstatboxAdapter(substatSets, selectedSubstats)
@@ -117,21 +125,24 @@ class AddSubstatDialog(private val items: MutableList<FilterItem>): DialogFragme
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
             var level = weightNumber.text.toString().toInt()
-            Toast.makeText(context, level.toString(), Toast.LENGTH_SHORT).show()
 
             radioButtonExact.setOnClickListener {
                 radioButtonExact.setImageResource(R.drawable.ic_radio_button_checked)
                 radioButtonWeight.setImageResource(R.drawable.ic_radio_button_unchecked)
+                isExact = true
             }
 
             radioButtonWeight.setOnClickListener {
                 radioButtonExact.setImageResource(R.drawable.ic_radio_button_unchecked)
                 radioButtonWeight.setImageResource(R.drawable.ic_radio_button_checked)
+                isExact = false
             }
 
             weightSubtractLevel.setOnClickListener {
-                level--
-                weightNumber.text = level.toString()
+                if (level > 3) {
+                    level--
+                    weightNumber.text = level.toString()
+                }
             }
 
             weightAddLevel.setOnClickListener {
@@ -161,6 +172,7 @@ class AddSubstatDialog(private val items: MutableList<FilterItem>): DialogFragme
                     "substat",
                     Bundle().apply {
                         putParcelableArrayList("substat", ArrayList(selectedSubstatsCopy))
+                        putInt("weightLevel", origWeight)
                     }
                 )
                 dismiss()
@@ -176,6 +188,11 @@ class AddSubstatDialog(private val items: MutableList<FilterItem>): DialogFragme
                     "substat",
                     Bundle().apply {
                         putParcelableArrayList("substat", ArrayList(adapter.selectedSubstats))
+                        if (isExact) {
+                            putInt("weightLevel", -1)
+                        } else {
+                            putInt("weightLevel", level)
+                        }
                     }
                 )
                 dismiss()

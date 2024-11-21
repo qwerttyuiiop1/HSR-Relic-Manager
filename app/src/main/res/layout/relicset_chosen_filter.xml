@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp">
+    android:layout_marginTop="10dp"
+    android:layout_marginStart="10dp">
 
     <!-- ImageView -->
     <ImageView
@@ -16,10 +17,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <!-- TextView -->
+    <!-- Left TextView -->
     <TextView
         android:id="@+id/chosenFilterText"
-        android:layout_width="250dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:text="Sample Text"
@@ -28,5 +29,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/chosenFilterImage"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Right TextView -->
+    <TextView
+        android:id="@+id/weightFilterText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="80dp"
+        android:text="weight"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

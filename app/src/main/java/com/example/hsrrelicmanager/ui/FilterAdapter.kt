@@ -18,6 +18,7 @@ class FilterAdapter(private val items: MutableList<FilterItem>) : RecyclerView.A
     class FilterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val choiceText: TextView = itemView.findViewById(R.id.item_filter_text)
         val recyclerView: RecyclerView = itemView.findViewById(R.id.chosenFilterGroup)
+        val substatText: TextView = itemView.findViewById(R.id.substats_subtext)
         val entireView: View = itemView
     }
 
@@ -28,8 +29,19 @@ class FilterAdapter(private val items: MutableList<FilterItem>) : RecyclerView.A
 
     override fun onBindViewHolder(holder: FilterViewHolder, position: Int) {
         val filterItem = items[position]
+        val weightLevel = filterItem.weightLevel
 
         holder.choiceText.text = filterItem.title
+
+        if (filterItem.title == "Substat") {
+            holder.substatText.visibility = View.VISIBLE
+            if (weightLevel != -1) {
+                holder.substatText.text = "(>= ${weightLevel})"
+            }
+            else{
+                holder.substatText.text = "(exact)"
+            }
+        }
 
         val subAdapter = SubFilterAdapter(filterItem)
         holder.recyclerView.layoutManager = LinearLayoutManager(holder.itemView.context)

@@ -8,6 +8,7 @@ data class FilterItem(
     val title: String,
     val RelicSet: MutableList<RelicSet>,
     val Substat: MutableList<Substat>,
+    val weightLevel: Int,
     var levelNum: Int,
     var levelType: Boolean,
     val rarityList: MutableList<Int>,

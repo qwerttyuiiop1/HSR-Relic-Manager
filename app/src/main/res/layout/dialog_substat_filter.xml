@@ -89,7 +89,7 @@
             android:layout_marginEnd="10dp"
             android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/ic_radio_button_unchecked" />
+            android:src="@drawable/ic_radio_button_checked" />
 
         <TextView
             android:id="@+id/exact_choice"
