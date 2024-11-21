@@ -32,6 +32,11 @@ class SubFilterAdapter(private val items: FilterItem) : RecyclerView.Adapter<Sub
             holder.filterText.text = relicSet.name
             holder.filterImage.setImageResource(relicSet.icon)
         }
+        else if (title == "Slot"){
+            val slot = items.Slot[position]
+            holder.filterText.text = slot.name
+            holder.filterImage.setImageResource(slot.image)
+        }
         else if (title == "Mainstat") {
             val mainstat = items.Mainstat[position]
             holder.filterText.text = mainstat.name
@@ -71,6 +76,9 @@ class SubFilterAdapter(private val items: FilterItem) : RecyclerView.Adapter<Sub
     override fun getItemCount(): Int {
         return if (items.title == "Relic Set") {
             items.RelicSet.size
+        }
+        else if (items.title == "Slot") {
+            items.Slot.size
         }
         else if (items.title == "Mainstat") {
             items.Mainstat.size

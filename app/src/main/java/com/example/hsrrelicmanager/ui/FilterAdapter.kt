@@ -61,6 +61,13 @@ class FilterAdapter(private val items: MutableList<FilterItem>) : RecyclerView.A
                 addSetDialog.show(it, "AddSetDialog")
             }
         }
+        else if (filterItem.title == "Slot") {
+            val addSlotDialog = AddSlotDialog(items)
+            val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
+            fragmentManager?.let {
+                addSlotDialog.show(it, "AddSlotDialog")
+            }
+        }
         else if (filterItem.title == "Mainstat") {
             val addMainstatDialog = AddMainstatDialog(items)
             val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager

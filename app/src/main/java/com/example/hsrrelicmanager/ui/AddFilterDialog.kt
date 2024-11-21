@@ -29,6 +29,7 @@ class AddFilterDialog(private val items: MutableList<FilterItem>): DialogFragmen
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
         val relicSetIndex = items.indexOfFirst { it.title == "Relic Set" }
+        val slotIndex = items.indexOfFirst { it.title == "Slot" }
         val mainstatIndex = items.indexOfFirst { it.title == "Mainstat" }
         val substatIndex = items.indexOfFirst { it.title == "Substat" }
         val rarityIndex = items.indexOfFirst { it.title == "Rarity" }
@@ -51,16 +52,16 @@ class AddFilterDialog(private val items: MutableList<FilterItem>): DialogFragmen
                 }
             }
 
-//            if (slotIndex != -1) {
-//                addSlot.isEnabled = false
-//                addSlot.alpha = 0.5f
-//            } else {
-//                addSlot.setOnClickListener {
-//                    val addSlotDialog = AddSlotDialog(items)
-//                    addSlotDialog.show(requireActivity().supportFragmentManager, "AddSlotDialog")
-//                    dismiss()
-//                }
-//            }
+            if (slotIndex != -1) {
+                addSlot.isEnabled = false
+                addSlot.alpha = 0.5f
+            } else {
+                addSlot.setOnClickListener {
+                    val addSlotDialog = AddSlotDialog(items)
+                    addSlotDialog.show(requireActivity().supportFragmentManager, "AddSlotDialog")
+                    dismiss()
+                }
+            }
 
             if (mainstatIndex != -1) {
                 addMainStat.isEnabled = false

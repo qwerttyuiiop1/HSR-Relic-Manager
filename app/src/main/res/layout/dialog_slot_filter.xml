@@ -31,7 +31,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Relic Set"
+                android:text="Slot"
                 android:letterSpacing="0.03"
                 android:textSize="32sp"
                 android:textStyle="bold"
@@ -63,17 +63,16 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="400dp"
+        android:layout_weight="1"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
-        android:layout_weight="1" />
-
+        />
 
 
     <!-- footer -->
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
