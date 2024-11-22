@@ -6,7 +6,7 @@ import android.net.Uri
 import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.example.hsrrelicmanager.HSRAutoClickService
+import com.example.hsrrelicmanager.task.HSRAutoClickService
 import com.example.hsrrelicmanager.core.AutoclickService
 
 class PermissionLauncher : AppCompatActivity() {

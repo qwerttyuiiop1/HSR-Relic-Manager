@@ -1,6 +1,7 @@
-package com.example.hsrrelicmanager
+package com.example.hsrrelicmanager.task
 
 import android.content.Intent
+import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.core.AutoclickService
 import com.example.hsrrelicmanager.core.android.ImageDump
 import com.example.hsrrelicmanager.core.components.Task
@@ -8,6 +9,8 @@ import com.example.hsrrelicmanager.core.exe.MyResult
 import com.example.hsrrelicmanager.core.exe.TaskRunner
 import com.example.hsrrelicmanager.core.exe.invoke
 import com.example.hsrrelicmanager.core.io.IBubbleController
+import com.example.hsrrelicmanager.task.autobattle.AutobattleTask
+import com.example.hsrrelicmanager.task.scan.ScanInventoryTask
 import com.example.hsrrelicmanager.ui.MainActivity
 import com.example.hsrrelicmanager.ui.bubble.BubbleController
 import com.example.hsrrelicmanager.ui.bubble.PermissionLauncher
@@ -30,9 +33,7 @@ class HSRAutoClickService : AutoclickService() {
     }
 
     /**
-     *         Task(true, "AUTOBATTLE") to view.btnAutobattle,
      *         Task(true, "ORGANIZE") to view.btnOrganizeInventory,
-     *         Task(true, "SCAN") to view.btnScanInventory,
      */
     override fun onInit() {
         addHandler(TaskRunner(Task.NONE) {
@@ -66,6 +67,7 @@ class HSRAutoClickService : AutoclickService() {
             MyResult.Success("")
         })
 
-
+        addHandler(AutobattleTask())
+        addHandler(ScanInventoryTask())
     }
 }

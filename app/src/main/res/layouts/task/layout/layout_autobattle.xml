@@ -50,16 +50,20 @@
             android:layout_marginEnd="-110.5px"
             >
             <TextView
+                android:id="@+id/lbl_start_cost"
                 android:layout_width="65px"
                 android:layout_height="match_parent"
                 android:layout_marginStart="75px"
                 android:background="@drawable/border_red"
                 />
-            <View
+
+            <TextView
+                android:id="@+id/btn_restart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="150px"
                 android:background="@drawable/border_red"
+                android:text="one,more,time"
                 />
         </FrameLayout>
     </LinearLayout>

@@ -1,5 +1,6 @@
 package com.example.hsrrelicmanager.core.exe
 
+import com.google.android.datatransport.runtime.logging.Logging
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -32,6 +33,8 @@ abstract class Instance<T> private constructor(
             try {
                 val res = run()
                 exit(res)
+            } catch (e: Throwable) {
+                Logging.e("Instance", "Error in instance", e)
             } finally {
                 onClose()
                 close()

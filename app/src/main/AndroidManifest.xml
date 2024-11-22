@@ -52,7 +52,7 @@
         <activity android:name=".ui.InventoryBodyFragment"/>
 
         <service
-            android:name=".HSRAutoClickService"
+            android:name=".task.HSRAutoClickService"
             android:exported="false"
             android:foregroundServiceType="mediaProjection"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">

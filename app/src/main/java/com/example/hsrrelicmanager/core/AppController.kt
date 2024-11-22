@@ -34,9 +34,7 @@ open class AppController (
         )
         taskHandler = TaskHandler(uiCtx).apply {
             onTaskChangeListener = { task ->
-                uiCtx.uiHandler.post {
-                    uiController?.setSelectedTask(task)
-                }
+                uiController?.setSelectedTask(task)
             }
             onCompleteListener = { res ->
                 uiCtx.uiHandler.post {

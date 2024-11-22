@@ -4,8 +4,7 @@ import android.graphics.Bitmap
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.sync.Semaphore
 
 open class TaskScope<T>: TaskInstance<T>, CoroutineScope {
     private val resultChannel = Channel<MyResult<T>?>(Channel.RENDEZVOUS)
@@ -70,28 +69,34 @@ open class TaskScope<T>: TaskInstance<T>, CoroutineScope {
     override suspend fun awaitResult() =
         resultChannel.receive()
 
-    private val lock = Mutex()
+    private val lock = Semaphore(1)
     /**
      * block until the next tick is received
      */
     suspend fun awaitTick(): Bitmap {
         check()
-        lock.withLock {
+        try {
+            lock.acquire()
             resultChannel.send(null)
             _tick = tickChannel.receive()
+            return tick
+        } finally {
+            lock.release()
         }
-        return tick
     }
 
     /**
      * notify that the task is completed and exit
      */
     suspend fun complete(msg: MyResult<T>): Nothing {
-        lock.withLock {
+        try {
+            lock.acquire()
             resultChannel.send(msg)
+        } finally {
+            lock.release()
+            close()
+            throw CancellationException(msg.toString())
         }
-        close()
-        throw CancellationException(msg.toString())
     }
     override fun close() {
         if (closed) return

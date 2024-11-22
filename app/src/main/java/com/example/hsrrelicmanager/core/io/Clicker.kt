@@ -14,6 +14,7 @@ open class Clicker(
 ) {
     companion object {
         const val CLICK_DURATION = 50L
+        // 4 pixels per 3 milliseconds
         const val SWIPE_SPEED = 4/3f
     }
     private class Promisify(

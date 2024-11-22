@@ -7,39 +7,57 @@ import android.widget.TextView
 import androidx.core.view.children
 import com.example.hsrrelicmanager.core.components.UIContext
 import com.example.hsrrelicmanager.core.components.impl.MButtonImpl
-import com.example.hsrrelicmanager.core.components.impl.MTextAreaImpl
 import com.example.hsrrelicmanager.core.components.impl.MTextButtonImpl
 import com.example.hsrrelicmanager.core.components.ui.TextArea.Companion.getDefaultScale
+import com.example.hsrrelicmanager.core.components.views.TextAreaView
 import com.example.hsrrelicmanager.core.ext.rect
 
 
-interface TextButton: TextArea, UIButton
-interface MTextButton: TextButton, MTextArea, MUIButton
+interface TextButton: TextArea, UIButton {
+    companion object {
+        operator fun invoke(
+            area: Rect,
+            ctx: UIContext,
+            clickArea: Rect = area,
+            label: Set<String>? = null,
+            scale: Float = getDefaultScale(area),
+        ): TextButton = MTextButtonImpl(
+            area, scale, label, clickArea, ctx
+        )
+    }
+}
+interface MTextButton: TextButton, MTextArea, MUIButton {
+    companion object {
+        operator fun invoke(
+            area: Rect,
+            ctx: UIContext,
+            clickArea: Rect = area,
+            label: Set<String>? = null,
+            scale: Float = getDefaultScale(area),
+        ): MTextButton = MTextButtonImpl(
+            area, scale, label, clickArea, ctx
+        )
+    }
+}
 
-typealias TBtnBldr = TextButtonBuilder
+typealias UIBldr = TextButtonBuilder
 class TextButtonBuilder(
-    var rect: Rect? = null,
+    var area: Rect? = null,
     var scale: Float? = null,
+    var ctx: UIContext? = null,
     var label: Set<String>? = null,
     var clickArea: Rect? = null,
-    var ctx: UIContext? = null,
 ) {
     constructor(
-        rect: Rect,
-        btn: UIButton,
-        ctx: UIContext,
-        scale: Float = getDefaultScale(rect),
-    ): this(rect, scale, null, btn.clickArea, ctx)
-    constructor(
-        rect: Rect,
-        clickArea: Rect = rect,
-        ctx: UIContext,
-        scale: Float = getDefaultScale(rect),
-    ) : this(rect, scale, null, rect, ctx)
-    constructor(
-        v: TextView, ctx: UIContext, btn: Button? = null,
+        v: TextView, ctx: UIContext,
+        btn: Button? = null, scale: Float? = null,
     ): this() {
-        textView(v, ctx, btn)
+        textView(v, ctx, btn, scale)
+    }
+    constructor(
+        v: TextAreaView, ctx: UIContext, btn: Button? = null,
+    ): this() {
+        textView(v, ctx, btn, v.scale)
     }
     constructor(
         g: ViewGroup, ctx: UIContext
@@ -48,18 +66,23 @@ class TextButtonBuilder(
     }
 
     fun textArea(value: TextArea) {
-        rect = value.area
+        area = value.area
         scale = value.scale
+        ctx = value.ctx
         label = value.label
     }
     fun button(value: UIButton) {
         clickArea = value.clickArea
+        ctx = value.ctx
     }
     fun textView(
-        v: TextView, ctx: UIContext, btn: Button? = null,
+        v: TextView, ctx: UIContext,
+        btn: Button? = null,
+        scale: Float? = null
     ) {
-        rect = v.rect
-        scale = null
+        area = v.rect
+        this.ctx = ctx
+        this.scale = scale
         label = v.text.let {
             if (it == null || it == "") null
             else it.split(",").toSet()
@@ -82,11 +105,34 @@ class TextButtonBuilder(
         get() = mTextButton
     val mTextButton: MTextButton
         get() {
-            val text = MTextAreaImpl(
-                rect!!, ctx!!,
-                scale ?: getDefaultScale(rect!!)
+            val area = this.area ?: clickArea!!
+            return MTextButtonImpl(
+                area,
+                scale ?: getDefaultScale(area),
+                label,
+                clickArea ?: area,
+                ctx!!
             )
-            val btn = MButtonImpl(clickArea!!, ctx!!)
-            return MTextButtonImpl(text, btn)
+        }
+
+    val textArea: TextArea
+        get() = mTextArea
+    val mTextArea: MTextArea
+        get() = MTextButtonImpl(
+            area!!,
+            scale ?: getDefaultScale(area!!),
+            label,
+            clickArea ?: area!!,
+            ctx!!
+        )
+
+    val button: UIButton
+        get() = mButton
+    val mButton: MUIButton
+        get() {
+            return MButtonImpl(
+                clickArea!!,
+                ctx!!
+            )
         }
 }

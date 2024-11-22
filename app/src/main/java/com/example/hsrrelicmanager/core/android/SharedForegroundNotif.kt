@@ -5,7 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.view.WindowManager
-import com.example.hsrrelicmanager.HSRAutoClickService
+import com.example.hsrrelicmanager.task.HSRAutoClickService
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.core.AppController
 import com.example.hsrrelicmanager.core.AutoclickService
@@ -74,7 +74,8 @@ class SharedForegroundNotif(
         fun alert(ctx: Context, res: TaskResult) {
             ctx.apply {
                 val alertDialog = android.app.AlertDialog.Builder(this).apply {
-                    setTitle(getString(res.task.displayName))
+//                    setTitle(getString(res.task.displayName))
+                    setTitle(res.task.name)
                     val msg = when (res) {
                         is TaskResult.Success -> res.message
                         is TaskResult.Fail -> res.error.toString()
