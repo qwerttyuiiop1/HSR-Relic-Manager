@@ -22,6 +22,9 @@ import com.example.hsrrelicmanager.model.rules.group.Group
 
 class DeleteRuleDialogFragment : DialogFragment() {
 
+    var index: Int = -1
+    lateinit var group: Group
+
     companion object {
         private const val ARG_INDEX = "index"
         private const val ARG_DATA = "data"
@@ -48,8 +51,8 @@ class DeleteRuleDialogFragment : DialogFragment() {
         val builder = androidx.appcompat.app.AlertDialog.Builder(requireActivity())
         val dialogView = requireActivity().layoutInflater.inflate(R.layout.dialog_delete_rule, null)
 
-        val index = arguments?.getInt(ARG_INDEX)
-        val group = arguments?.getParcelable<Group>(ARG_DATA)
+        index = arguments?.getInt(ARG_INDEX)!!
+        group = arguments?.getParcelable<Group>(ARG_DATA)!!
 
         builder.setView(dialogView)
 
@@ -129,6 +132,18 @@ class DeleteRuleDialogFragment : DialogFragment() {
         // Remove the blur effect on dismissal
         val bgView = requireActivity().findViewById<View>(R.id.activity_main_layout)
         bgView.setRenderEffect(null)
+    }
+
+    // User pressed outside dialog
+    override fun onCancel(dialog: DialogInterface) {
+        super.onCancel(dialog)
+
+        val resultBundle = Bundle().apply {
+            putInt("index", index ?: -1)
+            putString("action", "cancel")
+        }
+        parentFragmentManager.setFragmentResult("delete_rule_request", resultBundle)
+        dismiss()
     }
 
     private fun getGroupImageResource(group: Group): Int {
