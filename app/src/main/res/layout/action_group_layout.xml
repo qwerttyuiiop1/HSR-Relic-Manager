@@ -74,6 +74,7 @@
                         android:text="Action"
                         android:textColor="#FFC65C"
                         android:textSize="24sp"
+                        android:textStyle="bold"
                         android:typeface="normal" />
 
                 </LinearLayout>

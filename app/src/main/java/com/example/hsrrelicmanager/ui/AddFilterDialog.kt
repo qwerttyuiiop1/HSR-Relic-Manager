@@ -1,15 +1,19 @@
 package com.example.hsrrelicmanager.ui
 
 import android.content.DialogInterface
+import android.graphics.RenderEffect
+import android.graphics.Shader
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.hsrrelicmanager.R
+import com.example.hsrrelicmanager.core.components.FilterItem
 import com.example.hsrrelicmanager.databinding.DialogSelectFilterBinding
+import java.util.logging.Filter
 
-class AddFilterDialog: DialogFragment() {
+class AddFilterDialog(private val items: MutableList<FilterItem>): DialogFragment() {
 
     val binding: DialogSelectFilterBinding by lazy {
         DialogSelectFilterBinding.inflate(
@@ -24,42 +28,100 @@ class AddFilterDialog: DialogFragment() {
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
+        val relicSetIndex = items.indexOfFirst { it.title == "Relic Set" }
+        val slotIndex = items.indexOfFirst { it.title == "Slot" }
+        val mainstatIndex = items.indexOfFirst { it.title == "Mainstat" }
+        val substatIndex = items.indexOfFirst { it.title == "Substat" }
+        val rarityIndex = items.indexOfFirst { it.title == "Rarity" }
+        val levelIndex = items.indexOfFirst { it.title == "Level" }
+        val statusIndex = items.indexOfFirst { it.title == "Status" }
+
         binding.apply {
             closeDialogButton.setOnClickListener {
                 dismiss()
             }
-            addRelicSet.setOnClickListener {
-                val addSetDialog = AddSetDialog()
-                addSetDialog.show(requireActivity().supportFragmentManager, "AddSetDialog")
-                dismiss()
+
+            if (relicSetIndex != -1) {
+                addRelicSet.isEnabled = false
+                addRelicSet.alpha = 0.5f
+            } else {
+                addRelicSet.setOnClickListener {
+                    val addSetDialog = AddSetDialog(items)
+                    addSetDialog.show(requireActivity().supportFragmentManager, "AddSetDialog")
+                    dismiss()
+                }
             }
-//            addSlot.setOnClickListener {
-//                // TODO: start AddSlotFragment
-//            }
-            addMainStat.setOnClickListener {
-                val addMainStatDialog = AddMainstatDialog()
-                addMainStatDialog.show(requireActivity().supportFragmentManager, "AddMainstatDialog")
-                dismiss()
+
+            if (slotIndex != -1) {
+                addSlot.isEnabled = false
+                addSlot.alpha = 0.5f
+            } else {
+                addSlot.setOnClickListener {
+                    val addSlotDialog = AddSlotDialog(items)
+                    addSlotDialog.show(requireActivity().supportFragmentManager, "AddSlotDialog")
+                    dismiss()
+                }
             }
-            addSubStat.setOnClickListener {
-                val addSubStatDialog = AddSubstatDialog()
-                addSubStatDialog.show(requireActivity().supportFragmentManager, "AddSubstatDialog")
-                dismiss()
+
+            if (mainstatIndex != -1) {
+                addMainStat.isEnabled = false
+                addMainStat.alpha = 0.5f
+            } else {
+                addMainStat.setOnClickListener {
+                    val addMainStatDialog = AddMainstatDialog(items)
+                    addMainStatDialog.show(
+                        requireActivity().supportFragmentManager,
+                        "AddMainstatDialog"
+                    )
+                    dismiss()
+                }
             }
-            addRarity.setOnClickListener {
-                val addRarityDialog = AddRarityDialog()
-                addRarityDialog.show(requireActivity().supportFragmentManager, "AddRarityDialog")
-                dismiss()
+
+            if (substatIndex != -1) {
+                addSubStat.isEnabled = false
+                addSubStat.alpha = 0.5f
+            } else {
+                addSubStat.setOnClickListener {
+                    val addSubStatDialog = AddSubstatDialog(items)
+                    addSubStatDialog.show(
+                        requireActivity().supportFragmentManager,
+                        "AddSubstatDialog"
+                    )
+                    dismiss()
+                }
             }
-            addLevel.setOnClickListener {
-                val addLevelDialog = AddLevelDialog();
-                addLevelDialog.show(requireActivity().supportFragmentManager, "AddLevelDialog")
-                dismiss()
+
+            if (rarityIndex != -1) {
+                addRarity.isEnabled = false
+                addRarity.alpha = 0.5f
+            } else {
+                addRarity.setOnClickListener {
+                    val addRarityDialog = AddRarityDialog(items)
+                    addRarityDialog.show(requireActivity().supportFragmentManager, "AddRarityDialog")
+                    dismiss()
+                }
             }
-            addStatus.setOnClickListener {
-                val addStatusDialog = AddStatusDialog()
-                addStatusDialog.show(requireActivity().supportFragmentManager, "AddStatusDialog")
-                dismiss()
+
+            if (levelIndex != -1) {
+                addLevel.isEnabled = false
+                addLevel.alpha = 0.5f
+            } else {
+                addLevel.setOnClickListener() {
+                    val addLevelDialog = AddLevelDialog(items);
+                    addLevelDialog.show(requireActivity().supportFragmentManager,"AddLevelDialog")
+                    dismiss()
+                }
+            }
+
+            if (statusIndex != -1) {
+                addStatus.isEnabled = false
+                addStatus.alpha = 0.5f
+            } else {
+                addStatus.setOnClickListener {
+                    val addStatusDialog = AddStatusDialog(items)
+                    addStatusDialog.show(requireActivity().supportFragmentManager, "AddStatusDialog")
+                    dismiss()
+                }
             }
         }
 //        val addActionGroupFragment: View = dialogView.findViewById(R.id.add_action_group)
@@ -70,6 +132,11 @@ class AddFilterDialog: DialogFragment() {
 //            (requireActivity() as MainActivity).loadFragment(addActionGroupHeaderFragment, addActionGroupBodyFragment)
 //            dismiss()
 //        }
+        val activity = context as MainActivity
+        val bgView = activity.findViewById<View>(R.id.activity_main_layout)
+        bgView.setRenderEffect(
+            RenderEffect.createBlurEffect(20f, 20f, Shader.TileMode.CLAMP)
+        )
 
         return dialog
     }

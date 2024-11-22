@@ -27,7 +27,7 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActionViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.action_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_action, parent, false)
         return ActionViewHolder(view)
     }
 
@@ -55,7 +55,7 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
 
     @RequiresApi(Build.VERSION_CODES.S)
     private fun showDialog(context: Context, holder: ActionViewHolder) {
-        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_buttons, null)
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_action_rule, null)
         val builder = AlertDialog.Builder(context)
             .setView(dialogView)
 
@@ -79,23 +79,43 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
         }
 
         // Set up radio button click listeners
-        dialogView.findViewById<ImageView>(R.id.radio_button_enhance).setOnClickListener {
+        dialogView.findViewById<View>(R.id.enhance_action_group).setOnClickListener {
             updateRadioButtonState(dialogView, R.id.radio_button_enhance)
             selectedOption = "Enhance"
         }
-        dialogView.findViewById<ImageView>(R.id.radio_button_lock).setOnClickListener {
+        dialogView.findViewById<View>(R.id.radio_button_enhance).setOnClickListener {
+            updateRadioButtonState(dialogView, R.id.radio_button_enhance)
+            selectedOption = "Enhance"
+        }
+        dialogView.findViewById<View>(R.id.lock_action_group).setOnClickListener {
             updateRadioButtonState(dialogView, R.id.radio_button_lock)
             selectedOption = "Lock"
         }
-        dialogView.findViewById<ImageView>(R.id.radio_button_reset).setOnClickListener {
+        dialogView.findViewById<View>(R.id.radio_button_lock).setOnClickListener {
+            updateRadioButtonState(dialogView, R.id.radio_button_lock)
+            selectedOption = "Lock"
+        }
+        dialogView.findViewById<View>(R.id.reset_action_group).setOnClickListener {
             updateRadioButtonState(dialogView, R.id.radio_button_reset)
             selectedOption = "Reset"
         }
-        dialogView.findViewById<ImageView>(R.id.radio_button_filter).setOnClickListener {
+        dialogView.findViewById<View>(R.id.radio_button_reset).setOnClickListener {
+            updateRadioButtonState(dialogView, R.id.radio_button_reset)
+            selectedOption = "Reset"
+        }
+        dialogView.findViewById<View>(R.id.filter_action_group).setOnClickListener {
             updateRadioButtonState(dialogView, R.id.radio_button_filter)
             selectedOption = "Filter Group"
         }
-        dialogView.findViewById<ImageView>(R.id.radio_button_trash).setOnClickListener {
+        dialogView.findViewById<View>(R.id.radio_button_filter).setOnClickListener {
+            updateRadioButtonState(dialogView, R.id.radio_button_filter)
+            selectedOption = "Filter Group"
+        }
+        dialogView.findViewById<View>(R.id.trash_action_group).setOnClickListener {
+            updateRadioButtonState(dialogView, R.id.radio_button_trash)
+            selectedOption = "Trash"
+        }
+        dialogView.findViewById<View>(R.id.radio_button_trash).setOnClickListener {
             updateRadioButtonState(dialogView, R.id.radio_button_trash)
             selectedOption = "Trash"
         }
@@ -117,10 +137,14 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
             }
         }
 
-        val cancelButton = dialogView.findViewById<View>(R.id.cancel_action_group_dialog_button)
-        cancelButton.setOnClickListener {
+    val cancelButton = dialogView.findViewById<View>(R.id.cancel_action_group_dialog_button)
+    cancelButton.setOnClickListener {
+        if (activity.supportFragmentManager.backStackEntryCount > 0) {
+            activity.supportFragmentManager.popBackStack()
+        } else {
             dialog.dismiss()
         }
+    }
 
         val confirmButton = dialogView.findViewById<View>(R.id.confirm_action_group_dialog_button)
         confirmButton.setOnClickListener {

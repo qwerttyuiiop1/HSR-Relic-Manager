@@ -76,51 +76,6 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/reset"
-                 />
-
-            <!-- Label -->
-            <TextView
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
-                android:text="Reset"
-                android:fontFamily="@font/pf_din_text_pro_regular"
-                android:textColor="#4A4A4A"
-                android:textSize="24sp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/container3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:background="@drawable/rule_add_rectangle_button"
-            android:elevation="5dp"
-            android:translationY="-5dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp">
-
-            <!-- Radio Button -->
-            <CheckBox
-                android:id="@+id/check3"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center_vertical"
-                android:buttonTint="@color/gold" />
-
-            <ImageView
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center_vertical"
                 android:src="@drawable/lock"
                  />
 
@@ -136,6 +91,7 @@
                 android:textColor="#4A4A4A"
                 android:textSize="24sp"/>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/container2"
             android:layout_width="match_parent"
@@ -181,7 +137,7 @@
                 android:textSize="24sp"/>
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/container4"
+            android:id="@+id/container3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -197,7 +153,7 @@
 
             <!-- Radio Button -->
             <CheckBox
-                android:id="@+id/check4"
+                android:id="@+id/check3"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center_vertical"
@@ -219,7 +175,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="15dp"
                 android:paddingBottom="15dp"
-                android:text="Enhance"
+                android:text="None"
                 android:fontFamily="@font/pf_din_text_pro_regular"
                 android:textColor="#4A4A4A"
                 android:textSize="24sp"/>

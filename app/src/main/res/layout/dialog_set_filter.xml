@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:background="@drawable/right_corner_rounded_rect"
     android:orientation="vertical"
-    android:padding="0dp">
+    android:padding="0dp"
+    android:maxHeight="500dp">
 
     <!-- header -->
     <LinearLayout
@@ -62,7 +63,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="500dp"
         android:layout_weight="1"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"

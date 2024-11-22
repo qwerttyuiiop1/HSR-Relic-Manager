@@ -1,5 +1,10 @@
 package com.example.hsrrelicmanager.ui
 
+import android.graphics.Color
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,10 +43,36 @@ class RelicAdapter(
                 imgRelicMainStat.setImageResource(relic.mainstatResource)
 
                 imgRelic.setImageResource(relic.set.icon)
+
+                var isMaxed = false;
+                var levelText = ""
+                val goldSpan = ForegroundColorSpan(Color.parseColor("#FFC65C"))
+
+                if (relic.level == ((relic.level/3 + 1)*3).coerceAtMost(relic.rarity * 3)) {
+                    isMaxed = true;
+                }
+
+                // Level upgrading
                 if (relic.prev != null && relic.level != relic.prev!!.level) {
-                    lblRelicLevel.text = "+${relic.prev!!.level}  >  +${relic.level}"
+                    levelText = "+${relic.prev!!.level}  >  +${relic.level}"
+                    val spanString = SpannableString(levelText)
+
+                    if (isMaxed) {
+                        spanString.setSpan(goldSpan, 7, levelText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    }
+
+                    lblRelicLevel.text = spanString
+
+                // Level unchanged
                 } else {
-                    lblRelicLevel.text = "+${relic.level}"
+                    levelText = "+${relic.level}"
+                    val spanString = SpannableString(levelText)
+
+                    if (isMaxed) {
+                        spanString.setSpan(goldSpan, 0, levelText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    }
+
+                    lblRelicLevel.text = spanString
                 }
 
                 imgRelic.setBackgroundResource(relic.rarityResource)

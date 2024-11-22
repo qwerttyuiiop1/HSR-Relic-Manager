@@ -35,7 +35,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <FrameLayout
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:id="@+id/filter_secton_preview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -98,6 +98,17 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewFilterGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintHeight_max="350dp"
+        android:nestedScrollingEnabled="false"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintTop_toBottomOf="@+id/action_group_filter_section"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <!-- Divider Line -->
     <View
         android:id="@+id/divider_line"
@@ -105,7 +116,7 @@
         android:layout_height="2dp"
         android:layout_marginTop="30dp"
         android:background="#CCD9D9D9"
-        app:layout_constraintTop_toBottomOf="@+id/action_group_filter_section"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewFilterGroup"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -129,13 +140,12 @@
         android:id="@+id/recyclerViewActionGroup"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         android:nestedScrollingEnabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/action_section_title"
-        app:layout_constraintVertical_bias="0.0" /> <!-- Disable nested scrolling -->
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
