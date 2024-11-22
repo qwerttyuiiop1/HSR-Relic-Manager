@@ -29,73 +29,7 @@ class CategorizedRuleBodyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Dummy group data
-        val groupData = mutableListOf<Group>()
-        for (i in 1..3) {
-            val filterGroup =
-                FilterGroup().apply {
-                    actionGroupList.add(
-                        ActionGroup(
-                            StatusAction(
-                                if (i % 2 == 0) Relic.Status.LOCK
-                                else Relic.Status.TRASH
-                            )
-                        )
-                    )
-                    filters[Filter.Type.RARITY] = Filter.RarityFilter(
-                        atMost = 2 + i
-                    )
-                }
-            val lockActionGroup =
-                ActionGroup(
-                    StatusAction(
-                        Relic.Status.LOCK
-                    )
-                ).apply {
-                    filters[Filter.Type.RARITY] = Filter.RarityFilter(
-                        atLeast = 3
-                    )
-                }
-            val trashActionGroup =
-                ActionGroup(
-                    StatusAction(
-                        Relic.Status.TRASH
-                    )
-                ).apply {
-                    filters[Filter.Type.SLOT] = Filter.SlotFilter(
-                        mutableSetOf("Boots")
-                    )
-                }
-            val resetActionGroup =
-                ActionGroup(
-                    StatusAction(
-                        Relic.Status.DEFAULT
-                    )
-                ).apply {
-                    filters[Filter.Type.LEVEL] = Filter.LevelFilter(
-                        atLeast = 10
-                    )
-                }
-            val enhanceActionGroup =
-                ActionGroup(
-                    EnhanceAction(
-                        15
-                    )
-                ).apply {
-                    filters[Filter.Type.MAIN_STAT] = Filter.MainStatFilter(
-                        mutableSetOf("SPD")
-                    )
-                }
-
-            groupData.add(filterGroup)
-            groupData.add(lockActionGroup)
-            groupData.add(trashActionGroup)
-            groupData.add(resetActionGroup)
-            groupData.add(enhanceActionGroup)
-        }
-        for (i in 0..<groupData.size) {
-            groupData.get(i).position = i
-        }
+        val groupData = (activity as MainActivity).groupData
         val categorizedGroupAdapter = CategorizedGroupAdapter(groupData)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
