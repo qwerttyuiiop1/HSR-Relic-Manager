@@ -40,6 +40,11 @@ open class MainActivity : AppCompatActivity() {
         // Hide the action bar
         supportActionBar?.hide()
 
+        // Color of top and bottom bar
+        val window = this.window
+        window.statusBarColor = Color.parseColor("#252e4a")
+        window.navigationBarColor = Color.parseColor("#111624")
+
         // Inventory tab by default
         if (savedInstanceState == null) {
             loadFragment(InventoryHeaderFragment(), InventoryBodyFragment())
@@ -101,6 +106,7 @@ open class MainActivity : AppCompatActivity() {
             outerCircleIcon.setColorFilter(Color.WHITE)
         }
     }
+
     private fun handleFrameClick(selectedFrame: View, header: Fragment, body: Fragment) {
         if (this.selectedFrame == selectedFrame) {
             return
