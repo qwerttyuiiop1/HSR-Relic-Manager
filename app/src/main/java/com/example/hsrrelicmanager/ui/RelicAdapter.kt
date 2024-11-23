@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.InventoryRelicItemBinding
 import com.example.hsrrelicmanager.model.relics.Relic
+import com.example.hsrrelicmanager.ui.db.inventory.InventoryDBManager
 
 class RelicAdapter(
     private val relicData: MutableList<Relic>,
@@ -35,6 +36,8 @@ class RelicAdapter(
     }
 
     inner class ViewHolder(val binding: InventoryRelicItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        private lateinit var dbManager: InventoryDBManager
+
         fun bind(relic: Relic, position: Int) {
             binding.apply {
                 lblRelicName.text = relic.set.name
@@ -52,6 +55,8 @@ class RelicAdapter(
                     isMaxed = true;
                 }
 
+//                Log.d("TEST", relic.status.contains(Relic.Status.UPGRADE).toString())
+
                 // Level upgrading
                 if (relic.prev != null && relic.level != relic.prev!!.level) {
                     levelText = "+${relic.prev!!.level}  >  +${relic.level}"
@@ -62,6 +67,12 @@ class RelicAdapter(
                     }
 
                     lblRelicLevel.text = spanString
+
+                    // Update the DB
+//                    dbManager = InventoryDBManager(binding.root.context)
+//                    dbManager.open()
+//                    dbManager.insertStatus(relic.id, listOf("UPGRADE"))
+//                    dbManager.close()
 
                 // Level unchanged
                 } else {

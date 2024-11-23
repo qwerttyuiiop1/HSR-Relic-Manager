@@ -22,6 +22,7 @@ class InventoryBodyFragment : Fragment() {
     private lateinit var dbManager: InventoryDBManager
 
     val relicData = mutableListOf<Relic>()
+    val dbRelics = mutableListOf<Relic>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,17 +81,17 @@ class InventoryBodyFragment : Fragment() {
         val relic_set = relicSets.random().name
         val relic_slot = "Hands"
         val relic_rarity = 5
-        val relic_level = 15
+        val relic_level = 12
         val relic_mainstat = "ATK%"
         val relic_mainstat_val = "11.1"
         val relic_status = listOf(
-            "TRASH",
-            "UPGRADE"
+            "TRASH"
         )
         val relic_substats = mapOf(
             "ATK" to "2.0",
             "SPD" to "5.0",
             "DEF" to "8.5",
+            "CRIT Rate" to "12.1"
         )
 
         // Insert inventory in DB
@@ -109,24 +110,32 @@ class InventoryBodyFragment : Fragment() {
 
         // Fetch
         val cursor = dbManager.fetchRelic()
-        if (cursor != null && cursor.moveToFirst()) {
+        if (cursor != null) {
             while (cursor.moveToNext()) {
-                relicData.add(
+                val relic_id = cursor.getLong(cursor.getColumnIndexOrThrow(InventoryDBHelper._ID))
+
+                dbRelics.add(
                     Relic(
+                        relic_id,
                         dbManager.getRelicSetByName(cursor.getString(cursor.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_SET))),
                         cursor.getString(cursor.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_SLOT)),
                         cursor.getInt(cursor.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_RARITY)),
                         cursor.getInt(cursor.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_LEVEL)),
                         cursor.getString(cursor.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_MAINSTAT)),
                         cursor.getString(cursor.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_MAINSTAT_VAL)),
-                        dbManager.fetchSubstatsForRelic(cursor.getLong(cursor.getColumnIndexOrThrow(InventoryDBHelper._ID))),
-                        dbManager.fetchStatusForRelic(cursor.getLong(cursor.getColumnIndexOrThrow(InventoryDBHelper._ID))),
+                        dbManager.fetchSubstatsForRelic(relic_id),
+                        dbManager.fetchStatusForRelic(relic_id),
                     )
                 )
             }
         }
         cursor.close()
         dbManager.close()
+
+
+        // APPLY RULES OR SOMETHING
+        relicData.addAll(dbRelics)
+
 
         // Adapter
         val relicAdapter = RelicAdapter(relicData, this)
