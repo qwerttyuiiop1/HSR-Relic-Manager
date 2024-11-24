@@ -130,7 +130,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.515"
                     app:srcCompat="@drawable/ic_up_arrow"
-                    app:tint="#50FFFFFF"/>
+                    app:tint="#80FFFFFF"/>
 
                 <ImageView
                     android:id="@+id/ivDownArrow"
@@ -144,7 +144,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.888"
                     app:srcCompat="@drawable/ic_up_arrow"
-                    app:tint="#50FFFFFF "/>
+                    app:tint="#80FFFFFF "/>
 
                 <TextView
                     android:id="@+id/tvPosition"
@@ -155,7 +155,7 @@
                     android:foregroundGravity="center_horizontal"
                     android:gravity="center_horizontal"
                     android:text="0"
-                    android:textColor="#50FFFFFF"
+                    android:textColor="#80FFFFFF"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/ivDownArrow"

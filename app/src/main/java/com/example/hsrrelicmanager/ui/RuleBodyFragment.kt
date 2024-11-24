@@ -161,11 +161,11 @@ class RuleBodyFragment : Fragment() {
 
                     upArrow.setColorFilter(Color.parseColor("#FFFFFF"));
                     downArrow.setColorFilter(Color.parseColor("#FFFFFF"));
-                    upArrow.alpha = 0.3f
-                    downArrow.alpha = 0.3f
+                    upArrow.alpha = 0.5f
+                    downArrow.alpha = 0.5f
 
                     position.setTextColor(Color.parseColor("#FFFFFF"));
-                    position.alpha = 0.3f
+                    position.alpha = 0.5f
                 }
 
                 itemView.translationX = dX
