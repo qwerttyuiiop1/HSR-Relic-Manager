@@ -21,7 +21,8 @@ public class InventoryDBHelper extends SQLiteOpenHelper {
             COLUMN_LEVEL = "level",
             COLUMN_MAINSTAT = "mainstat",
             COLUMN_MAINSTAT_VAL = "mainstat_val",
-            COLUMN_STATUS = "status";
+            COLUMN_STATUS = "status",
+            COLUMN_EQUIPPED = "equipped";
 
     // Creating relic table query
     private static final String CREATE_RELIC_TABLE =
@@ -33,7 +34,8 @@ public class InventoryDBHelper extends SQLiteOpenHelper {
                     COLUMN_LEVEL + " INTEGER, " +
                     COLUMN_MAINSTAT + " TEXT, " +
                     COLUMN_MAINSTAT_VAL + " TEXT, " +
-                    COLUMN_STATUS + " TEXT " +
+                    COLUMN_STATUS + " TEXT, " +
+                    COLUMN_EQUIPPED + " BOOLEAN " +
                     ");";
 
 

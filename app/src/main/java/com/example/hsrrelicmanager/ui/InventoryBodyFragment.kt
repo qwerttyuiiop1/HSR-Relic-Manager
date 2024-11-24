@@ -91,6 +91,7 @@ class InventoryBodyFragment : Fragment() {
             "DEF" to "8.5",
             "CRIT Rate" to "12.1"
         )
+        val relic_equipped = true
 
         // Insert inventory in DB
         dbManager.insertInventory(
@@ -101,7 +102,8 @@ class InventoryBodyFragment : Fragment() {
             relic_mainstat,
             relic_mainstat_val,
             relic_substats,
-            relic_status
+            relic_status,
+            relic_equipped
         )
 
 //        dbManager.close()
@@ -111,6 +113,13 @@ class InventoryBodyFragment : Fragment() {
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 val relic_id = cursor.getLong(cursor.getColumnIndexOrThrow(InventoryDBHelper._ID))
+
+                val statuses = mutableListOf<Relic.Status>()
+                statuses.add(Relic.Status.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_STATUS))))
+
+                if (cursor.getInt(cursor.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_EQUIPPED)) == 1) {
+                    statuses.add(Relic.Status.EQUIPPED)
+                }
 
                 dbRelics.add(
                     Relic(
@@ -122,7 +131,7 @@ class InventoryBodyFragment : Fragment() {
                         cursor.getString(cursor.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_MAINSTAT)),
                         cursor.getString(cursor.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_MAINSTAT_VAL)),
                         dbManager.fetchSubstatsForRelic(relic_id),
-                        listOf(Relic.Status.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_STATUS)))),
+                        statuses,
                     )
                 )
             }

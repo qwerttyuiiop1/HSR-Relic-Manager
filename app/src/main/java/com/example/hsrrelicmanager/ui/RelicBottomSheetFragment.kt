@@ -238,6 +238,9 @@ class RelicBottomSheetFragment : BottomSheetDialogFragment() {
         dbManager.insertStatus(relic.id, add.map { it.name })
         dbManager.deleteStatus(relic.id, delete.map { it.name })
 
+        Log.d("TEST", relic.status.toString())
+        Log.d("TEST", dbManager.fetchStatusForRelic(relic.id).toString())
+
         dbManager.close()
     }
 }

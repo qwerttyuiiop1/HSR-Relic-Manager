@@ -37,6 +37,7 @@ class InventoryDBManager(private val context: Context) {
         mainStat: String,
         mainStatVal: String,
         status: String,
+        equipped: Boolean
     ): Long {
         val values = ContentValues().apply {
             put(InventoryDBHelper.COLUMN_SET, relicSet)
@@ -46,6 +47,7 @@ class InventoryDBManager(private val context: Context) {
             put(InventoryDBHelper.COLUMN_MAINSTAT, mainStat)
             put(InventoryDBHelper.COLUMN_MAINSTAT_VAL, mainStatVal)
             put(InventoryDBHelper.COLUMN_STATUS, status)
+            put(InventoryDBHelper.COLUMN_EQUIPPED, equipped)
         }
         val id = database.insert(InventoryDBHelper.TABLE_RELIC, null, values)
         return id
@@ -60,7 +62,8 @@ class InventoryDBManager(private val context: Context) {
             InventoryDBHelper.COLUMN_LEVEL,
             InventoryDBHelper.COLUMN_MAINSTAT,
             InventoryDBHelper.COLUMN_MAINSTAT_VAL,
-            InventoryDBHelper.COLUMN_STATUS
+            InventoryDBHelper.COLUMN_STATUS,
+            InventoryDBHelper.COLUMN_EQUIPPED
         )
         val cursor = database.query(
             InventoryDBHelper.TABLE_RELIC,
@@ -82,7 +85,8 @@ class InventoryDBManager(private val context: Context) {
         level: Int,
         mainStat: String,
         mainStatVal: String,
-        status: String
+        status: String,
+        equipped: Boolean
     ): Int {
         val values = ContentValues().apply {
             put(InventoryDBHelper.COLUMN_SET, relicSet)
@@ -92,6 +96,7 @@ class InventoryDBManager(private val context: Context) {
             put(InventoryDBHelper.COLUMN_MAINSTAT, mainStat)
             put(InventoryDBHelper.COLUMN_MAINSTAT_VAL, mainStatVal)
             put(InventoryDBHelper.COLUMN_STATUS, status)
+            put(InventoryDBHelper.COLUMN_EQUIPPED, equipped)
         }
         return database.update(
             InventoryDBHelper.TABLE_RELIC,
@@ -217,7 +222,8 @@ class InventoryDBManager(private val context: Context) {
         mainstat: String,
         mainstat_val: String,
         substats: Map<String, String>,
-        status: String
+        status: String,
+        equipped: Boolean
     ) {
         // Insert relic in DB
         val relic_id = insertRelic(
@@ -227,7 +233,8 @@ class InventoryDBManager(private val context: Context) {
             level,
             mainstat,
             mainstat_val,
-            status
+            status,
+            equipped
         )
 
         // Insert substats in DB
@@ -236,10 +243,18 @@ class InventoryDBManager(private val context: Context) {
             substats
         )
 
-        // Insert status in DB
+        val statuses = mutableListOf<String>()
+        statuses.add(status)
+
+        // Add equipped status
+        if (equipped) {
+            statuses.add("EQUIPPED")
+        }
+
+        // Insert statuses in DB
         insertStatus(
             relic_id,
-            listOf(status)
+            statuses
         )
     }
 }
