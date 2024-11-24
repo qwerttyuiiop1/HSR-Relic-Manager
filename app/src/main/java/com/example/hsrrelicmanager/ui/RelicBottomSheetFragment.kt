@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.RelicBottomSheetBinding
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicBuilder
+import com.example.hsrrelicmanager.ui.db.inventory.InventoryDBManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class RelicBottomSheetFragment : BottomSheetDialogFragment() {
@@ -54,7 +56,6 @@ class RelicBottomSheetFragment : BottomSheetDialogFragment() {
                 if (isMaxed) {
                     spanString.setSpan(goldSpan, 7, levelText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 }
-
                 lblRelicLevel.text = spanString
 
                 // Level unchanged
@@ -65,7 +66,17 @@ class RelicBottomSheetFragment : BottomSheetDialogFragment() {
                 if (isMaxed) {
                     spanString.setSpan(goldSpan, 0, levelText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 }
+                lblRelicLevel.text = spanString
+            }
 
+            // Sync relic level from DB
+            if (relic.status.contains(Relic.Status.UPGRADE)) {
+                levelText = "+${relic.prev!!.level}  >  +${((relic.level/3 + 1)*3).coerceAtMost(relic.rarity * 3)}"
+                val spanString = SpannableString(levelText)
+
+                if (((relic.level/3 + 1)*3).coerceAtMost(relic.rarity * 3) == relic.rarity * 3) {
+                    spanString.setSpan(goldSpan, 7, levelText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                }
                 lblRelicLevel.text = spanString
             }
 
@@ -118,6 +129,7 @@ class RelicBottomSheetFragment : BottomSheetDialogFragment() {
             }
 
             updateStatusIcons(relic, binding)
+
             val toggleStatus = { old: Relic.Status ->
                 relic = RelicBuilder(relic).apply {
                     mstatus = mstatus.toMutableList().apply {
@@ -151,6 +163,7 @@ class RelicBottomSheetFragment : BottomSheetDialogFragment() {
                     updateView(binding, relic)
                 })
             }
+
             btnRelicUpgrade.setOnClickListener {
                 toggleStatus(Relic.Status.UPGRADE)
             }
@@ -160,6 +173,8 @@ class RelicBottomSheetFragment : BottomSheetDialogFragment() {
             btnRelicTrash.setOnClickListener {
                 toggleStatus(Relic.Status.TRASH)
             }
+
+            updateStatusInDB(relic)
         }
     }
 
@@ -209,5 +224,20 @@ class RelicBottomSheetFragment : BottomSheetDialogFragment() {
 
             }
         }
+    }
+
+    private fun updateStatusInDB(relic: Relic) {
+        lateinit var dbManager: InventoryDBManager
+
+        dbManager = InventoryDBManager(binding.root.context)
+        dbManager.open()
+
+        val add = relic.status - dbManager.fetchStatusForRelic(relic.id)
+        val delete = dbManager.fetchStatusForRelic(relic.id) - relic.status
+
+        dbManager.insertStatus(relic.id, add.map { it.name })
+        dbManager.deleteStatus(relic.id, delete.map { it.name })
+
+        dbManager.close()
     }
 }

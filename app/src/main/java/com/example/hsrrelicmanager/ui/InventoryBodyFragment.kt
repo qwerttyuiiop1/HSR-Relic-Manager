@@ -81,12 +81,10 @@ class InventoryBodyFragment : Fragment() {
         val relic_set = relicSets.random().name
         val relic_slot = "Hands"
         val relic_rarity = 5
-        val relic_level = 12
+        val relic_level = 13
         val relic_mainstat = "ATK%"
         val relic_mainstat_val = "11.1"
-        val relic_status = listOf(
-            "TRASH"
-        )
+        val relic_status = "TRASH"
         val relic_substats = mapOf(
             "ATK" to "2.0",
             "SPD" to "5.0",
@@ -124,17 +122,33 @@ class InventoryBodyFragment : Fragment() {
                         cursor.getString(cursor.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_MAINSTAT)),
                         cursor.getString(cursor.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_MAINSTAT_VAL)),
                         dbManager.fetchSubstatsForRelic(relic_id),
-                        dbManager.fetchStatusForRelic(relic_id),
+                        listOf(Relic.Status.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_STATUS)))),
                     )
                 )
             }
         }
-        cursor.close()
-        dbManager.close()
 
+        cursor.close()
 
         // APPLY RULES OR SOMETHING
-        relicData.addAll(dbRelics)
+        dbRelics.forEach { prevRelic ->
+            relicData.add(
+                Relic(
+                    prevRelic.id,
+                    prevRelic.set,
+                    prevRelic.slot,
+                    prevRelic.rarity,
+                    prevRelic.level,
+                    prevRelic.mainstat,
+                    prevRelic.mainstatVal,
+                    prevRelic.substats,
+                    dbManager.fetchStatusForRelic(prevRelic.id),
+                    prevRelic
+                )
+            )
+        }
+
+        dbManager.close()
 
 
         // Adapter

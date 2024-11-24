@@ -36,6 +36,7 @@ class InventoryDBManager(private val context: Context) {
         level: Int,
         mainStat: String,
         mainStatVal: String,
+        status: String,
     ): Long {
         val values = ContentValues().apply {
             put(InventoryDBHelper.COLUMN_SET, relicSet)
@@ -44,6 +45,7 @@ class InventoryDBManager(private val context: Context) {
             put(InventoryDBHelper.COLUMN_LEVEL, level)
             put(InventoryDBHelper.COLUMN_MAINSTAT, mainStat)
             put(InventoryDBHelper.COLUMN_MAINSTAT_VAL, mainStatVal)
+            put(InventoryDBHelper.COLUMN_STATUS, status)
         }
         val id = database.insert(InventoryDBHelper.TABLE_RELIC, null, values)
         return id
@@ -57,7 +59,8 @@ class InventoryDBManager(private val context: Context) {
             InventoryDBHelper.COLUMN_RARITY,
             InventoryDBHelper.COLUMN_LEVEL,
             InventoryDBHelper.COLUMN_MAINSTAT,
-            InventoryDBHelper.COLUMN_MAINSTAT_VAL
+            InventoryDBHelper.COLUMN_MAINSTAT_VAL,
+            InventoryDBHelper.COLUMN_STATUS
         )
         val cursor = database.query(
             InventoryDBHelper.TABLE_RELIC,
@@ -79,6 +82,7 @@ class InventoryDBManager(private val context: Context) {
         level: Int,
         mainStat: String,
         mainStatVal: String,
+        status: String
     ): Int {
         val values = ContentValues().apply {
             put(InventoryDBHelper.COLUMN_SET, relicSet)
@@ -87,6 +91,7 @@ class InventoryDBManager(private val context: Context) {
             put(InventoryDBHelper.COLUMN_LEVEL, level)
             put(InventoryDBHelper.COLUMN_MAINSTAT, mainStat)
             put(InventoryDBHelper.COLUMN_MAINSTAT_VAL, mainStatVal)
+            put(InventoryDBHelper.COLUMN_STATUS, status)
         }
         return database.update(
             InventoryDBHelper.TABLE_RELIC,
@@ -155,23 +160,23 @@ class InventoryDBManager(private val context: Context) {
 
 
 
-    // STATUS TABLE
-    fun insertStatus(relicId: Long, status: List<String>) {
-        status.forEach {
+    // MANUAL STATUS TABLE
+    fun insertStatus(relicId: Long, statuses: List<String>) {
+        statuses.forEach {
             val values = ContentValues().apply {
                 put(InventoryDBHelper.COLUMN_RELIC_ID, relicId)
-                put(InventoryDBHelper.COLUMN_STATUS, it)
+                put(InventoryDBHelper.COLUMN_NEW_STATUS, it)
             }
-            database.insert(InventoryDBHelper.TABLE_STATUS, null, values)
+            database.insert(InventoryDBHelper.TABLE_MANUAL_STATUS, null, values)
         }
     }
 
     fun fetchStatusForRelic(relicId: Long): List<Relic.Status> {
         val statuses = mutableListOf<Relic.Status>()
 
-        val columns = arrayOf(InventoryDBHelper.COLUMN_STATUS)
+        val columns = arrayOf(InventoryDBHelper.COLUMN_NEW_STATUS)
         val cursor = database.query(
-            InventoryDBHelper.TABLE_STATUS,
+            InventoryDBHelper.TABLE_MANUAL_STATUS,
             columns,
             "${InventoryDBHelper.COLUMN_RELIC_ID} = ?",
             arrayOf(relicId.toString()),
@@ -182,7 +187,7 @@ class InventoryDBManager(private val context: Context) {
 
         cursor?.use {
             while (it.moveToNext()) {
-                val statusValue = it.getString(it.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_STATUS))
+                val statusValue = it.getString(it.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_NEW_STATUS))
                 val status = Relic.Status.valueOf(statusValue)
                 statuses.add(status)
             }
@@ -191,8 +196,19 @@ class InventoryDBManager(private val context: Context) {
         return statuses
     }
 
+    fun deleteStatus(relicId: Long, statuses: List<String>) {
+        statuses.forEach {
+            database.delete(
+                InventoryDBHelper.TABLE_MANUAL_STATUS,
+                "${InventoryDBHelper.COLUMN_RELIC_ID} = ? AND ${InventoryDBHelper.COLUMN_NEW_STATUS} = ?",
+                arrayOf(relicId.toString(), it)
+            )
+        }
+    }
 
-    // INSERT INVENTORY -  all in one, call this for inserting relics
+
+
+    // INSERT INVENTORY -  all in one, call to insert OLD relic scanned from OCR
     fun insertInventory(
         set: String,
         slot: String,
@@ -201,7 +217,7 @@ class InventoryDBManager(private val context: Context) {
         mainstat: String,
         mainstat_val: String,
         substats: Map<String, String>,
-        status: List<String>
+        status: String
     ) {
         // Insert relic in DB
         val relic_id = insertRelic(
@@ -210,7 +226,8 @@ class InventoryDBManager(private val context: Context) {
             rarity,
             level,
             mainstat,
-            mainstat_val
+            mainstat_val,
+            status
         )
 
         // Insert substats in DB
@@ -222,7 +239,7 @@ class InventoryDBManager(private val context: Context) {
         // Insert status in DB
         insertStatus(
             relic_id,
-            status
+            listOf(status)
         )
     }
 }

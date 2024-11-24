@@ -20,7 +20,8 @@ public class InventoryDBHelper extends SQLiteOpenHelper {
             COLUMN_RARITY = "rarity",
             COLUMN_LEVEL = "level",
             COLUMN_MAINSTAT = "mainstat",
-            COLUMN_MAINSTAT_VAL = "mainstat_val";
+            COLUMN_MAINSTAT_VAL = "mainstat_val",
+            COLUMN_STATUS = "status";
 
     // Creating relic table query
     private static final String CREATE_RELIC_TABLE =
@@ -31,7 +32,8 @@ public class InventoryDBHelper extends SQLiteOpenHelper {
                     COLUMN_RARITY + " INTEGER, " +
                     COLUMN_LEVEL + " INTEGER, " +
                     COLUMN_MAINSTAT + " TEXT, " +
-                    COLUMN_MAINSTAT_VAL + " TEXT " +
+                    COLUMN_MAINSTAT_VAL + " TEXT, " +
+                    COLUMN_STATUS + " TEXT " +
                     ");";
 
 
@@ -53,17 +55,17 @@ public class InventoryDBHelper extends SQLiteOpenHelper {
 
 
 
-    // STATUS TABLE
+    // MANUAL STATUS TABLE
     public static final String
-            TABLE_STATUS = "status",
+            TABLE_MANUAL_STATUS = "manual_status",
 //            COLUMN_RELIC_ID = "relic_id",  // same as in SUBSTATS TABLE
-            COLUMN_STATUS = "status";
+            COLUMN_NEW_STATUS = "new_status";
 
     // Creating STATUS TABLE query
     private static final String CREATE_STATUS_TABLE =
-            "CREATE TABLE " + TABLE_STATUS + " (" +
+            "CREATE TABLE " + TABLE_MANUAL_STATUS + " (" +
                     COLUMN_RELIC_ID + " INTEGER NOT NULL, " +
-                    COLUMN_STATUS + " TEXT, " +
+                    COLUMN_NEW_STATUS + " TEXT, " +
                     "FOREIGN KEY (" + COLUMN_RELIC_ID + ") REFERENCES " + TABLE_RELIC + " (" + _ID + "));";
 
 
@@ -83,7 +85,7 @@ public class InventoryDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RELIC);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SUBSTATS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_STATUS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MANUAL_STATUS);
         onCreate(db);
     }
 }

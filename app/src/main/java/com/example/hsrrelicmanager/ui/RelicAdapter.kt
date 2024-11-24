@@ -36,8 +36,6 @@ class RelicAdapter(
     }
 
     inner class ViewHolder(val binding: InventoryRelicItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        private lateinit var dbManager: InventoryDBManager
-
         fun bind(relic: Relic, position: Int) {
             binding.apply {
                 lblRelicName.text = relic.set.name
@@ -55,8 +53,6 @@ class RelicAdapter(
                     isMaxed = true;
                 }
 
-//                Log.d("TEST", relic.status.contains(Relic.Status.UPGRADE).toString())
-
                 // Level upgrading
                 if (relic.prev != null && relic.level != relic.prev!!.level) {
                     levelText = "+${relic.prev!!.level}  >  +${relic.level}"
@@ -65,14 +61,7 @@ class RelicAdapter(
                     if (isMaxed) {
                         spanString.setSpan(goldSpan, 7, levelText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                     }
-
                     lblRelicLevel.text = spanString
-
-                    // Update the DB
-//                    dbManager = InventoryDBManager(binding.root.context)
-//                    dbManager.open()
-//                    dbManager.insertStatus(relic.id, listOf("UPGRADE"))
-//                    dbManager.close()
 
                 // Level unchanged
                 } else {
@@ -82,7 +71,17 @@ class RelicAdapter(
                     if (isMaxed) {
                         spanString.setSpan(goldSpan, 0, levelText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                     }
+                    lblRelicLevel.text = spanString
+                }
 
+                // Sync relic level from DB
+                if (relic.status.contains(Relic.Status.UPGRADE)) {
+                    levelText = "+${relic.prev!!.level}  >  +${((relic.level/3 + 1)*3).coerceAtMost(relic.rarity * 3)}"
+                    val spanString = SpannableString(levelText)
+
+                    if (((relic.level/3 + 1)*3).coerceAtMost(relic.rarity * 3) == relic.rarity * 3) {
+                        spanString.setSpan(goldSpan, 7, levelText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    }
                     lblRelicLevel.text = spanString
                 }
 
