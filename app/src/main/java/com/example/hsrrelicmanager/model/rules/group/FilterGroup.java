@@ -10,14 +10,14 @@ import java.util.List;
 
 @SuppressLint("ParcelCreator")
 public class FilterGroup extends Group {
-    private List<ActionGroup> actionGroupList;
+    private List<Group> groupList;
 
     public FilterGroup() {
-        actionGroupList = new ArrayList<>();
+        groupList = new ArrayList<>();
     }
 
-    public List<ActionGroup> getActionGroupList() {
-        return actionGroupList;
+    public List<Group> getGroupList() {
+        return groupList;
     }
 
     @Override

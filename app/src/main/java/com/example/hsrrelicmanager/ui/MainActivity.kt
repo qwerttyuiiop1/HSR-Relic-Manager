@@ -128,7 +128,7 @@ open class MainActivity : AppCompatActivity() {
         for (i in 1..3) {
             val filterGroup =
                 FilterGroup().apply {
-                    actionGroupList.add(
+                    groupList.add(
                         ActionGroup(
                             StatusAction(
                                 if (i % 2 == 0) Relic.Status.LOCK
