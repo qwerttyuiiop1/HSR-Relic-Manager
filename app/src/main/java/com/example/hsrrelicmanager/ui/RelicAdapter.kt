@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.InventoryRelicItemBinding
 import com.example.hsrrelicmanager.model.relics.Relic
+import com.example.hsrrelicmanager.ui.db.inventory.InventoryDBManager
 
 class RelicAdapter(
     private val relicData: MutableList<Relic>,
@@ -60,7 +61,6 @@ class RelicAdapter(
                     if (isMaxed) {
                         spanString.setSpan(goldSpan, 7, levelText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                     }
-
                     lblRelicLevel.text = spanString
 
                 // Level unchanged
@@ -71,7 +71,17 @@ class RelicAdapter(
                     if (isMaxed) {
                         spanString.setSpan(goldSpan, 0, levelText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                     }
+                    lblRelicLevel.text = spanString
+                }
 
+                // Sync relic level from DB
+                if (relic.status.contains(Relic.Status.UPGRADE)) {
+                    levelText = "+${relic.prev!!.level}  >  +${((relic.level/3 + 1)*3).coerceAtMost(relic.rarity * 3)}"
+                    val spanString = SpannableString(levelText)
+
+                    if (((relic.level/3 + 1)*3).coerceAtMost(relic.rarity * 3) == relic.rarity * 3) {
+                        spanString.setSpan(goldSpan, 7, levelText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    }
                     lblRelicLevel.text = spanString
                 }
 

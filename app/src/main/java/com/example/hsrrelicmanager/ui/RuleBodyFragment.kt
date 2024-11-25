@@ -37,36 +37,7 @@ class RuleBodyFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Dummy group data
-        val groupData = mutableListOf<Group>()
-        for (i in 1..1) {
-            val filterGroup =
-                FilterGroup().apply {
-                    actionGroupList.add(
-                        ActionGroup(
-                            StatusAction(
-                                if (i % 2 == 0) Relic.Status.LOCK
-                                else Relic.Status.TRASH
-                            )
-                        )
-                    )
-                    filters[Filter.Type.RARITY] = Filter.RarityFilter(
-                        atMost = 2 + i
-                    )
-                }
-            val lockActionGroup =
-                ActionGroup(
-                    StatusAction(
-                        Relic.Status.LOCK
-                    )
-                ).apply {
-                    filters[Filter.Type.RARITY] = Filter.RarityFilter(
-                        atLeast = 3
-                    )
-                }
-
-            groupData.add(filterGroup)
-            groupData.add(lockActionGroup)
-        }
+        val groupData = (activity as MainActivity).groupData
         val groupAdapter = GroupAdapter(groupData)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
@@ -190,11 +161,11 @@ class RuleBodyFragment : Fragment() {
 
                     upArrow.setColorFilter(Color.parseColor("#FFFFFF"));
                     downArrow.setColorFilter(Color.parseColor("#FFFFFF"));
-                    upArrow.alpha = 0.3f
-                    downArrow.alpha = 0.3f
+                    upArrow.alpha = 0.5f
+                    downArrow.alpha = 0.5f
 
                     position.setTextColor(Color.parseColor("#FFFFFF"));
-                    position.alpha = 0.3f
+                    position.alpha = 0.5f
                 }
 
                 itemView.translationX = dX

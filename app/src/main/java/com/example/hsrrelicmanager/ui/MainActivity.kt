@@ -13,6 +13,13 @@ import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.core.AutoclickService
 import com.example.hsrrelicmanager.databinding.ActivityMainBinding
 import com.example.hsrrelicmanager.databinding.NavbarBinding
+import com.example.hsrrelicmanager.model.relics.Relic
+import com.example.hsrrelicmanager.model.rules.Filter
+import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
+import com.example.hsrrelicmanager.model.rules.action.StatusAction
+import com.example.hsrrelicmanager.model.rules.group.ActionGroup
+import com.example.hsrrelicmanager.model.rules.group.FilterGroup
+import com.example.hsrrelicmanager.model.rules.group.Group
 
 open class MainActivity : AppCompatActivity() {
 
@@ -20,6 +27,8 @@ open class MainActivity : AppCompatActivity() {
     protected lateinit var binding: ActivityMainBinding
     protected lateinit var navbarBinding: NavbarBinding
     private var selectedFrame: View? = null
+
+    lateinit var groupData: MutableList<Group>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +40,11 @@ open class MainActivity : AppCompatActivity() {
         // Hide the action bar
         supportActionBar?.hide()
 
+        // Color of top and bottom bar
+        val window = this.window
+        window.statusBarColor = Color.parseColor("#252e4a")
+        window.navigationBarColor = Color.parseColor("#111624")
+
         // Inventory tab by default
         if (savedInstanceState == null) {
             loadFragment(InventoryHeaderFragment(), InventoryBodyFragment())
@@ -41,6 +55,9 @@ open class MainActivity : AppCompatActivity() {
 
         setupClickListeners()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+
+        // TEMP ONLY! Refactor when database has been implemented
+        createDummyGroupData()
     }
 
     // navigation
@@ -89,6 +106,7 @@ open class MainActivity : AppCompatActivity() {
             outerCircleIcon.setColorFilter(Color.WHITE)
         }
     }
+
     private fun handleFrameClick(selectedFrame: View, header: Fragment, body: Fragment) {
         if (this.selectedFrame == selectedFrame) {
             return
@@ -102,6 +120,76 @@ open class MainActivity : AppCompatActivity() {
         navbarBinding.ruleButtonCircle.setColorFilter(Color.parseColor("#1C243B"))
         navbarBinding.playButtonCircle.setColorFilter(Color.parseColor("#1C243B"))
         navbarBinding.inventoryButtonCircle.setColorFilter(Color.parseColor("#1C243B"))
+    }
+
+    // Only while DB has not been implemented
+    private fun createDummyGroupData() {
+        groupData = mutableListOf<Group>()
+        for (i in 1..3) {
+            val filterGroup =
+                FilterGroup().apply {
+                    actionGroupList.add(
+                        ActionGroup(
+                            StatusAction(
+                                if (i % 2 == 0) Relic.Status.LOCK
+                                else Relic.Status.TRASH
+                            )
+                        )
+                    )
+                    filters[Filter.Type.RARITY] = Filter.RarityFilter(
+                        atMost = 2 + i
+                    )
+                }
+            val lockActionGroup =
+                ActionGroup(
+                    StatusAction(
+                        Relic.Status.LOCK
+                    )
+                ).apply {
+                    filters[Filter.Type.RARITY] = Filter.RarityFilter(
+                        atLeast = 3
+                    )
+                }
+            val trashActionGroup =
+                ActionGroup(
+                    StatusAction(
+                        Relic.Status.TRASH
+                    )
+                ).apply {
+                    filters[Filter.Type.SLOT] = Filter.SlotFilter(
+                        mutableSetOf("Boots")
+                    )
+                }
+            val resetActionGroup =
+                ActionGroup(
+                    StatusAction(
+                        Relic.Status.DEFAULT
+                    )
+                ).apply {
+                    filters[Filter.Type.LEVEL] = Filter.LevelFilter(
+                        atLeast = 10
+                    )
+                }
+            val enhanceActionGroup =
+                ActionGroup(
+                    EnhanceAction(
+                        15
+                    )
+                ).apply {
+                    filters[Filter.Type.MAIN_STAT] = Filter.MainStatFilter(
+                        mutableSetOf("SPD")
+                    )
+                }
+
+            groupData.add(filterGroup)
+            groupData.add(lockActionGroup)
+            groupData.add(trashActionGroup)
+            groupData.add(resetActionGroup)
+            groupData.add(enhanceActionGroup)
+        }
+        for (i in 0..<groupData.size) {
+            groupData.get(i).position = i
+        }
     }
 }
 

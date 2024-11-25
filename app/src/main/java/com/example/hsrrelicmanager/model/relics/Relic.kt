@@ -7,6 +7,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Relic (
+    val id: Long,
     val set: RelicSet,
     val slot: String,
     val rarity: Int,
@@ -58,6 +59,7 @@ data class Relic (
 }
 
 class RelicBuilder(
+    var id: Long = 0,
     var set: RelicSet = RelicSet("", 0, ""),
     var slot: String = "",
     var rarity: Int = 0,
@@ -70,6 +72,7 @@ class RelicBuilder(
     private val isPrev: Boolean = false,
 ) {
     constructor(r: Relic, isPrev: Boolean = false): this(
+        r.id,
         r.set,
         r.slot,
         r.rarity,
@@ -87,6 +90,7 @@ class RelicBuilder(
         isPrev
     )
     constructor(r: RelicBuilder, isPrev: Boolean): this(
+        r.id,
         r.set,
         r.slot,
         r.rarity,
@@ -129,6 +133,6 @@ class RelicBuilder(
 
     fun build(): Relic {
         val prev = if (isPrev) null else this.prev.build()
-        return Relic(set, slot, rarity, level, mainstat, mainstatVal, msubstats, mstatus, prev)
+        return Relic(id, set, slot, rarity, level, mainstat, mainstatVal, msubstats, mstatus, prev)
     }
 }
