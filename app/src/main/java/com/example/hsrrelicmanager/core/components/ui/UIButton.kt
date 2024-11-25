@@ -18,6 +18,8 @@ interface UIButton: UIElement {
         get() = ctx.clicker
     val clickArea: Rect
     suspend fun click()
+
+    override val rect get() = clickArea
 }
 
 interface MUIButton: UIButton, MUIElement {

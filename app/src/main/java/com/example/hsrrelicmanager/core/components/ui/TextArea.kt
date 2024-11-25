@@ -33,6 +33,8 @@ interface TextArea: UIElement {
         )
     }
     val area: Rect
+    override val rect get() = area
+
     val recognizer: TextRecognizer
         get() = ctx.recognizer
     val scale: Float

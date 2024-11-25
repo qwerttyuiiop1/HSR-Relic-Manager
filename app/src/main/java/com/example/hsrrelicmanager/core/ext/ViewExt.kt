@@ -30,6 +30,20 @@ fun View.toBitmap(): Bitmap {
     return bitmap
 }
 
+fun <T: ViewBinding> T.measure(
+    ctx: UIContext
+): T {
+    val metrics = ctx.wmgr.maximumWindowMetrics
+    val w = metrics.bounds.width()
+    val h = metrics.bounds.height()
+    root.measure(
+        View.MeasureSpec.makeMeasureSpec(w, View.MeasureSpec.EXACTLY),
+        View.MeasureSpec.makeMeasureSpec(h, View.MeasureSpec.EXACTLY)
+    )
+    root.layout(0, 0, w, h)
+    return this
+}
+
 suspend fun <T, U: ViewBinding> U.doOnMeasure(
     ctx: UIContext,
     onMeasure: (U)->T
