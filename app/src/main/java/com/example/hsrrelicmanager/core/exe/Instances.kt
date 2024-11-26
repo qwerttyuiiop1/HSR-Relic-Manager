@@ -128,3 +128,18 @@ operator fun <T> TaskInstance.Companion.invoke(
         }
     }
 } as TaskInstance<T>
+
+fun <T> TaskInstance.Companion.default(
+    a: suspend TaskScope<T>.() -> MyResult<T>
+) = invoke(a)
+
+fun <T> TaskInstance.Companion.instant(
+    a: suspend () -> MyResult<T>
+) = object: TaskInstance<T> {
+    override suspend fun nextTick(tick: Bitmap) {
+        throw IllegalStateException("This should never be called")
+    }
+    override suspend fun awaitResult() = a()
+    override fun start(scope: CoroutineScope) {}
+    override fun close() {}
+}

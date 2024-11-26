@@ -7,9 +7,9 @@ import com.example.hsrrelicmanager.core.io.Clicker
 
 class SwipeArea(
     override val rect: Rect,
+    override val ctx: UIContext,
     val speed: Float = Clicker.SWIPE_SPEED,
     val hold: Long = 1000,
-    override val ctx: UIContext
 ): UIElement {
     val clicker: Clicker
         get() = ctx.clicker

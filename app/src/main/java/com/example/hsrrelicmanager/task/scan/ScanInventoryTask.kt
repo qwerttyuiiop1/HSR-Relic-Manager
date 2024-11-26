@@ -1,60 +1,97 @@
 package com.example.hsrrelicmanager.task.scan
 
-import android.graphics.Rect
+import android.util.Log
 import com.example.hsrrelicmanager.core.components.Task
+import com.example.hsrrelicmanager.core.components.UIContext
 import com.example.hsrrelicmanager.core.exe.Instance
 import com.example.hsrrelicmanager.core.exe.MyResult
 import com.example.hsrrelicmanager.core.exe.ResetRunner
+import kotlinx.coroutines.delay
+import java.util.regex.Pattern
 
 class ScanInventoryTask: ResetRunner() {
     inner class ScanInventoryInstance: Instance<String>() {
+        val pattern = Pattern.compile("\\d+")
+        suspend fun getNumRelics(): Int {
+            val text = ui.numRelics.getText().text
+            val matcher = pattern.matcher(text)
+            if (!matcher.find()) return -1
+            return matcher.group().toInt()
+        }
+
+        suspend fun scanRelic(): String {
+            val relicName = ui.relicName.getText().text
+            val relicType = ui.relicType.getText().text
+            val rarity = ui.relicRarity.getRarity()
+            val relicLevel = ui.relicLevel.getText().text
+            val isTrash = ui.relicTrash.isSelected()
+            val isLocked = ui.relicLock.isSelected()
+            val mainstat = ui.mainStat.getText().text
+            val mainstatval = ui.mainStatValue.getText().text
+            val substatVals = mutableListOf<String>()
+            val substats = mutableListOf<String>()
+            for (i in 0 until 4) {
+                if (!ui.substatIcons[i].isPresent()) break
+                substats.add(ui.substatLabels[i].getText().text)
+                substatVals.add(ui.substatValues[i].getText().text)
+            }
+            val equipped = ui.equipped.isRecognized()
+            return "Relic: $relicName\n" +
+                    "Type: $relicType\n" +
+                    "Rarity: $rarity\n" +
+                    "Level: $relicLevel\n" +
+                    "Main Stat: $mainstat $mainstatval\n" +
+                    "Substats: ${substats.joinToString(", ")}\n" +
+                    "Substat Values: ${substatVals.joinToString(", ")}\n" +
+                    "Trash: $isTrash\n" +
+                    "Locked: $isLocked\n" +
+                    "Equipped: $equipped"
+        }
         override suspend fun run(): MyResult<String> {
-            val clicker = uiCtx.clicker
-            val scrollArea = Rect(250, 250, 750, 900)
+            awaitTick()
+            val container = ui.container
+            join(ui.relicScrollBar.scrollToTop())
+            container.reset()
+            val numRelics = getNumRelics()
+            if (numRelics == -1)
+                return MyResult.Fail("Could not find number of relics")
 
-//            val scrollDists = listOf(10, 20, 30, 40, 50)
-//            awaitTick()
-//            for (dist in scrollDists) {
-//                clicker.swipeV(scrollArea, dist)
-//                delay(3 * 1000)
-//                awaitTick()
-//                ImageDump(uiCtx.ctx).dump(tick)
-//            }
-
-//            val scrollDurations = listOf(1.0f, 1.5f, 2.0f, 2.5f, 3.0f)
-//            awaitTick()
-//            ImageDump(uiCtx.ctx).dump(tick)
-//            for (duration in scrollDurations) {
-//                clicker.swipeV(scrollArea, 300, duration, hold = 0)
-//                delay(5 * 1000)
-//                awaitTick()
-//                ImageDump(uiCtx.ctx).dump(tick)
-//            }
-
-
-
-            // hold: 400, speed: 3.0f
-//            val holds = listOf(200, 300, 400, 500, 600)
-//            awaitTick()
-//            for (hold in holds) {
-//                clicker.swipeV(scrollArea, 300, 3.0f, hold.toLong())
-//                delay(3 * 1000)
-//                awaitTick()
-//                ImageDump(uiCtx.ctx).dump(tick)
-//            }
-
-            // pixels glided roughly depends on speed and distance
-//            val glideTest = listOf(50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650)
-//            awaitTick()
-//            for (dist in glideTest) {
-//                clicker.swipeV(scrollArea, dist, 3.0f, hold = 100)
-//                delay(5 * 1000)
-//                awaitTick()
-//                ImageDump(uiCtx.ctx).dump(tick)
-//            }
+//            val numCols = container.row.size
+//            val numRows = container.rect.height() / (container.itemH + container.gapH).toFloat()
+            var i = 0
+            var col = 0
+            val numCols = container.row.size
+            while (i < numRelics) {
+                val res = join(container.row[col].select())
+                if (!res) {
+                    return MyResult.Fail("Failed to select relic")
+                }
+                val relic = scanRelic()
+                Log.e("<Relic!!>", relic)
+                if (col == numCols - 1) {
+                    container.moveNextRow()
+                    if (container.isOverflow()) {
+                        ui.relicScrollBar.defaultScroll()
+                        delay(3000)
+                        awaitTick()
+                        container.calibrate(col)
+                        container.moveNextRow()
+                    }
+                    col = 0
+                } else {
+                    col++
+                }
+                i++
+            }
 
             return MyResult.Success("Scan Inventory")
         }
+    }
+
+    private lateinit var ui: ScanInventoryUIBinding
+    override suspend fun initialize(uiCtx: UIContext): ResetRunner {
+        ui = ScanInventoryUIBinding(uiCtx)
+        return super.initialize(uiCtx)
     }
 
     override fun newInstance() = ScanInventoryInstance()

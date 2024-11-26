@@ -120,7 +120,18 @@
         app:layout_constraintBottom_toBottomOf="@id/grid_layout"
         app:layout_constraintStart_toEndOf="@id/grid_layout" />
 
+    <TextView
+        android:id="@+id/num_relics"
+        android:layout_width="200px"
+        android:layout_height="50px"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="75dp"
+        android:background="@drawable/border_red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
+        android:id="@+id/relic_detail_container"
         android:layout_width="552px"
         android:layout_height="0dp"
 
@@ -142,6 +153,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:id="@+id/relic_info_container"
             android:layout_height="204px"
             android:layout_marginBottom="48px">
 
@@ -292,8 +304,31 @@
             android:id="@+id/lbl_relic_equipped"
             android:layout_width="300px"
             android:layout_height="30px"
+            android:text="equipped"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/border_red"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="72px"
+        app:layout_constraintStart_toStartOf="@id/relic_detail_container"
+        app:layout_constraintEnd_toEndOf="@id/relic_detail_container"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="57px"
+        >
+        <View
+            android:layout_width="0px"
+            android:layout_height="0px"
+            android:layout_weight="1"/>
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/border_red"
+            android:layout_marginStart="100px"
+            android:layout_marginEnd="50px"
+            android:text="enhance"/>
     </LinearLayout>
 
     <FrameLayout
