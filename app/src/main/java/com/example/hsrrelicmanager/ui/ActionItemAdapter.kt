@@ -34,7 +34,7 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
     override fun onBindViewHolder(holder: ActionViewHolder, position: Int) {
         val choice = items[0]
 
-        holder.choiceText.text = if (choice.isEmpty()) "+" else choice
+        holder.choiceText.text = if (choice.isEmpty()) "+ Default" else choice
         holder.actionImage.setImageResource(getImageResource(choice))
 
         // Show or hide level information based on choice

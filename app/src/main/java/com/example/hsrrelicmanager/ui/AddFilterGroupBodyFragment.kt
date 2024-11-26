@@ -37,8 +37,11 @@ class AddFilterGroupBodyFragment : Fragment() {
     private var index = -1
 
     //    private lateinit var adapter: ActionItemAdapter
-    private val actionItems = mutableListOf<ActionGroup>()
+    private val actionGroups = mutableListOf<ActionGroup>()
     private lateinit var adapter: GroupAdapter
+
+    private val actionItem = mutableListOf("")
+    private lateinit var adapterAction: ActionItemAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,9 +51,9 @@ class AddFilterGroupBodyFragment : Fragment() {
 
         binding.apply {
             // Initialize Action Adapter
-//            adapterAction = ActionItemAdapter(actionItems)
-//            recyclerViewActionGroup.layoutManager = LinearLayoutManager(context)
-//            recyclerViewActionGroup.adapter = adapterAction
+            adapterAction = ActionItemAdapter(actionItem)
+            recyclerViewActionItem.layoutManager = LinearLayoutManager(context)
+            recyclerViewActionItem.adapter = adapterAction
 
             // Initialize Filter Adapter
             adapterFilter = FilterAdapter(filterItems)

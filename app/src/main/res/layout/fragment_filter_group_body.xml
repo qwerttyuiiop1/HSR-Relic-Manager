@@ -140,7 +140,7 @@
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/pf_din_text_pro_regular"
                 android:letterSpacing="0.03"
-                android:text="Groups"
+                android:text="Actions"
                 android:textColor="#D3D6DB"
                 android:textSize="24sp"
                 android:textStyle="bold"
@@ -148,7 +148,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <FrameLayout
-                android:visibility="invisible"
                 android:id="@+id/action_group_order_add"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -179,6 +178,16 @@
         android:layout_marginBottom="316dp"
         android:nestedScrollingEnabled="false"
         app:layout_constraintTop_toBottomOf="@id/action_group_order_action_section"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewActionItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="316dp"
+        android:nestedScrollingEnabled="false"
+        app:layout_constraintTop_toBottomOf="@id/recyclerViewActionGroup"
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent" />
 
