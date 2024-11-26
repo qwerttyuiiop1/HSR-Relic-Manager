@@ -16,7 +16,11 @@ import com.example.hsrrelicmanager.model.Mainstat
 import com.example.hsrrelicmanager.model.Slot
 import com.example.hsrrelicmanager.model.Status
 import com.example.hsrrelicmanager.model.Substat
+import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicSet
+import com.example.hsrrelicmanager.model.rules.Filter
+import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
+import com.example.hsrrelicmanager.model.rules.action.StatusAction
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
@@ -25,9 +29,6 @@ class AddFilterGroupBodyFragment : Fragment() {
 
     private var _binding: FragmentFilterGroupBodyBinding? = null
     private val binding get() = _binding!!
-
-    val filterItems: MutableList<FilterItem> = mutableListOf()
-    private lateinit var adapterFilter: FilterAdapter
 
     private var RelicTracker = 0
     private var SlotTracker = 0
@@ -38,12 +39,17 @@ class AddFilterGroupBodyFragment : Fragment() {
     private var StatusTracker = 0
     private var index = -1
 
-    //    private lateinit var adapter: ActionItemAdapter
-    private val actionGroups = mutableListOf<ActionGroup>()
-    private lateinit var adapter: GroupAdapter
+    // Filters
+    private val filterItems: MutableList<FilterItem> = mutableListOf()
+    private lateinit var adapterFilter: FilterAdapter
 
+    // Default Action
     private val actionItem = mutableListOf("")
     private lateinit var adapterAction: ActionItemAdapter
+
+    // Groups
+    private val actionGroups = mutableListOf<ActionGroup>()
+    private lateinit var adapterGroup: GroupAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,16 +57,75 @@ class AddFilterGroupBodyFragment : Fragment() {
     ): View? {
         _binding = FragmentFilterGroupBodyBinding.inflate(inflater, container, false)
 
-        binding.apply {
-            // Initialize Action Adapter
-            adapterAction = ActionItemAdapter(actionItem)
-            recyclerViewActionItem.layoutManager = LinearLayoutManager(context)
-            recyclerViewActionItem.adapter = adapterAction
+        for (i in 1..1) {
+            val filterGroup =
+                ActionGroup().apply {
+                    addGroup(
+                        ActionGroup().apply {
+                            action = StatusAction(
+                                if (i % 2 == 0) Relic.Status.LOCK
+                                else Relic.Status.TRASH
+                            )
+                        }
+                    )
+                    filters[Filter.Type.RARITY] = Filter.RarityFilter(
+                        mutableSetOf(1, 2, 4)
+                    )
+                }
+            val lockActionGroup =
+                ActionGroup().apply {
+                    action = StatusAction(Relic.Status.LOCK)
+                    filters[Filter.Type.RARITY] = Filter.RarityFilter(
+                        mutableSetOf(5)
+                    )
+                }
+            val trashActionGroup =
+                ActionGroup().apply {
+                    action = StatusAction(Relic.Status.TRASH)
+                    filters[Filter.Type.SLOT] = Filter.SlotFilter(
+                        mutableSetOf("Boots")
+                    )
+                }
+            val resetActionGroup =
+                ActionGroup().apply {
+                    action = StatusAction(Relic.Status.DEFAULT)
+                    filters[Filter.Type.LEVEL] = Filter.LevelFilter(
+                        atLeast = 10
+                    )
+                }
+            val enhanceActionGroup =
+                ActionGroup().apply {
+                    action = EnhanceAction(15)
+                    filters[Filter.Type.MAIN_STAT] = Filter.MainStatFilter(
+                        mutableSetOf("SPD")
+                    )
+                }
 
+//            actionGroups.add(filterGroup)
+//            actionGroups.add(lockActionGroup)
+//            actionGroups.add(trashActionGroup)
+//            actionGroups.add(resetActionGroup)
+//            actionGroups.add(enhanceActionGroup)
+        }
+        for (i in 0..<actionGroups.size) {
+            actionGroups.get(i).position = i
+        }
+
+        binding.apply {
             // Initialize Filter Adapter
             adapterFilter = FilterAdapter(filterItems)
             recyclerViewFilterGroup.layoutManager = LinearLayoutManager(context)
             recyclerViewFilterGroup.adapter = adapterFilter
+
+            // Initialize Default Action Adapter
+            adapterAction = ActionItemAdapter(actionItem)
+            recyclerViewActionItem.layoutManager = LinearLayoutManager(context)
+            recyclerViewActionItem.adapter = adapterAction
+
+            // Initialize Group Adapter
+            adapterGroup = GroupAdapter(actionGroups)
+            recyclerViewActionGroup.layoutManager = LinearLayoutManager(context)
+            recyclerViewActionGroup.adapter = adapterGroup
 
             // Add Filter Button Click Listener
             filterGroupSectonAdd.setOnClickListener {
@@ -283,7 +348,13 @@ class AddFilterGroupBodyFragment : Fragment() {
                     }
                     adapterFilter.notifyDataSetChanged()
                 }
+            }
 
+            actionGroupOrderAdd.setOnClickListener {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.body_fragment_container, AddFilterGroupBodyFragment())
+                    .addToBackStack(null)
+                    .commit()
             }
         }
 
