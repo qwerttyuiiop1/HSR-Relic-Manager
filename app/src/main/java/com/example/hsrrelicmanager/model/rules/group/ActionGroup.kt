@@ -20,6 +20,11 @@ class ActionGroup(
     var groupList: MutableList<ActionGroup> = mutableListOf(),
     var action: @RawValue Action? = null
 ) : Parcelable {
+    fun addGroup(child: ActionGroup) {
+        child.parentGroup = this
+        groupList.add(child)
+    }
+
     fun getViewName() : String {
         if (!groupList.isEmpty()) {
             return "Filter Group"
