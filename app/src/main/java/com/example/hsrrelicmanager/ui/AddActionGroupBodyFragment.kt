@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.core.components.FilterItem
+import com.example.hsrrelicmanager.model.FilterItem
 import com.example.hsrrelicmanager.databinding.FragmentActionGroupBodyBinding
 import com.example.hsrrelicmanager.model.Mainstat
 import com.example.hsrrelicmanager.model.Slot
@@ -22,7 +22,7 @@ class AddActionGroupBodyFragment : Fragment() {
     private var _binding: FragmentActionGroupBodyBinding? = null
     private val binding get() = _binding!!
 
-    public val filterItems: MutableList<FilterItem> = mutableListOf()
+    val filterItems: MutableList<FilterItem> = mutableListOf()
     private lateinit var adapterFilter: FilterAdapter
 
     private val actionItems = mutableListOf("")

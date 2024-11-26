@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.core.components.FilterItem
+import com.example.hsrrelicmanager.model.FilterItem
 
 class SubFilterAdapter(private val items: FilterItem) : RecyclerView.Adapter<SubFilterAdapter.SubFilterViewHolder>() {
 

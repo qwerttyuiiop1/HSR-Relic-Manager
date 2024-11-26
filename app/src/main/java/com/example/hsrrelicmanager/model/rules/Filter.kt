@@ -2,8 +2,11 @@ package com.example.hsrrelicmanager.model.rules
 
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicSet
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-abstract class Filter {
+@Serializable
+sealed class Filter {
     enum class Type {
         SET,
         SLOT,
@@ -21,16 +24,18 @@ abstract class Filter {
     // RARITY: 1-5
     // LEVEL: 0-15
     // STATUS: based on Relic.Status
-    abstract val type: Type?
+    abstract val filterType: Type?
     abstract val name: String
     abstract val description: String
 
     abstract fun accepts(relic: Relic): Boolean
 
+    @Serializable
+    @SerialName("SET")
     class SetFilter(
         var sets: MutableSet<RelicSet> = mutableSetOf()
     ): Filter() {
-        override val type: Type = Type.SET
+        override val filterType: Type = Type.SET
         override val name: String = "Relic Set"
         override val description: String = "Filter by relic set"
 
@@ -39,10 +44,12 @@ abstract class Filter {
         }
     }
 
+    @Serializable
+    @SerialName("SLOT")
     class SlotFilter(
         var types: MutableSet<String> = mutableSetOf()
     ): Filter() {
-        override val type: Type = Type.SLOT
+        override val filterType: Type = Type.SLOT
         override val name: String = "Relic Type"
         override val description
             get() = types.joinToString(", ")
@@ -52,10 +59,12 @@ abstract class Filter {
         }
     }
 
+    @Serializable
+    @SerialName("MAINSTAT")
     class MainStatFilter(
         var stats: MutableSet<String> = mutableSetOf()
     ): Filter() {
-        override val type: Type = Type.MAIN_STAT
+        override val filterType: Type = Type.MAIN_STAT
         override val name: String = "Main Stat"
         override val description: String
             get() = stats.joinToString(", ")
@@ -65,47 +74,45 @@ abstract class Filter {
         }
     }
 
+    @Serializable
+    @SerialName("SUBSTAT")
     class SubStatFilter(
-        var stats: MutableSet<String> = mutableSetOf()
+        var stats: MutableMap<String, Int> = mutableMapOf(),
+        var minWeight: Int = -1
     ): Filter() {
-        override val type: Type = Type.SUB_STATS
+        override val filterType: Type = Type.SUB_STATS
         override val name: String = "Sub Stats"
         override val description: String
-            get() = stats.joinToString(", ")
+            get() = stats.keys.joinToString(", ")
 
         override fun accepts(relic: Relic): Boolean {
-            return stats.any { relic.substats.containsKey(it) }
+            //return stats.any { relic.substats.containsKey(it) }
+            TODO("Take into account weights")
         }
     }
 
+    @Serializable
+    @SerialName("RARITY")
     class RarityFilter(
-        var atLeast: Int? = null,
-        var atMost: Int? = null
+        var rarities: MutableSet<Int> = mutableSetOf()
     ): Filter() {
-        override val type: Type = Type.RARITY
+        override val filterType: Type = Type.RARITY
         override val name: String = "Rarity"
         override val description: String
-            get() = if (atLeast != null && atMost != null) {
-                "$atLeast - $atMost"
-            } else if (atLeast != null) {
-                "At least $atLeast"
-            } else if (atMost != null) {
-                "At most $atMost"
-            } else {
-                "Any"
-            }
+            get() = rarities.joinToString(", ")
 
         override fun accepts(relic: Relic): Boolean {
-            return (atLeast == null || relic.rarity >= atLeast!!) &&
-                    (atMost == null || relic.rarity <= atMost!!)
+            return rarities.contains(relic.rarity)
         }
     }
 
+    @Serializable
+    @SerialName("LEVEL")
     class LevelFilter(
         var atLeast: Int? = null,
         var atMost: Int? = null
     ): Filter() {
-        override val type: Type = Type.LEVEL
+        override val filterType: Type = Type.LEVEL
         override val name: String = "Level"
         override val description: String
             get() = if (atLeast != null && atMost != null) {
@@ -124,10 +131,12 @@ abstract class Filter {
         }
     }
 
+    @Serializable
+    @SerialName("STATUS")
     class StatusFilter(
         var statuses: MutableSet<Relic.Status> = mutableSetOf()
     ): Filter() {
-        override val type: Type = Type.STATUS
+        override val filterType: Type = Type.STATUS
         override val name: String = "Status"
         override val description: String
             get() = statuses.joinToString(", ")

@@ -210,6 +210,7 @@
 
         <!-- Filter Action Group -->
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/filter_action_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -348,8 +349,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
+                            android:layout_marginEnd="4dp"
                             android:text="Cancel"
-                            android:textColor="#4A4A4A" />
+                            android:textColor="#4A4A4A"
+                            android:textStyle="bold" />
                     </LinearLayout>
                 </FrameLayout>
 
@@ -381,8 +384,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
+                            android:layout_marginEnd="4dp"
                             android:text="Confirm"
-                            android:textColor="#4A4A4A" />
+                            android:textColor="#4A4A4A"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                 </FrameLayout>

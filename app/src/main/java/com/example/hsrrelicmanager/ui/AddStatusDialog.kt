@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.core.components.FilterItem
+import com.example.hsrrelicmanager.model.FilterItem
 import com.example.hsrrelicmanager.databinding.DialogStatusFilterBinding
 
 class AddStatusDialog(private val items: MutableList<FilterItem>): DialogFragment() {

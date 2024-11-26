@@ -9,6 +9,10 @@ import android.util.Log
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicSet
 import com.example.hsrrelicmanager.model.relics.relicSets
+import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
+import com.example.hsrrelicmanager.model.rules.group.ActionGroup
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.encodeToString
 
 class InventoryDBManager(private val context: Context) {
 
@@ -26,7 +30,35 @@ class InventoryDBManager(private val context: Context) {
         dbHelper.close()
     }
 
+    // RULES
+    fun insertGroup(group: ActionGroup, parentId: Long? = null): Long {
+        val values = ContentValues().apply {
+            put(InventoryDBHelper.RulesTable.COLUMN_POS, group.position)
+            put(InventoryDBHelper.RulesTable.COLUMN_FILTERS, Json.encodeToString(group.filters)) // json
 
+            if (parentId != null) {
+                put(InventoryDBHelper.RulesTable.COLUMN_PARENT_ID, parentId)
+            } else {
+                putNull(InventoryDBHelper.RulesTable.COLUMN_PARENT_ID)
+            }
+
+            if (group.action is EnhanceAction) {
+                put(InventoryDBHelper.RulesTable.COLUMN_ACTION, "Enhance")
+                put(InventoryDBHelper.RulesTable.COLUMN_LEVEL, (group.action as EnhanceAction).targetLevel)
+            } else {
+                put(InventoryDBHelper.RulesTable.COLUMN_ACTION, group.action.toString())
+                putNull(InventoryDBHelper.RulesTable.COLUMN_LEVEL)
+            }
+        }
+
+        val id = database.insert(InventoryDBHelper.RulesTable.TABLE_NAME, null, values)
+
+        for (child in group.groupList) {
+            insertGroup(child, id)
+        }
+
+        return id
+    }
 
     // INVENTORY TABLE
     fun insertRelic(

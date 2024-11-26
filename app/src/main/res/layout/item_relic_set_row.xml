@@ -55,21 +55,21 @@
 
         <ImageView
             android:id="@+id/btn_minimize"
-            android:layout_width="9dp"
-            android:layout_height="20dp"
+            android:layout_width="8dp"
+            android:layout_height="16dp"
             android:src="@drawable/ic_minimized"
             android:layout_marginStart="4dp"
             android:layout_gravity="center_vertical"
             android:visibility="gone"
             />
+
         <ImageView
             android:id="@+id/btn_maximize"
-            android:layout_width="20dp"
-            android:layout_height="9dp"
-            android:src="@drawable/ic_expanded"
-            android:layout_marginStart="4dp"
+            android:layout_width="16dp"
+            android:layout_height="8dp"
             android:layout_gravity="center_vertical"
-            />
+            android:layout_marginStart="4dp"
+            android:src="@drawable/ic_expanded" />
     </LinearLayout>
 
     <TextView
