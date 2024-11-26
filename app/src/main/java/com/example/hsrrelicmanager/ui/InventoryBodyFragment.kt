@@ -74,7 +74,7 @@ class InventoryBodyFragment : Fragment() {
 //        }
 
 
-        dbManager = InventoryDBManager(requireContext())
+        dbManager = (requireContext() as MainActivity).dbManager
         dbManager.open()
 
         // Example "payload"
@@ -156,9 +156,6 @@ class InventoryBodyFragment : Fragment() {
                 )
             )
         }
-
-        dbManager.close()
-
 
         // Adapter
         val relicAdapter = RelicAdapter(relicData, this)

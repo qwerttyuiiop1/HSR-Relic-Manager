@@ -229,7 +229,7 @@ class RelicBottomSheetFragment : BottomSheetDialogFragment() {
     private fun updateStatusInDB(relic: Relic) {
         lateinit var dbManager: InventoryDBManager
 
-        dbManager = InventoryDBManager(binding.root.context)
+        dbManager = (requireContext() as MainActivity).dbManager
         dbManager.open()
 
         val add = relic.status - dbManager.fetchStatusForRelic(relic.id)
@@ -237,7 +237,5 @@ class RelicBottomSheetFragment : BottomSheetDialogFragment() {
 
         dbManager.insertStatus(relic.id, add.map { it.name })
         dbManager.deleteStatus(relic.id, delete.map { it.name })
-
-        dbManager.close()
     }
 }
