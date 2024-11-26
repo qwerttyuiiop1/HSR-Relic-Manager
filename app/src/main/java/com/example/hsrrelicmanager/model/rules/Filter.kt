@@ -66,38 +66,30 @@ abstract class Filter {
     }
 
     class SubStatFilter(
-        var stats: MutableSet<String> = mutableSetOf()
+        var stats: MutableMap<String, Int> = mutableMapOf(),
+        var minWeight: Int = -1
     ): Filter() {
         override val type: Type = Type.SUB_STATS
         override val name: String = "Sub Stats"
         override val description: String
-            get() = stats.joinToString(", ")
+            get() = stats.keys.joinToString(", ")
 
         override fun accepts(relic: Relic): Boolean {
-            return stats.any { relic.substats.containsKey(it) }
+            //return stats.any { relic.substats.containsKey(it) }
+            TODO("Take into account weights")
         }
     }
 
     class RarityFilter(
-        var atLeast: Int? = null,
-        var atMost: Int? = null
+        var rarities: MutableSet<Int> = mutableSetOf()
     ): Filter() {
         override val type: Type = Type.RARITY
         override val name: String = "Rarity"
         override val description: String
-            get() = if (atLeast != null && atMost != null) {
-                "$atLeast - $atMost"
-            } else if (atLeast != null) {
-                "At least $atLeast"
-            } else if (atMost != null) {
-                "At most $atMost"
-            } else {
-                "Any"
-            }
+            get() = rarities.joinToString(", ")
 
         override fun accepts(relic: Relic): Boolean {
-            return (atLeast == null || relic.rarity >= atLeast!!) &&
-                    (atMost == null || relic.rarity <= atMost!!)
+            return rarities.contains(relic.rarity)
         }
     }
 

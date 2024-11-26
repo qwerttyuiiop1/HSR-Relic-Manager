@@ -34,9 +34,12 @@ data class FilterItem(
             "Relic Set" -> Filter.SetFilter(RelicSet.toMutableSet())
             "Slot" -> Filter.SlotFilter(Slot.map{it.name}.toMutableSet())
             "Mainstat" -> Filter.MainStatFilter(Mainstat.map{it.name}.toMutableSet())
-            "Substat" -> Filter.SubStatFilter(Substat.toMutableSet(), weightLevel)
-            "Level" -> Filter.LevelFilter(levelNum, levelType)
-            "Rarity" -> Filter.RarityFilter(rarityList)
+            "Substat" -> Filter.SubStatFilter(Substat.map{it.name to it.level}.toMap().toMutableMap(), weightLevel)
+            "Level" -> Filter.LevelFilter(
+                if (levelType) levelNum else null,
+                if (levelType) null else levelNum
+            )
+            "Rarity" -> Filter.RarityFilter(rarityList.toMutableSet())
             "Status" -> Filter.StatusFilter(statusList.map {
                 when (it.name) {
                     "Lock" -> Relic.Status.TRASH
