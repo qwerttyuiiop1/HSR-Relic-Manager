@@ -14,14 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.hsrrelicmanager.R;
 import com.example.hsrrelicmanager.databinding.GroupCardDescriptionBinding;
 import com.example.hsrrelicmanager.model.rules.Filter;
-import com.example.hsrrelicmanager.model.rules.group.NewGroup;
+import com.example.hsrrelicmanager.model.rules.group.ActionGroup;
 
 import java.util.List;
 
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> {
-    private List<NewGroup> groupData;
+    private List<ActionGroup> groupData;
 
-    public GroupAdapter(List<NewGroup> groupData) {
+    public GroupAdapter(List<ActionGroup> groupData) {
         this.groupData = groupData;
     }
 
@@ -36,7 +36,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull GroupAdapter.ViewHolder holder, int position) {
-        NewGroup group = groupData.get(position);
+        ActionGroup group = groupData.get(position);
         holder.updatePosition(position);
         holder.bind(group);
 
@@ -49,7 +49,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         return groupData.size();
     }
 
-    public List<NewGroup> getGroupData() {
+    public List<ActionGroup> getGroupData() {
         return groupData;
     }
 
@@ -71,7 +71,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             ivTrash = itemView.findViewById(R.id.trash_icon);
         }
 
-        public void bind(NewGroup group) {
+        public void bind(ActionGroup group) {
             tvGroupName.setText(group.getViewName());
             filterContainer.removeAllViews();
             // check class of group is filter / action group

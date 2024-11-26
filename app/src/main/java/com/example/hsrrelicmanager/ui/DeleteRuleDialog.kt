@@ -12,18 +12,18 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.GroupCardDescriptionBinding
-import com.example.hsrrelicmanager.model.rules.group.NewGroup
+import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 
 class DeleteRuleDialogFragment : DialogFragment() {
 
     var index: Int = -1
-    lateinit var group: NewGroup
+    lateinit var group: ActionGroup
 
     companion object {
         private const val ARG_INDEX = "index"
         private const val ARG_DATA = "data"
 
-        fun newInstance(index: Int, data: NewGroup): DeleteRuleDialogFragment {
+        fun newInstance(index: Int, data: ActionGroup): DeleteRuleDialogFragment {
             val fragment = DeleteRuleDialogFragment()
             val args = Bundle().apply {
                 putInt(ARG_INDEX, index)
@@ -46,7 +46,7 @@ class DeleteRuleDialogFragment : DialogFragment() {
         val dialogView = requireActivity().layoutInflater.inflate(R.layout.dialog_delete_rule, null)
 
         index = arguments?.getInt(ARG_INDEX)!!
-        group = arguments?.getParcelable<NewGroup>(ARG_DATA)!!
+        group = arguments?.getParcelable<ActionGroup>(ARG_DATA)!!
 
         builder.setView(dialogView)
 

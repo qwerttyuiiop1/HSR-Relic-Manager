@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.model.rules.group.NewGroup
+import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 import java.util.Collections
 
 class RuleBodyFragment : Fragment() {
@@ -175,7 +175,7 @@ class RuleBodyFragment : Fragment() {
     }
 
 
-    private fun showDeleteRuleDialog(index: Int, group: NewGroup) {
+    private fun showDeleteRuleDialog(index: Int, group: ActionGroup) {
         val dialog = DeleteRuleDialogFragment.newInstance(index, group)
         dialog.show(parentFragmentManager, "DeleteRuleDialog")
     }

@@ -17,7 +17,7 @@ import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
 import com.example.hsrrelicmanager.model.rules.action.StatusAction
-import com.example.hsrrelicmanager.model.rules.group.NewGroup
+import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 
 open class MainActivity : AppCompatActivity() {
 
@@ -26,7 +26,7 @@ open class MainActivity : AppCompatActivity() {
     protected lateinit var navbarBinding: NavbarBinding
     private var selectedFrame: View? = null
 
-    lateinit var groupData: MutableList<NewGroup>
+    lateinit var groupData: MutableList<ActionGroup>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,12 +122,12 @@ open class MainActivity : AppCompatActivity() {
 
     // Only while DB has not been implemented
     private fun createDummyGroupData() {
-        groupData = mutableListOf<NewGroup>()
+        groupData = mutableListOf<ActionGroup>()
         for (i in 1..3) {
             val filterGroup =
-                NewGroup().apply {
+                ActionGroup().apply {
                     groupList.add(
-                        NewGroup().apply {
+                        ActionGroup().apply {
                             action = StatusAction(
                                 if (i % 2 == 0) Relic.Status.LOCK
                                 else Relic.Status.TRASH
@@ -139,28 +139,28 @@ open class MainActivity : AppCompatActivity() {
                     )
                 }
             val lockActionGroup =
-                NewGroup().apply {
+                ActionGroup().apply {
                     action = StatusAction(Relic.Status.LOCK)
                     filters[Filter.Type.RARITY] = Filter.RarityFilter(
                         atLeast = 3
                     )
                 }
             val trashActionGroup =
-                NewGroup().apply {
+                ActionGroup().apply {
                     action = StatusAction(Relic.Status.TRASH)
                     filters[Filter.Type.SLOT] = Filter.SlotFilter(
                         mutableSetOf("Boots")
                     )
                 }
             val resetActionGroup =
-                NewGroup().apply {
+                ActionGroup().apply {
                     action = StatusAction(Relic.Status.DEFAULT)
                     filters[Filter.Type.LEVEL] = Filter.LevelFilter(
                         atLeast = 10
                     )
                 }
             val enhanceActionGroup =
-                NewGroup().apply {
+                ActionGroup().apply {
                     action = EnhanceAction(15)
                     filters[Filter.Type.MAIN_STAT] = Filter.MainStatFilter(
                         mutableSetOf("SPD")

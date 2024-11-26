@@ -15,16 +15,16 @@ import com.example.hsrrelicmanager.model.rules.Filter;
 import com.example.hsrrelicmanager.model.rules.action.Action;
 import com.example.hsrrelicmanager.model.rules.action.EnhanceAction;
 import com.example.hsrrelicmanager.model.rules.action.StatusAction;
-import com.example.hsrrelicmanager.model.rules.group.NewGroup;
+import com.example.hsrrelicmanager.model.rules.group.ActionGroup;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CategorizedGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<ListItem> items;
-    private List<NewGroup> groupData;
+    private List<ActionGroup> groupData;
 
-    public CategorizedGroupAdapter(List<NewGroup> groupData) {
+    public CategorizedGroupAdapter(List<ActionGroup> groupData) {
         this.groupData = groupData;
 
         List<ListItem> enhanceGroups = new ArrayList<>();
@@ -33,7 +33,7 @@ public class CategorizedGroupAdapter extends RecyclerView.Adapter<RecyclerView.V
         List<ListItem> resetGroups = new ArrayList<>();
         List<ListItem> filterGroups = new ArrayList<>();
 
-        for (NewGroup group : groupData) {
+        for (ActionGroup group : groupData) {
             if (!group.getGroupList().isEmpty()) {
                 filterGroups.add(new GroupItem(group));
             } else if (group.getAction() != null) {
@@ -82,7 +82,7 @@ public class CategorizedGroupAdapter extends RecyclerView.Adapter<RecyclerView.V
         return items;
     }
 
-    public List<NewGroup> getGroupData() {
+    public List<ActionGroup> getGroupData() {
         return groupData;
     }
 
@@ -154,7 +154,7 @@ public class CategorizedGroupAdapter extends RecyclerView.Adapter<RecyclerView.V
             filterContainer = itemView.findViewById(R.id.filter_container);
         }
 
-        public void bind(NewGroup group) {
+        public void bind(ActionGroup group) {
             tvGroupName.setText(group.getViewName());
             filterContainer.removeAllViews();
             // check class of group is filter / action group
@@ -205,13 +205,13 @@ public class CategorizedGroupAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     class GroupItem extends ListItem {
-        NewGroup group;
+        ActionGroup group;
 
-        public GroupItem(NewGroup group) {
+        public GroupItem(ActionGroup group) {
             this.group = group;
         }
 
-        public NewGroup getGroup() {
+        public ActionGroup getGroup() {
             return group;
         }
 

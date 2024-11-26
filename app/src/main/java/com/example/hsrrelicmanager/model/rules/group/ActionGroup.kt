@@ -12,12 +12,12 @@ import kotlinx.parcelize.RawValue
 import java.util.EnumMap
 
 @Parcelize
-class NewGroup(
+class ActionGroup(
     val id: Long = -1,
     var filters: @RawValue MutableMap<Filter.Type, Filter?> = EnumMap(Filter.Type.entries.associateWith { null }),
     var position: Int = -1,
-    var parentGroup: NewGroup? = null,
-    var groupList: MutableList<NewGroup> = mutableListOf(),
+    var parentGroup: ActionGroup? = null,
+    var groupList: MutableList<ActionGroup> = mutableListOf(),
     var action: @RawValue Action? = null
 ) : Parcelable {
     fun getViewName() : String {
