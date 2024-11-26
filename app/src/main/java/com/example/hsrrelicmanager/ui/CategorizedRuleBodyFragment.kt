@@ -10,13 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.ui.CategorizedGroupAdapter.GroupViewHolder
-import com.example.hsrrelicmanager.model.relics.Relic
-import com.example.hsrrelicmanager.model.rules.Filter
-import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
-import com.example.hsrrelicmanager.model.rules.action.StatusAction
-import com.example.hsrrelicmanager.model.rules.group.ActionGroup
-import com.example.hsrrelicmanager.model.rules.group.FilterGroup
-import com.example.hsrrelicmanager.model.rules.group.Group
 
 class CategorizedRuleBodyFragment : Fragment() {
     override fun onCreateView(

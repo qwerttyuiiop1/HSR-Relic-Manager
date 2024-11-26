@@ -9,27 +9,21 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.GroupCardDescriptionBinding
-import com.example.hsrrelicmanager.model.relics.Relic
-import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
-import com.example.hsrrelicmanager.model.rules.action.StatusAction
-import com.example.hsrrelicmanager.model.rules.group.ActionGroup
-import com.example.hsrrelicmanager.model.rules.group.FilterGroup
-import com.example.hsrrelicmanager.model.rules.group.Group
+import com.example.hsrrelicmanager.model.rules.group.NewGroup
 
 class DeleteRuleDialogFragment : DialogFragment() {
 
     var index: Int = -1
-    lateinit var group: Group
+    lateinit var group: NewGroup
 
     companion object {
         private const val ARG_INDEX = "index"
         private const val ARG_DATA = "data"
 
-        fun newInstance(index: Int, data: Group): DeleteRuleDialogFragment {
+        fun newInstance(index: Int, data: NewGroup): DeleteRuleDialogFragment {
             val fragment = DeleteRuleDialogFragment()
             val args = Bundle().apply {
                 putInt(ARG_INDEX, index)
@@ -52,7 +46,7 @@ class DeleteRuleDialogFragment : DialogFragment() {
         val dialogView = requireActivity().layoutInflater.inflate(R.layout.dialog_delete_rule, null)
 
         index = arguments?.getInt(ARG_INDEX)!!
-        group = arguments?.getParcelable<Group>(ARG_DATA)!!
+        group = arguments?.getParcelable<NewGroup>(ARG_DATA)!!
 
         builder.setView(dialogView)
 
@@ -60,12 +54,12 @@ class DeleteRuleDialogFragment : DialogFragment() {
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
         // Set group data
-        val name = group!!.viewName
+        val name = group!!.getViewName()
         val groupName = dialogView.findViewById<TextView>(R.id.tvGroupName)
         groupName.text = name
 
         val groupIcon = dialogView.findViewById<ImageView>(R.id.groupIcon)
-        groupIcon.setBackgroundResource(getGroupImageResource(group))
+        groupIcon.setBackgroundResource(group.getImageResource())
 
         val filters = group!!.filters
         val filterList = ArrayList(filters.values)
@@ -75,17 +69,19 @@ class DeleteRuleDialogFragment : DialogFragment() {
         filterContainer.removeAllViews()
 
         for (filter in filterList) {
-            val binding = GroupCardDescriptionBinding.inflate(
-                LayoutInflater.from(filterContainer.context),
-                filterContainer,
-                false
-            )
-            binding.rowName.setTextColor(Color.parseColor("#4A4A4A"))
-            binding.rowValue.setTextColor(Color.parseColor("#4A4A4A"))
+            if (filter != null) {
+                val binding = GroupCardDescriptionBinding.inflate(
+                    LayoutInflater.from(filterContainer.context),
+                    filterContainer,
+                    false
+                )
+                binding.rowName.setTextColor(Color.parseColor("#4A4A4A"))
+                binding.rowValue.setTextColor(Color.parseColor("#4A4A4A"))
 
-            binding.rowName.text = filter.name + ':'
-            binding.rowValue.text = filter.description
-            filterContainer.addView(binding.root)
+                binding.rowName.text = filter.name + ':'
+                binding.rowValue.text = filter.description
+                filterContainer.addView(binding.root)
+            }
         }
 
         // Cancel button
@@ -144,26 +140,5 @@ class DeleteRuleDialogFragment : DialogFragment() {
         }
         parentFragmentManager.setFragmentResult("delete_rule_request", resultBundle)
         dismiss()
-    }
-
-    private fun getGroupImageResource(group: Group): Int {
-        if (group is FilterGroup) {
-            return R.drawable.sticker_ppg_11_other_01
-        } else if (group is ActionGroup) {
-            val action = group.action
-
-            if (action is EnhanceAction) {
-                return R.drawable.sticker_ppg_09_topaz_and_numby_03
-            } else if (action is StatusAction) {
-                return when ((action as StatusAction).targetStatus) {
-                    Relic.Status.LOCK -> R.drawable.sticker_ppg_07_pom_pom_04
-                    Relic.Status.TRASH -> R.drawable.sticker_ppg_12_other_01
-                    Relic.Status.DEFAULT -> R.drawable.sticker_ppg_13_acheron_03
-                    else -> -1
-                }
-            }
-        }
-
-        return -1
     }
 }

@@ -8,20 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.FragmentFilterGroupBodyBinding
-import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicSet
-import com.example.hsrrelicmanager.model.rules.Filter
-import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
-import com.example.hsrrelicmanager.model.rules.action.StatusAction
-import com.example.hsrrelicmanager.model.rules.group.ActionGroup
-import com.example.hsrrelicmanager.model.rules.group.FilterGroup
-import com.example.hsrrelicmanager.model.rules.group.Group
+import com.example.hsrrelicmanager.model.rules.group.NewGroup
 
 class AddFilterGroupBodyFragment : Fragment() {
     lateinit var binding: FragmentFilterGroupBodyBinding
 
     //    private lateinit var adapter: ActionItemAdapter
-    private val actionItems = mutableListOf<Group>()
+    private val actionItems = mutableListOf<NewGroup>()
     private lateinit var adapter: GroupAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

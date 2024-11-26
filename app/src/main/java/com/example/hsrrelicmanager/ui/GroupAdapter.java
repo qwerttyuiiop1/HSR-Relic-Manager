@@ -1,5 +1,6 @@
 package com.example.hsrrelicmanager.ui;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,21 +12,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hsrrelicmanager.R;
-import com.example.hsrrelicmanager.model.rules.action.Action;
-import com.example.hsrrelicmanager.model.rules.action.EnhanceAction;
-import com.example.hsrrelicmanager.model.rules.action.StatusAction;
-import com.example.hsrrelicmanager.model.rules.group.ActionGroup;
-import com.example.hsrrelicmanager.model.rules.group.FilterGroup;
 import com.example.hsrrelicmanager.databinding.GroupCardDescriptionBinding;
 import com.example.hsrrelicmanager.model.rules.Filter;
-import com.example.hsrrelicmanager.model.rules.group.Group;
+import com.example.hsrrelicmanager.model.rules.group.NewGroup;
 
 import java.util.List;
 
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> {
-    private List<Group> groupData;
+    private List<NewGroup> groupData;
 
-    public GroupAdapter(List<Group> groupData) {
+    public GroupAdapter(List<NewGroup> groupData) {
         this.groupData = groupData;
     }
 
@@ -40,7 +36,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull GroupAdapter.ViewHolder holder, int position) {
-        Group group = groupData.get(position);
+        NewGroup group = groupData.get(position);
         holder.updatePosition(position);
         holder.bind(group);
 
@@ -53,32 +49,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         return groupData.size();
     }
 
-    private int getGroupImageResource(Group group) {
-        if (group instanceof FilterGroup) {
-            return R.drawable.sticker_ppg_11_other_01;
-        } else if (group instanceof ActionGroup) {
-            Action action = ((ActionGroup) group).getAction();
-
-            if (action instanceof EnhanceAction) {
-                return R.drawable.sticker_ppg_09_topaz_and_numby_03;
-            } else if (action instanceof StatusAction) {
-                switch (((StatusAction) action).getTargetStatus()) {
-                    case LOCK:
-                        return R.drawable.sticker_ppg_07_pom_pom_04;
-                    case TRASH:
-                        return R.drawable.sticker_ppg_12_other_01;
-                    case DEFAULT:
-                        return R.drawable.sticker_ppg_13_acheron_03;
-                    default:
-                        return -1;
-                }
-            }
-        }
-
-        return -1;
-    }
-
-    public List<Group> getGroupData() {
+    public List<NewGroup> getGroupData() {
         return groupData;
     }
 
@@ -100,16 +71,25 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             ivTrash = itemView.findViewById(R.id.trash_icon);
         }
 
-        public void bind(Group group) {
+        public void bind(NewGroup group) {
             tvGroupName.setText(group.getViewName());
             filterContainer.removeAllViews();
             // check class of group is filter / action group
             for (Filter filter : group.getFilters().values()) {
-                GroupCardDescriptionBinding binding = GroupCardDescriptionBinding.inflate(LayoutInflater.from(filterContainer.getContext()), filterContainer, false);
-                binding.rowName.setText(filter.getName() + ':');
-                binding.rowValue.setText(filter.getDescription());
-                filterContainer.addView(binding.getRoot());
-                groupIcon.setImageResource(getGroupImageResource(group));
+                if (filter != null) {
+                    GroupCardDescriptionBinding binding = GroupCardDescriptionBinding.inflate(LayoutInflater.from(filterContainer.getContext()), filterContainer, false);
+                    binding.rowName.setText(filter.getName() + ':');
+                    binding.rowValue.setText(filter.getDescription());
+                    filterContainer.addView(binding.getRoot());
+                    if (group.getAction() != null) {
+                        Log.d("GROUP ACTION", group.getAction().toString());
+                    }
+                    if (!group.getGroupList().isEmpty()) {
+                        Log.d("CHILD GROUPS", "HAS!!");
+                    }
+                    Log.d("GROUP DATA", String.valueOf(group.getImageResource()));
+                    groupIcon.setImageResource(group.getImageResource());
+                }
 //                switch (group.getViewName().replaceAll(" .*", "")) {
 //                    case "Filter":
 //                        groupIcon.setImageResource(R.drawable.filter_group);

@@ -15,18 +15,16 @@ import com.example.hsrrelicmanager.model.rules.Filter;
 import com.example.hsrrelicmanager.model.rules.action.Action;
 import com.example.hsrrelicmanager.model.rules.action.EnhanceAction;
 import com.example.hsrrelicmanager.model.rules.action.StatusAction;
-import com.example.hsrrelicmanager.model.rules.group.ActionGroup;
-import com.example.hsrrelicmanager.model.rules.group.FilterGroup;
-import com.example.hsrrelicmanager.model.rules.group.Group;
+import com.example.hsrrelicmanager.model.rules.group.NewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CategorizedGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<ListItem> items;
-    private List<Group> groupData;
+    private List<NewGroup> groupData;
 
-    public CategorizedGroupAdapter(List<Group> groupData) {
+    public CategorizedGroupAdapter(List<NewGroup> groupData) {
         this.groupData = groupData;
 
         List<ListItem> enhanceGroups = new ArrayList<>();
@@ -35,11 +33,11 @@ public class CategorizedGroupAdapter extends RecyclerView.Adapter<RecyclerView.V
         List<ListItem> resetGroups = new ArrayList<>();
         List<ListItem> filterGroups = new ArrayList<>();
 
-        for (Group group : groupData) {
-            if (group instanceof FilterGroup) {
+        for (NewGroup group : groupData) {
+            if (!group.getGroupList().isEmpty()) {
                 filterGroups.add(new GroupItem(group));
-            } else if (group instanceof ActionGroup) {
-                Action action = ((ActionGroup) group).getAction();
+            } else if (group.getAction() != null) {
+                Action action = group.getAction();
 
                 if (action instanceof EnhanceAction) {
                     enhanceGroups.add(new GroupItem(group));
@@ -84,7 +82,7 @@ public class CategorizedGroupAdapter extends RecyclerView.Adapter<RecyclerView.V
         return items;
     }
 
-    public List<Group> getGroupData() {
+    public List<NewGroup> getGroupData() {
         return groupData;
     }
 
@@ -142,31 +140,6 @@ public class CategorizedGroupAdapter extends RecyclerView.Adapter<RecyclerView.V
         return items.get(position).getType();
     }
 
-    private int getGroupImageResource(Group group) {
-        if (group instanceof FilterGroup) {
-            return R.drawable.sticker_ppg_11_other_01;
-        } else if (group instanceof ActionGroup) {
-            Action action = ((ActionGroup) group).getAction();
-
-            if (action instanceof EnhanceAction) {
-                return R.drawable.sticker_ppg_09_topaz_and_numby_03;
-            } else if (action instanceof StatusAction) {
-                switch (((StatusAction) action).getTargetStatus()) {
-                    case LOCK:
-                        return R.drawable.sticker_ppg_07_pom_pom_04;
-                    case TRASH:
-                        return R.drawable.sticker_ppg_12_other_01;
-                    case DEFAULT:
-                        return R.drawable.sticker_ppg_13_acheron_03;
-                    default:
-                        return -1;
-                }
-            }
-        }
-
-        return -1;
-    }
-
     public class GroupViewHolder extends RecyclerView.ViewHolder {
         private ImageView groupIcon;
         private TextView tvGroupName, tvPosition;
@@ -181,16 +154,18 @@ public class CategorizedGroupAdapter extends RecyclerView.Adapter<RecyclerView.V
             filterContainer = itemView.findViewById(R.id.filter_container);
         }
 
-        public void bind(Group group) {
+        public void bind(NewGroup group) {
             tvGroupName.setText(group.getViewName());
             filterContainer.removeAllViews();
             // check class of group is filter / action group
             for (Filter filter : group.getFilters().values()) {
-                GroupCardDescriptionBinding binding = GroupCardDescriptionBinding.inflate(LayoutInflater.from(filterContainer.getContext()), filterContainer, false);
-                binding.rowName.setText(filter.getName() + ':');
-                binding.rowValue.setText(filter.getDescription());
-                filterContainer.addView(binding.getRoot());
-                groupIcon.setImageResource(getGroupImageResource(group));
+                if (filter != null) {
+                    GroupCardDescriptionBinding binding = GroupCardDescriptionBinding.inflate(LayoutInflater.from(filterContainer.getContext()), filterContainer, false);
+                    binding.rowName.setText(filter.getName() + ':');
+                    binding.rowValue.setText(filter.getDescription());
+                    filterContainer.addView(binding.getRoot());
+                    groupIcon.setImageResource(group.getImageResource());
+                }
             }
         }
 
@@ -230,19 +205,19 @@ public class CategorizedGroupAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     class GroupItem extends ListItem {
-        Group group;
+        NewGroup group;
 
-        public GroupItem(Group group) {
+        public GroupItem(NewGroup group) {
             this.group = group;
         }
 
-        public Group getGroup() {
+        public NewGroup getGroup() {
             return group;
         }
 
         @Override
         public int getType() {
-            return TYPE_GROUP;
+            return ListItem.TYPE_GROUP;
         }
     }
 
@@ -259,14 +234,14 @@ public class CategorizedGroupAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         @Override
         public int getType() {
-            return TYPE_HEADER;
+            return ListItem.TYPE_HEADER;
         }
     }
 
     class DividerItem extends ListItem {
         @Override
         public int getType() {
-            return TYPE_DIVIDER;
+            return ListItem.TYPE_DIVIDER;
         }
     }
 }
