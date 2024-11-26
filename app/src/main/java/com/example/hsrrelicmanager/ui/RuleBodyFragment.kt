@@ -71,6 +71,16 @@ class RuleBodyFragment : Fragment() {
             swipedItemIndex = -1
         }
 
+        // Listens for new rules created
+        parentFragmentManager.setFragmentResultListener("new_group", viewLifecycleOwner) { _, bundle ->
+            val group = bundle.getParcelable<ActionGroup>("group")
+
+            if (group != null) {
+                groupData.add(group)
+                groupAdapter.notifyDataSetChanged()
+            }
+        }
+
         val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
             override fun getMovementFlags(
                 recyclerView: RecyclerView,
