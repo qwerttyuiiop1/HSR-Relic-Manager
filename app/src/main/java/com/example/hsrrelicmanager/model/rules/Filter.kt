@@ -2,6 +2,7 @@ package com.example.hsrrelicmanager.model.rules
 
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicSet
+import kotlinx.serialization.Serializable
 
 abstract class Filter {
     enum class Type {
@@ -27,6 +28,7 @@ abstract class Filter {
 
     abstract fun accepts(relic: Relic): Boolean
 
+    @Serializable
     class SetFilter(
         var sets: MutableSet<RelicSet> = mutableSetOf()
     ): Filter() {
@@ -39,6 +41,7 @@ abstract class Filter {
         }
     }
 
+    @Serializable
     class SlotFilter(
         var types: MutableSet<String> = mutableSetOf()
     ): Filter() {
@@ -52,6 +55,7 @@ abstract class Filter {
         }
     }
 
+    @Serializable
     class MainStatFilter(
         var stats: MutableSet<String> = mutableSetOf()
     ): Filter() {
@@ -65,6 +69,7 @@ abstract class Filter {
         }
     }
 
+    @Serializable
     class SubStatFilter(
         var stats: MutableMap<String, Int> = mutableMapOf(),
         var minWeight: Int = -1
@@ -80,6 +85,7 @@ abstract class Filter {
         }
     }
 
+    @Serializable
     class RarityFilter(
         var rarities: MutableSet<Int> = mutableSetOf()
     ): Filter() {
@@ -93,6 +99,7 @@ abstract class Filter {
         }
     }
 
+    @Serializable
     class LevelFilter(
         var atLeast: Int? = null,
         var atMost: Int? = null
@@ -116,6 +123,7 @@ abstract class Filter {
         }
     }
 
+    @Serializable
     class StatusFilter(
         var statuses: MutableSet<Relic.Status> = mutableSetOf()
     ): Filter() {
