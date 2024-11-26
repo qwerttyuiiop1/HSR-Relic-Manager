@@ -3,13 +3,33 @@ package com.example.hsrrelicmanager.ui.db.inventory;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.BaseColumns;
 
 public class InventoryDBHelper extends SQLiteOpenHelper {
 
-    static final int DB_VERSION = 1;
+    static final int DB_VERSION = 2;
     static final String DB_NAME = "HSR_RELIC_MANAGER.DB";
 
+    // RULES TABLE
+    public static class RulesTable implements BaseColumns {
+        public static final String TABLE_NAME = "rule"; // "GROUP" is SQL keyword
+        public static final String COLUMN_POS = "pos";
+        public static final String COLUMN_FILTERS = "filters";
+        public static final String COLUMN_PARENT_ID = "parent_id";
+        public static final String COLUMN_ACTION = "action_chosen"; // "ACTION" is SQL keyword
+        public static final String COLUMN_LEVEL = "level";
+    }
 
+    public static final String CREATE_GROUP_TABLE =
+            "CREATE TABLE " + RulesTable.TABLE_NAME + " (" +
+                    RulesTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    RulesTable.COLUMN_POS + " INTEGER NOT NULL, " +
+                    RulesTable.COLUMN_FILTERS + " TEXT, " + // JSON stored as text
+                    RulesTable.COLUMN_PARENT_ID + " INTEGER, " + // FOREIGN KEY
+                    RulesTable.COLUMN_ACTION + " TEXT, " +
+                    RulesTable.COLUMN_LEVEL + " LEVEL, " +
+                    "FOREIGN KEY (" + RulesTable.COLUMN_PARENT_ID + ") REFERENCES " + RulesTable.TABLE_NAME + " (" + RulesTable._ID + ") " +
+                    ");";
 
     // RELIC TABLE
     public static final String
@@ -81,6 +101,7 @@ public class InventoryDBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_RELIC_TABLE);
         db.execSQL(CREATE_SUBSTATS_TABLE);
         db.execSQL(CREATE_STATUS_TABLE);
+        db.execSQL(CREATE_GROUP_TABLE);
     }
 
     @Override
@@ -88,6 +109,7 @@ public class InventoryDBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RELIC);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SUBSTATS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MANUAL_STATUS);
+        db.execSQL("DROP TABLE IF EXISTS " + RulesTable.TABLE_NAME);
         onCreate(db);
     }
 }
