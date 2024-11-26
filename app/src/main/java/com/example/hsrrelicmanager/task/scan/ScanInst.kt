@@ -2,15 +2,22 @@ package com.example.hsrrelicmanager.task.scan
 
 import com.example.hsrrelicmanager.core.exe.Instance
 import com.example.hsrrelicmanager.core.exe.MyResult
+import com.example.hsrrelicmanager.core.exe.ResList
 import com.example.hsrrelicmanager.core.exe.TaskInstance
+import com.example.hsrrelicmanager.core.exe.flatten
 import com.example.hsrrelicmanager.core.exe.instant
 import com.example.hsrrelicmanager.core.exe.multi
+import com.example.hsrrelicmanager.model.relics.Relic
+import com.example.hsrrelicmanager.model.relics.RelicBuilder
+import com.example.hsrrelicmanager.model.relics.relicNameToSet
 
 class ScanInst(
     val ui: ScanInventoryUIBinding
-): Instance<String>() {
-    override suspend fun run(): MyResult<String> {
+): Instance<Relic>() {
+    @Suppress("UNCHECKED_CAST")
+    override suspend fun run(): MyResult<Relic> {
         awaitTick()
+        val bldr = RelicBuilder(isPrev=true)
         val textFields = listOf(
             ui.relicName,
             ui.relicType,
@@ -32,39 +39,41 @@ class ScanInst(
                 MyResult.Success(it.getText().text)
             }
         }
-        val inst = TaskInstance.multi(
+        var lastSubstat = 0
+        val custom = TaskInstance.instant {
+            bldr.rarity = ui.relicRarity.getRarity()
+            if (ui.relicTrash.isSelected())
+                bldr.mstatus.add(Relic.Status.TRASH)
+            else if (ui.relicLock.isSelected())
+                bldr.mstatus.add(Relic.Status.LOCK)
+            else
+                bldr.mstatus.add(Relic.Status.DEFAULT)
+            if (ui.equipped.isRecognized())
+                bldr.mstatus.add(Relic.Status.EQUIPPED)
+            for (i in 0 until 4) {
+                if (!ui.substatIcons[i].isPresent()) break
+                lastSubstat = i
+            }
+            MyResult.Success(Unit)
+        }
+        val res = join(TaskInstance.multi(
             TaskInstance.multi(textFields),
             TaskInstance.multi(substatLabels),
             TaskInstance.multi(substatValues),
-        )
-        /**
-         * val relicName = ui.relicName.getText().text
-         *             val relicType = ui.relicType.getText().text
-         *             val rarity = ui.relicRarity.getRarity()
-         *             val relicLevel = ui.relicLevel.getText().text
-         *             val isTrash = ui.relicTrash.isSelected()
-         *             val isLocked = ui.relicLock.isSelected()
-         *             val mainstat = ui.mainStat.getText().text
-         *             val mainstatval = ui.mainStatValue.getText().text
-         *             val substatVals = mutableListOf<String>()
-         *             val substats = mutableListOf<String>()
-         *             for (i in 0 until 4) {
-         *                 if (!ui.substatIcons[i].isPresent()) break
-         *                 substats.add(ui.substatLabels[i].getText().text)
-         *                 substatVals.add(ui.substatValues[i].getText().text)
-         *             }
-         *             val equipped = ui.equipped.isRecognized()
-         *             return "Relic: $relicName\n" +
-         *                     "Type: $relicType\n" +
-         *                     "Rarity: $rarity\n" +
-         *                     "Level: $relicLevel\n" +
-         *                     "Main Stat: $mainstat $mainstatval\n" +
-         *                     "Substats: ${substats.joinToString(", ")}\n" +
-         *                     "Substat Values: ${substatVals.joinToString(", ")}\n" +
-         *                     "Trash: $isTrash\n" +
-         *                     "Locked: $isLocked\n" +
-         *                     "Equipped: $equipped"
-         */
-        return MyResult.Success("Complete")
+            custom,
+        )).flatten()
+        val textRes = (res[0] as ResList<String>).flatten()
+        val substatLabelsRes = (res[1] as ResList<String>).flatten()
+        val substatValuesRes = (res[2] as ResList<String>).flatten()
+
+        bldr.set = relicNameToSet[textRes[0].lowercase()]!!
+        bldr.slot = textRes[1]
+        val pttrn = "\\d+".toRegex()
+        bldr.level = pttrn.find(textRes[2])!!.value.toInt()
+        bldr.mainstat = textRes[3]
+        bldr.mainstatVal = textRes[4]
+        for (i in 0..lastSubstat)
+            bldr.msubstats[substatLabelsRes[i]] = substatValuesRes[i]
+        return MyResult.Success(bldr.build())
     }
 }

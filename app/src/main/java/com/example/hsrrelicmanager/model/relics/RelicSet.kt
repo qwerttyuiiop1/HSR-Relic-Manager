@@ -246,3 +246,254 @@ val relicSets = listOf(
                 "4-Pc: When the wearer uses their Ultimate on an ally, all allies' Break Effect increases by 30% for 2 turn(s). This effect cannot be stacked."
     ),
 )
+
+val relicNameToSet = listOf(
+    "Band of Sizzling Thunder" to listOf(
+        "Band's Polarized Sunglasses",
+        "Band's Touring Bracelet",
+        "Band's Leather Jacket With Studs",
+        "Band's Ankle Boots With Rivets"
+    )
+    ,
+    "Champion of Streetwise Boxing" to listOf(
+        "Champion's Headgear",
+        "Champion's Heavy Gloves",
+        "Champion's Chest Guard",
+        "Champion's Fleetfoot Boots"
+    )
+    ,
+    "Eagle of Twilight Line" to listOf(
+        "Eagle's Beaked Helmet",
+        "Eagle's Soaring Ring",
+        "Eagle's Winged Suit Harness",
+        "Eagle's Quilted Puttees"
+    )
+    ,
+    "Firesmith of Lava-Forging" to listOf(
+        "Firesmith's Obsidian Goggles",
+        "Firesmith's Ring of Flame-Mastery",
+        "Firesmith's Fireproof Apron",
+        "Firesmith's Alloy Leg"
+    )
+    ,
+    "Genius of Brilliant Stars" to listOf(
+        "Genius's Ultraremote Sensing Visor",
+        "Genius's Frequency Catcher",
+        "Genius's Metafield Suit",
+        "Genius's Gravity Walker"
+    )
+    ,
+    "Guard of Wuthering Snow" to listOf(
+        "Guard's Cast Iron Helmet",
+        "Guard's Shining Gauntlets",
+        "Guard's Uniform of Old",
+        "Guard's Silver Greaves"
+    )
+    ,
+    "Hunter of Glacial Forest" to listOf(
+        "Hunter's Artaius Hood",
+        "Hunter's Lizard Gloves",
+        "Hunter's Ice Dragon Cloak",
+        "Hunter's Soft Elkskin Boots"
+    )
+    ,
+    "Iron Cavalry Against the Scourge" to listOf(
+        "Iron Cavalry's Homing Helm",
+        "Iron Cavalry's Crushing Wristguard",
+        "Iron Cavalry's Silvery Armor",
+        "Iron Cavalry's Skywalk Greaves"
+    )
+    ,
+    "Knight of Purity Palace" to listOf(
+        "Knight's Forgiving Casque",
+        "Knight's Silent Oath Ring",
+        "Knight's Solemn Breastplate",
+        "Knight's Iron Boots of Order"
+    )
+    ,
+    "Longevous Disciple" to listOf(
+        "Disciple's Prosthetic Eye",
+        "Disciple's Ingenium Hand",
+        "Disciple's Dewy Feather Garb",
+        "Disciple's Celestial Silk Sandals"
+    )
+    ,
+    "Messenger Traversing Hackerspace" to listOf(
+        "Messenger's Holovisor",
+        "Messenger's Transformative Arm",
+        "Messenger's Secret Satchel",
+        "Messenger's Par-kool Sneakers"
+    )
+    ,
+    "Musketeer of Wild Wheat" to listOf(
+        "Musketeer's Wild Wheat Felt Hat",
+        "Musketeer's Coarse Leather Gloves",
+        "Musketeer's Wind-Hunting Shawl",
+        "Musketeer's Rivets Riding Boots"
+    )
+    ,
+    "Passerby of Wandering Cloud" to listOf(
+        "Passerby's Rejuvenated Wooden Hairstick",
+        "Passerby's Roaming Dragon Bracer",
+        "Passerby's Ragged Embroided Coat",
+        "Passerby's Stygian Hiking Boots"
+    )
+    ,
+    "Pioneer Diver of Dead Waters" to listOf(
+        "Pioneer's Heatproof Shell",
+        "Pioneer's Lacuna Compass",
+        "Pioneer's Sealed Lead Apron",
+        "Pioneer's Starfaring Anchor"
+    )
+    ,
+    "Prisoner in Deep Confinement" to listOf(
+        "Prisoner's Sealed Muzzle",
+        "Prisoner's Leadstone Shackles",
+        "Prisoner's Repressive Straitjacket",
+        "Prisoner's Restrictive Fetters"
+    )
+    ,
+    "Sacerdos' Relived Ordeal" to listOf(
+        "Sacerdos' Melodic Earrings",
+        "Sacerdos' Welcoming Gloves",
+        "Sacerdos' Ceremonial Garb",
+        "Sacerdos' Arduous Boots"
+    )
+    ,
+    "Scholar Lost in Erudition" to listOf(
+        "Scholar's Silver-Rimmed Monocle",
+        "Scholar's Auxiliary Knuckle",
+        "Scholar's Tweed Jacket",
+        "Scholar's Felt Snowboots"
+    )
+    ,
+    "The Ashblazing Grand Duke" to listOf(
+        "Grand Duke's Crown of Netherflame",
+        "Grand Duke's Gloves of Fieryfur",
+        "Grand Duke's Robe of Grace",
+        "Grand Duke's Ceremonial Boots"
+    )
+    ,
+    "The Wind-Soaring Valorous" to listOf(
+        "Valorous Mask of Northern Skies",
+        "Valorous Bracelet of Grappling Hooks",
+        "Valorous Plate of Soaring Flight",
+        "Valorous Greaves of Pursuing Hunt"
+    )
+    ,
+    "Thief of Shooting Meteor" to listOf(
+        "Thief's Myriad-Faced Mask",
+        "Thief's Gloves With Prints",
+        "Thief's Steel Grappling Hook",
+        "Thief's Meteor Boots"
+    )
+    ,
+    "Wastelander of Banditry Desert" to listOf(
+        "Wastelander's Breathing Mask",
+        "Wastelander's Desert Terminal",
+        "Wastelander's Friar Robe",
+        "Wastelander's Powered Greaves"
+    )
+    ,
+    "Watchmaker, Master of Dream Machinations" to listOf(
+        "Watchmaker's Telescoping Lens",
+        "Watchmaker's Fortuitous Wristwatch",
+        "Watchmaker's Illusory Formal Suit",
+        "Watchmaker's Dream-Concealing Dress Shoes"
+    )
+    ,
+    "Belobog of the Architects" to listOf(
+        "Belobog's Fortress of Preservation",
+        "Belobog's Iron Defense"
+    )
+    ,
+    "Broken Keel" to listOf(
+        "Insumousu's Whalefall Ship",
+        "Insumousu's Frayed Hawser"
+    )
+    ,
+    "Celestial Differentiator" to listOf(
+        "Planet Screwllum's Mechanical Sun",
+        "Planet Screwllum's Ring System"
+    )
+    ,
+    "Duran, Dynasty of Running Wolves" to listOf(
+        "Duran's Tent of Golden Sky",
+        "Duran's Mechabeast Bridle"
+    )
+    ,
+    "Firmament Frontline: Glamoth" to listOf(
+        "Glamoth's Iron Cavalry Regiment",
+        "Glamoth's Silent Tombstone"
+    )
+    ,
+    "Fleet of the Ageless" to listOf(
+        "The Xianzhou Luofu's Celestial Ark",
+        "The Xianzhou Luofu's Ambrosial Arbor Vines"
+    )
+    ,
+    "Forge of the Kalpagni Lantern" to listOf(
+        "Forge's Lotus Lantern Wick",
+        "Forge's Heavenly Flamewheel Silk"
+    )
+    ,
+    "Inert Salsotto" to listOf(
+        "Salsotto's Moving City",
+        "Salsotto's Terminator Line"
+    )
+    ,
+    "Izumo Gensei and Takama Divine Realm" to listOf(
+        "Izumo's Magatsu no Morokami",
+        "Izumo's Blades of Origin and End"
+    )
+    ,
+    "Lushaka, the Sunken Seas" to listOf(
+        "Lushaka's Twinlanes",
+        "Lushaka's Waterscape"
+    )
+    ,
+    "Pan-Cosmic Commercial Enterprise" to listOf(
+        "The IPC's Mega HQ",
+        "The IPC's Trade Route"
+    )
+    ,
+    "Penacony, Land of the Dreams" to listOf(
+        "Penacony's Grand Hotel",
+        "Penacony's Dream-Seeking Tracks"
+    )
+    ,
+    "Rutilant Arena" to listOf(
+        "Taikiyan Laser Stadium",
+        "Taikiyan's Arclight Race Track"
+    )
+    ,
+    "Sigonia, the Unclaimed Desolation" to listOf(
+        "Sigonia's Gaiathra Berth",
+        "Sigonia's Knot of Cyclicality"
+    )
+    ,
+    "Space Sealing Station" to listOf(
+        "Herta's Space Station",
+        "Herta's Wandering Trek"
+    )
+    ,
+    "Sprightly Vonwacq" to listOf(
+        "Vonwacq's Island of Birth",
+        "Vonwacq's Islandic Coast"
+    )
+    ,
+    "Talia: Kingdom of Banditry" to listOf(
+        "Talia's Nailscrap Town",
+        "Talia's Exposed Electric Wire"
+    )
+    ,
+    "The Wondrous BananAmusement Park" to listOf(
+        "BananAmusement Park's Memetic Cables",
+        "BananAmusement Park's BananAxis Plaza"
+    )
+).let { list ->
+    val nameToSet = relicSets.associateBy { it.name }
+    list.flatMap { (set, items) ->
+        items.map { it.lowercase() to nameToSet[set]!! }
+    }.toMap()
+}

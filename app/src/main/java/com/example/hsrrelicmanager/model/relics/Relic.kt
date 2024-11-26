@@ -69,7 +69,7 @@ class RelicBuilder(
     var msubstats: MutableMap<String, String> = mutableMapOf(),
     var mstatus: MutableList<Relic.Status> = mutableListOf(),
     prev: RelicBuilder? = null,
-    private val isPrev: Boolean = false,
+    val isPrev: Boolean = false,
 ) {
     constructor(r: Relic, isPrev: Boolean = false): this(
         r.id,

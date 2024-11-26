@@ -66,8 +66,8 @@ class ScanInventoryTask: ResetRunner() {
                 if (!res) {
                     return MyResult.Fail("Failed to select relic")
                 }
-                val relic = scanRelic()
-                Log.e("<Relic!!>", relic)
+                val relic = join(ScanInst(ui))
+                Log.e("<Relic!!>", relic.toString())
                 if (col == numCols - 1) {
                     container.moveNextRow()
                     if (container.isOverflow()) {
