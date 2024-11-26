@@ -74,7 +74,7 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
             "Enhance" -> updateRadioButtonState(dialogView, R.id.radio_button_enhance)
             "Lock" -> updateRadioButtonState(dialogView, R.id.radio_button_lock)
             "Reset" -> updateRadioButtonState(dialogView, R.id.radio_button_reset)
-            "Filter Group" -> updateRadioButtonState(dialogView, R.id.radio_button_filter)
+//            "Filter Group" -> updateRadioButtonState(dialogView, R.id.radio_button_filter)
             "Trash" -> updateRadioButtonState(dialogView, R.id.radio_button_trash)
         }
 
@@ -103,14 +103,14 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
             updateRadioButtonState(dialogView, R.id.radio_button_reset)
             selectedOption = "Reset"
         }
-        dialogView.findViewById<View>(R.id.filter_action_group).setOnClickListener {
-            updateRadioButtonState(dialogView, R.id.radio_button_filter)
-            selectedOption = "Filter Group"
-        }
-        dialogView.findViewById<View>(R.id.radio_button_filter).setOnClickListener {
-            updateRadioButtonState(dialogView, R.id.radio_button_filter)
-            selectedOption = "Filter Group"
-        }
+//        dialogView.findViewById<View>(R.id.filter_action_group).setOnClickListener {
+//            updateRadioButtonState(dialogView, R.id.radio_button_filter)
+//            selectedOption = "Filter Group"
+//        }
+//        dialogView.findViewById<View>(R.id.radio_button_filter).setOnClickListener {
+//            updateRadioButtonState(dialogView, R.id.radio_button_filter)
+//            selectedOption = "Filter Group"
+//        }
         dialogView.findViewById<View>(R.id.trash_action_group).setOnClickListener {
             updateRadioButtonState(dialogView, R.id.radio_button_trash)
             selectedOption = "Trash"
@@ -170,7 +170,7 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
             "Enhance" -> R.drawable.enhance
             "Lock" -> R.drawable.lock
             "Reset" -> R.drawable.reset
-            "Filter Group" -> R.drawable.filter_group
+//            "Filter Group" -> R.drawable.filter_group
             "Trash" -> R.drawable.trash
             else -> R.drawable.transparent
         }
@@ -181,7 +181,7 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
             R.id.radio_button_enhance,
             R.id.radio_button_lock,
             R.id.radio_button_reset,
-            R.id.radio_button_filter,
+//            R.id.radio_button_filter,
             R.id.radio_button_trash
         )
 
