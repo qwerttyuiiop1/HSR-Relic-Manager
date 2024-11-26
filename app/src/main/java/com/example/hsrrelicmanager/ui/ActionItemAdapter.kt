@@ -198,4 +198,8 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
     override fun getItemCount(): Int {
         return 1
     }
+
+    fun getLevelNumber(): Int {
+        return levelNumber
+    }
 }

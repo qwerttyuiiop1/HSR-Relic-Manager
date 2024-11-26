@@ -19,6 +19,7 @@ import com.example.hsrrelicmanager.model.Substat
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicSet
 import com.example.hsrrelicmanager.model.rules.Filter
+import com.example.hsrrelicmanager.model.rules.action.Action
 import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
 import com.example.hsrrelicmanager.model.rules.action.StatusAction
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
@@ -333,12 +334,32 @@ class AddFilterGroupBodyFragment : Fragment() {
         //Log.d("AddGroupBodyFragment", "GroupData")
         //Log.d("AddGroupBodyFragment", (requireActivity() as MainActivity).groupData.joinToString("\n"))
 
-        val group = ActionGroup().apply {
-            action = StatusAction(Relic.Status.TRASH)
-            filters[Filter.Type.SLOT] = Filter.SlotFilter(
-                mutableSetOf("Boots")
-            )
+
+        // Filters
+        val filterMap: MutableMap<Filter.Type, Filter?> = mutableMapOf()
+        for (filterItem in filterItems) {
+            val filter = filterItem.buildFilter()
+            filter.filterType?.let { filterMap.put(it, filter) }
         }
+
+        Log.d("TEST", filterMap.toString())
+
+        // Default Action
+        var action: Action? = null
+        if (actionItem[0] != "") {
+            if (actionItem[0] == "Enhance") {
+                action = EnhanceAction(adapterAction.getLevelNumber())
+            } else if (actionItem[0] == "Reset")
+                action = StatusAction(Relic.Status.DEFAULT)
+            else
+                action = StatusAction(Relic.Status.valueOf(actionItem[0].uppercase()))
+        }
+
+        // Newly-Created Group
+        val group = ActionGroup(
+            filters=filterMap,
+            action=action
+        )
 
         val resultBundle = Bundle().apply {
             putParcelable("group", group)

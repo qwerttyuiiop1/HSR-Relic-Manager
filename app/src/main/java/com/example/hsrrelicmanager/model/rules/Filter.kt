@@ -37,7 +37,8 @@ sealed class Filter {
     ): Filter() {
         override val filterType: Type = Type.SET
         override val name: String = "Relic Set"
-        override val description: String = "Filter by relic set"
+        override val description: String
+            get() = sets.joinToString(", ") { it.name.split(" ").first() }
 
         override fun accepts(relic: Relic): Boolean {
             return sets.contains(relic.set)
