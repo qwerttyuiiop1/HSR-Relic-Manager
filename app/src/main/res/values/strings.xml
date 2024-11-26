@@ -14,7 +14,9 @@
     <string name="confirm_exit">Are you sure you want to exit?</string>
     <string-array name="rule_spinner_choices">
         <item>Ordered</item>
+        <item>Lock</item>
         <item>Trash</item>
+        <item>Reset</item>
         <item>Enhance</item>
         <item>Filter Group</item>
     </string-array>
