@@ -22,7 +22,7 @@ class AddActionGroupBodyFragment : Fragment() {
     private var _binding: FragmentActionGroupBodyBinding? = null
     private val binding get() = _binding!!
 
-    public val filterItems: MutableList<FilterItem> = mutableListOf()
+    val filterItems: MutableList<FilterItem> = mutableListOf()
     private lateinit var adapterFilter: FilterAdapter
 
     private val actionItems = mutableListOf("")

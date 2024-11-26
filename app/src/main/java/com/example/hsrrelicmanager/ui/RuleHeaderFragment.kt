@@ -31,8 +31,13 @@ class RuleHeaderFragment : Fragment() {
 
         val addButtonFrame: View = view.findViewById(R.id.rule_add_button_frame)
         addButtonFrame.setOnClickListener {
-            blurBackground()
-            showAddRuleDialog()
+//            blurBackground()
+//            showAddRuleDialog()
+
+            val addFilterGroupHeaderFragment  = AddFilterGroupHeaderFragment()
+            val addFilterGroupBodyFragment = AddFilterGroupBodyFragment()
+
+            (requireActivity() as MainActivity).loadFragment(addFilterGroupHeaderFragment, addFilterGroupBodyFragment)
         }
 
         return view

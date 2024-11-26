@@ -22,13 +22,13 @@
                 android:id="@+id/filter_group_secton_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="14dp"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/pf_din_text_pro_regular"
                 android:letterSpacing="0.03"
-                android:text="Filter"
+                android:text="Filters"
                 android:textColor="#D3D6DB"
-                android:textSize="32sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/filter_group_secton_preview"
                 app:layout_constraintStart_toStartOf="parent"
@@ -98,6 +98,17 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewFilterGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintHeight_max="350dp"
+        android:nestedScrollingEnabled="false"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintTop_toBottomOf="@+id/filter_group_filter_section"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <!-- Divider Line -->
     <View
         android:id="@+id/divider_line"
@@ -105,7 +116,7 @@
         android:layout_height="2dp"
         android:layout_marginTop="30dp"
         android:background="#CCD9D9D9"
-        app:layout_constraintTop_toBottomOf="@+id/filter_group_filter_section"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewFilterGroup"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -129,7 +140,7 @@
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/pf_din_text_pro_regular"
                 android:letterSpacing="0.03"
-                android:text="Action Group Order"
+                android:text="Groups"
                 android:textColor="#D3D6DB"
                 android:textSize="24sp"
                 android:textStyle="bold"

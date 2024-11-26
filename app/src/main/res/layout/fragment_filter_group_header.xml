@@ -25,7 +25,7 @@
         android:layout_marginTop="20dp"
         android:fontFamily="@font/pf_din_text_pro_regular"
         android:letterSpacing="0.02"
-        android:text="Filter Group"
+        android:text="Action Group"
         android:textColor="#FFC65C"
         android:textSize="36sp"
         android:textStyle="bold"
