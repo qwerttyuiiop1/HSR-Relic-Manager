@@ -7,12 +7,10 @@ import android.graphics.Shader
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.core.components.FilterItem
+import com.example.hsrrelicmanager.model.FilterItem
 import com.example.hsrrelicmanager.databinding.DialogRarityFilterBinding
-import java.util.logging.Filter
 
 class AddRarityDialog(private val items: MutableList<FilterItem>): DialogFragment() {
 
