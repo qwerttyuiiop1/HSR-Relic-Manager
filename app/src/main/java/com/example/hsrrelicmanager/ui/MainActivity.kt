@@ -57,9 +57,11 @@ open class MainActivity : AppCompatActivity() {
         setupClickListeners()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
+        groupData = mutableListOf<ActionGroup>()
+
         // TEMP ONLY! Refactor when database has been implemented
-        createDummyGroupData()
         dbManager.open()
+//        createDummyGroupData()
     }
 
     override fun onDestroy() {
@@ -131,7 +133,6 @@ open class MainActivity : AppCompatActivity() {
 
     // Only while DB has not been implemented
     private fun createDummyGroupData() {
-        groupData = mutableListOf<ActionGroup>()
         for (i in 1..3) {
             val filterGroup =
                 ActionGroup().apply {

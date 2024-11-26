@@ -26,6 +26,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
 
 class AddFilterGroupBodyFragment : Fragment() {
+    private lateinit var group: ActionGroup
 
     private var _binding: FragmentFilterGroupBodyBinding? = null
     private val binding get() = _binding!!
@@ -56,60 +57,6 @@ class AddFilterGroupBodyFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentFilterGroupBodyBinding.inflate(inflater, container, false)
-
-        for (i in 1..1) {
-            val filterGroup =
-                ActionGroup().apply {
-                    addGroup(
-                        ActionGroup().apply {
-                            action = StatusAction(
-                                if (i % 2 == 0) Relic.Status.LOCK
-                                else Relic.Status.TRASH
-                            )
-                        }
-                    )
-                    filters[Filter.Type.RARITY] = Filter.RarityFilter(
-                        mutableSetOf(1, 2, 4)
-                    )
-                }
-            val lockActionGroup =
-                ActionGroup().apply {
-                    action = StatusAction(Relic.Status.LOCK)
-                    filters[Filter.Type.RARITY] = Filter.RarityFilter(
-                        mutableSetOf(5)
-                    )
-                }
-            val trashActionGroup =
-                ActionGroup().apply {
-                    action = StatusAction(Relic.Status.TRASH)
-                    filters[Filter.Type.SLOT] = Filter.SlotFilter(
-                        mutableSetOf("Boots")
-                    )
-                }
-            val resetActionGroup =
-                ActionGroup().apply {
-                    action = StatusAction(Relic.Status.DEFAULT)
-                    filters[Filter.Type.LEVEL] = Filter.LevelFilter(
-                        atLeast = 10
-                    )
-                }
-            val enhanceActionGroup =
-                ActionGroup().apply {
-                    action = EnhanceAction(15)
-                    filters[Filter.Type.MAIN_STAT] = Filter.MainStatFilter(
-                        mutableSetOf("SPD")
-                    )
-                }
-
-//            actionGroups.add(filterGroup)
-//            actionGroups.add(lockActionGroup)
-//            actionGroups.add(trashActionGroup)
-//            actionGroups.add(resetActionGroup)
-//            actionGroups.add(enhanceActionGroup)
-        }
-        for (i in 0..<actionGroups.size) {
-            actionGroups.get(i).position = i
-        }
 
         binding.apply {
             // Initialize Filter Adapter
@@ -355,14 +302,23 @@ class AddFilterGroupBodyFragment : Fragment() {
                     .replace(R.id.body_fragment_container, AddFilterGroupBodyFragment())
                     .addToBackStack(null)
                     .commit()
+
+                parentFragmentManager.setFragmentResultListener("new_group", viewLifecycleOwner) { _, bundle ->
+                    val group = bundle.getParcelable<ActionGroup>("group")
+
+                    if (group != null) {
+                        actionGroups.add(group)
+                        adapterGroup.notifyDataSetChanged()
+                    }
+                }
             }
         }
 
         return binding.root
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         Log.d("AddGroupBodyFragment", "Being destroyed!")
         Log.d("AddGroupBodyFragment", "Filter Items:")
         Log.d("AddGroupBodyFragment", filterItems.joinToString("\n"))
@@ -377,8 +333,17 @@ class AddFilterGroupBodyFragment : Fragment() {
         //Log.d("AddGroupBodyFragment", "GroupData")
         //Log.d("AddGroupBodyFragment", (requireActivity() as MainActivity).groupData.joinToString("\n"))
 
-        val newGroup = ActionGroup(
+        val group = ActionGroup().apply {
+            action = StatusAction(Relic.Status.TRASH)
+            filters[Filter.Type.SLOT] = Filter.SlotFilter(
+                mutableSetOf("Boots")
+            )
+        }
 
-        )
+        val resultBundle = Bundle().apply {
+            putParcelable("group", group)
+        }
+
+        parentFragmentManager.setFragmentResult("new_group", resultBundle)
     }
 }
