@@ -53,4 +53,11 @@ class ActionGroup(
 
         return -1
     }
+
+    override fun toString(): String {
+        return "ActionGroup(id=$id, filters=$filters, position=$position, parentGroup=$parentGroup, " +
+            "action=$action)"
+    }
+
+
 }

@@ -1,6 +1,5 @@
 package com.example.hsrrelicmanager.ui;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,13 +80,6 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
                     binding.rowName.setText(filter.getName() + ':');
                     binding.rowValue.setText(filter.getDescription());
                     filterContainer.addView(binding.getRoot());
-                    if (group.getAction() != null) {
-                        Log.d("GROUP ACTION", group.getAction().toString());
-                    }
-                    if (!group.getGroupList().isEmpty()) {
-                        Log.d("CHILD GROUPS", "HAS!!");
-                    }
-                    Log.d("GROUP DATA", String.valueOf(group.getImageResource()));
                     groupIcon.setImageResource(group.getImageResource());
                 }
 //                switch (group.getViewName().replaceAll(" .*", "")) {

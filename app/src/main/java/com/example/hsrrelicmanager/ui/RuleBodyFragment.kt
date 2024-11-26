@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +37,8 @@ class RuleBodyFragment : Fragment() {
         // Dummy group data
         val groupData = (activity as MainActivity).groupData
         val groupAdapter = GroupAdapter(groupData)
+
+        Log.d(this::class.toString(), groupData.joinToString(",\n"))
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -197,6 +200,8 @@ class CategorizedRuleBodyFragment : Fragment() {
 
         val groupData = (activity as MainActivity).groupData
         val categorizedGroupAdapter = CategorizedGroupAdapter(groupData)
+
+        Log.d(this::class.toString(), groupData.joinToString(",\n"))
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
