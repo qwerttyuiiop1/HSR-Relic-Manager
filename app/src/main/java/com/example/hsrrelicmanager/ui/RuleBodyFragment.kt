@@ -215,7 +215,7 @@ class CategorizedRuleBodyFragment : Fragment() {
         val groupData = (activity as MainActivity).groupData
         val categorizedGroupAdapter = CategorizedGroupAdapter(groupData)
 
-        Log.d(this::class.toString(), groupData.joinToString(",\n"))
+        //Log.d(this::class.toString(), groupData.joinToString(",\n"))
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)

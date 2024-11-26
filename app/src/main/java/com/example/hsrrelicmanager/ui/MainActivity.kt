@@ -135,14 +135,14 @@ open class MainActivity : AppCompatActivity() {
                         }
                     )
                     filters[Filter.Type.RARITY] = Filter.RarityFilter(
-                        atMost = 2 + i
+                        mutableSetOf(1, 2, 4)
                     )
                 }
             val lockActionGroup =
                 ActionGroup().apply {
                     action = StatusAction(Relic.Status.LOCK)
                     filters[Filter.Type.RARITY] = Filter.RarityFilter(
-                        atLeast = 3
+                        mutableSetOf(5)
                     )
                 }
             val trashActionGroup =

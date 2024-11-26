@@ -3,6 +3,7 @@ package com.example.hsrrelicmanager.ui
 import android.graphics.RenderEffect
 import android.graphics.Shader
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.model.FilterItem
-import com.example.hsrrelicmanager.databinding.FragmentActionGroupBodyBinding
 import com.example.hsrrelicmanager.databinding.FragmentFilterGroupBodyBinding
 import com.example.hsrrelicmanager.model.Mainstat
 import com.example.hsrrelicmanager.model.Slot
@@ -18,6 +18,8 @@ import com.example.hsrrelicmanager.model.Status
 import com.example.hsrrelicmanager.model.Substat
 import com.example.hsrrelicmanager.model.relics.RelicSet
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.encodeToString
 
 class AddFilterGroupBodyFragment : Fragment() {
 
@@ -286,5 +288,26 @@ class AddFilterGroupBodyFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("AddGroupBodyFragment", "Being destroyed!")
+        Log.d("AddGroupBodyFragment", "Filter Items:")
+        Log.d("AddGroupBodyFragment", filterItems.joinToString("\n"))
+        Log.d("AddGroupBodyFragment", "Filter Items in JSON:")
+        Log.d("AddGroupBodyFragment", filterItems.joinToString {
+            Json.encodeToString(it.buildFilter())
+        })
+        Log.d("AddGroupBodyFragment", "Action Item:")
+        Log.d("AddGroupBodyFragment", actionItem.toString())
+        Log.d("AddGroupBodyFragment", "Action Groups:")
+        Log.d("AddGroupBodyFragment", actionGroups.joinToString("\n"))
+        //Log.d("AddGroupBodyFragment", "GroupData")
+        //Log.d("AddGroupBodyFragment", (requireActivity() as MainActivity).groupData.joinToString("\n"))
+
+        val newGroup = ActionGroup(
+
+        )
     }
 }
