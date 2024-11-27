@@ -53,6 +53,8 @@ class AddFilterGroupBodyFragment : Fragment() {
     private val actionGroups = mutableListOf<ActionGroup>()
     private lateinit var adapterGroup: GroupAdapter
 
+    private var creatingChild = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,6 +62,20 @@ class AddFilterGroupBodyFragment : Fragment() {
         _binding = FragmentFilterGroupBodyBinding.inflate(inflater, container, false)
 
         binding.apply {
+            creatingChild = false
+
+            // Listen for new groups
+            parentFragmentManager.setFragmentResultListener("new_group", viewLifecycleOwner) { _, bundle ->
+                if (!bundle.getBoolean("isChild")) {
+                    val group = bundle.getParcelable<ActionGroup>("group")
+
+                    if (group != null) {
+                        actionGroups.add(group)
+                        adapterGroup.notifyDataSetChanged()
+                    }
+                }
+            }
+
             // Initialize Filter Adapter
             adapterFilter = FilterAdapter(filterItems)
             recyclerViewFilterGroup.layoutManager = LinearLayoutManager(context)
@@ -299,19 +315,12 @@ class AddFilterGroupBodyFragment : Fragment() {
             }
 
             actionGroupOrderAdd.setOnClickListener {
+                creatingChild = true
+
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.body_fragment_container, AddFilterGroupBodyFragment())
                     .addToBackStack(null)
                     .commit()
-
-                parentFragmentManager.setFragmentResultListener("new_group", viewLifecycleOwner) { _, bundle ->
-                    val group = bundle.getParcelable<ActionGroup>("group")
-
-                    if (group != null) {
-                        actionGroups.add(group)
-                        adapterGroup.notifyDataSetChanged()
-                    }
-                }
             }
         }
 
@@ -362,6 +371,7 @@ class AddFilterGroupBodyFragment : Fragment() {
 
             val resultBundle = Bundle().apply {
                 putParcelable("group", group)
+                putBoolean("isChild", creatingChild)
             }
 
             parentFragmentManager.setFragmentResult("new_group", resultBundle)
