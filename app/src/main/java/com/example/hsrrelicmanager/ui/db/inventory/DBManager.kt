@@ -37,8 +37,8 @@ class DBManager(private val context: Context) {
     /* RULES TABLE */
 
     fun insertGroup(
-        filters: MutableMap<Filter.Type, Filter>,
-        position: Int,
+        filters: MutableMap<Filter.Type, Filter?>,
+        position: Int?,
         action: Action?,
         parentId: Long? = null
     ): Long {

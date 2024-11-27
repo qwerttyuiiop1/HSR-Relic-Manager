@@ -17,13 +17,23 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
+import com.example.hsrrelicmanager.model.relics.Relic
+import com.example.hsrrelicmanager.model.rules.Filter
+import com.example.hsrrelicmanager.model.rules.action.Action
+import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
+import com.example.hsrrelicmanager.model.rules.action.StatusAction
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 import com.example.hsrrelicmanager.ui.CategorizedGroupAdapter.GroupViewHolder
+import com.example.hsrrelicmanager.ui.db.inventory.DBHelper
+import com.example.hsrrelicmanager.ui.db.inventory.DBManager
 import java.util.Collections
-
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 
 class RuleBodyFragment : Fragment() {
+    private lateinit var dbManager: DBManager
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,6 +46,48 @@ class RuleBodyFragment : Fragment() {
 
         // Dummy group data
         val groupData = (activity as MainActivity).groupData
+
+        dbManager = (requireContext() as MainActivity).dbManager
+        dbManager.open()
+
+        // Fetch
+        val cursor = dbManager.fetchGroups()
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                if (cursor.isNull(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_PARENT_ID))) {
+
+                    // Action
+                    var action: Action? = null
+                    var actionDb: String
+
+                    if (!cursor.isNull(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_ACTION))) {
+                        actionDb =
+                            cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_ACTION))
+
+                        action = if (actionDb == "Enhance") {
+                            EnhanceAction(cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_LEVEL)))
+                        } else {
+                            StatusAction(Relic.Status.valueOf(actionDb.uppercase()))
+                        }
+                    }
+
+                    groupData.add(
+                        ActionGroup(
+                            cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper.RulesTable._ID)),
+                            Json.decodeFromString<MutableMap<Filter.Type, Filter?>>(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_FILTERS))),
+                            cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_POS)),
+                            null,
+                            mutableListOf(),
+                            action,
+                        )
+                    )
+                }
+            }
+        }
+
+        cursor.close()
+        dbManager.close()
+
         val groupAdapter = GroupAdapter(groupData, this)
 
         Log.d(this::class.toString(), groupData.joinToString(",\n"))
@@ -77,10 +129,22 @@ class RuleBodyFragment : Fragment() {
 
             // Check if a new group was created
             if (group != null) {
-                groupData.add(group)
-                groupAdapter.notifyDataSetChanged()
+                group.position = groupData.size
 
-                // Update list position indices
+                dbManager.open()
+                val id = dbManager.insertGroup(
+                    group.filters,
+                    group.position,
+                    group.action,
+                    null
+                )
+
+                group.id = id
+
+                dbManager.close()
+
+                Log.d("TEST", "CREATED!")
+
                 for (index in 0..<groupData.size) {
                     groupData[index].position = index
                 }

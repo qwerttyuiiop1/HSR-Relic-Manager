@@ -26,7 +26,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String CREATE_GROUP_TABLE =
             "CREATE TABLE " + RulesTable.TABLE_NAME + " (" +
                     RulesTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    RulesTable.COLUMN_POS + " INTEGER NOT NULL, " +
+                    RulesTable.COLUMN_POS + " INTEGER, " +
                     RulesTable.COLUMN_FILTERS + " TEXT, " +  // JSON stored as text
                     RulesTable.COLUMN_PARENT_ID + " INTEGER, " +  // FOREIGN KEY
                     RulesTable.COLUMN_ACTION + " TEXT, " +

@@ -14,7 +14,7 @@ import java.util.EnumMap
 
 @Parcelize
 class ActionGroup(
-    val id: Long = -1,
+    var id: Long = -1,
     var filters: @RawValue MutableMap<Filter.Type, Filter?> = EnumMap(Filter.Type.entries.associateWith { null }),
     var position: Int = -1,
     var parentGroup: ActionGroup? = null,

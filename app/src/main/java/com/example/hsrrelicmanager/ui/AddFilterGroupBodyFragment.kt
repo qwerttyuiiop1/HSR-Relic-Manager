@@ -32,12 +32,17 @@ import com.example.hsrrelicmanager.model.rules.action.Action
 import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
 import com.example.hsrrelicmanager.model.rules.action.StatusAction
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
+import com.example.hsrrelicmanager.ui.db.inventory.DBManager
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.util.Collections
+import kotlin.properties.Delegates
 
 class AddFilterGroupBodyFragment : Fragment() {
-    private lateinit var group: ActionGroup
+    private lateinit var dbManager: DBManager
+
+    private lateinit var thisGroup: ActionGroup
+    private var thisId by Delegates.notNull<Long>()
 
     private var _binding: FragmentFilterGroupBodyBinding? = null
     private val binding get() = _binding!!
@@ -69,10 +74,18 @@ class AddFilterGroupBodyFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        dbManager = (requireContext() as MainActivity).dbManager
         _binding = FragmentFilterGroupBodyBinding.inflate(inflater, container, false)
 
         binding.apply {
             creatingChild = false
+
+            // Create the group
+            dbManager.open()
+            thisId = dbManager.insertGroup(mutableMapOf(), null, null, null)
+            thisGroup = ActionGroup(thisId)
+            dbManager.close()
+
 
             // Listen for new groups
             parentFragmentManager.setFragmentResultListener("new_group", viewLifecycleOwner) { _, bundle ->
@@ -80,8 +93,19 @@ class AddFilterGroupBodyFragment : Fragment() {
                     val group = bundle.getParcelable<ActionGroup>("group")
 
                     if (group != null) {
-                        actionGroups.add(group)
-                        adapterGroup.notifyDataSetChanged()
+                        group.position = actionGroups.size
+
+                        dbManager.open()
+                        val id = dbManager.insertGroup(
+                            group.filters,
+                            group.position,
+                            group.action,
+                            group.parentGroup?.id
+                        )
+
+                        group.id = id
+
+                        dbManager.close()
                     }
                 }
             }
@@ -510,11 +534,11 @@ class AddFilterGroupBodyFragment : Fragment() {
             filter.filterType?.let { filterMap.put(it, filter) }
         }
 
-//        // Group List
-//        var groupList: MutableList<ActionGroup> = mutableListOf()
-//        if (actionGroups.isNotEmpty()) {
-//            groupList = actionGroups
-//        }
+        // Group List
+        var groupList: MutableList<ActionGroup> = mutableListOf()
+        if (actionGroups.isNotEmpty()) {
+            groupList = actionGroups
+        }
 
         // Default Action
         var action: Action? = null
@@ -530,18 +554,28 @@ class AddFilterGroupBodyFragment : Fragment() {
         if (filterMap.isNotEmpty() ||
 //            groupList.isNotEmpty() ||
             action != null) {
-            val group = ActionGroup(
+            thisGroup = ActionGroup(
+                id=thisId,
                 filters=filterMap,
-//                groupList=groupList,
+                groupList=groupList,
                 action=action
             )
 
+            dbManager.open()
+            dbManager.updateGroup(thisGroup)
+            dbManager.close()
+
             val resultBundle = Bundle().apply {
-                putParcelable("group", group)
+                putParcelable("group", thisGroup)
                 putBoolean("isChild", creatingChild)
             }
 
             parentFragmentManager.setFragmentResult("new_group", resultBundle)
+
+        } else {
+            dbManager.open()
+            dbManager.deleteGroup(thisId)
+            dbManager.close()
         }
     }
 

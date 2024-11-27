@@ -61,7 +61,7 @@ open class MainActivity : AppCompatActivity() {
 
         // TEMP ONLY! Refactor when database has been implemented
         dbManager.open()
-        createDummyGroupData()
+//        createDummyGroupData()
     }
 
     override fun onDestroy() {
