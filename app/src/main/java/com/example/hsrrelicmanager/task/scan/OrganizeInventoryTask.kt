@@ -164,6 +164,9 @@ class OrganizeInventoryTask: ResetRunner() {
                         dbManager.insertInventory(new_relic_builder.build())
                     }
 
+                    delay(3000)
+                    awaitTick()
+
                     MyResult.Success("Organize Inventory")
                 }
             })
