@@ -16,14 +16,14 @@ import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
 
-class InventoryDBManager(private val context: Context) {
+class DBManager(private val context: Context) {
 
-    private lateinit var dbHelper: InventoryDBHelper
+    private lateinit var dbHelper: DBHelper
     private lateinit var database: SQLiteDatabase
 
     @Throws(SQLException::class)
-    fun open(): InventoryDBManager {
-        dbHelper = InventoryDBHelper(context)
+    fun open(): DBManager {
+        dbHelper = DBHelper(context)
         database = dbHelper.writableDatabase
         return this
     }
@@ -32,7 +32,10 @@ class InventoryDBManager(private val context: Context) {
         dbHelper.close()
     }
 
-    // RULES
+
+
+    /* RULES TABLE */
+
     fun insertGroup(
         filters: MutableMap<Filter.Type, Filter>,
         position: Int,
@@ -40,93 +43,96 @@ class InventoryDBManager(private val context: Context) {
         parentId: Long? = null
     ): Long {
         val values = ContentValues().apply {
-            put(InventoryDBHelper.RulesTable.COLUMN_POS, position)
-            put(InventoryDBHelper.RulesTable.COLUMN_FILTERS, Json.encodeToString(filters))
+            put(DBHelper.RulesTable.COLUMN_POS, position)
+            put(DBHelper.RulesTable.COLUMN_FILTERS, Json.encodeToString(filters))
 
             if (parentId != null) {
-                put(InventoryDBHelper.RulesTable.COLUMN_PARENT_ID, parentId)
+                put(DBHelper.RulesTable.COLUMN_PARENT_ID, parentId)
             } else {
-                putNull(InventoryDBHelper.RulesTable.COLUMN_PARENT_ID)
+                putNull(DBHelper.RulesTable.COLUMN_PARENT_ID)
             }
 
             if (action == null) {
-                putNull(InventoryDBHelper.RulesTable.COLUMN_ACTION)
-                putNull(InventoryDBHelper.RulesTable.COLUMN_LEVEL)
+                putNull(DBHelper.RulesTable.COLUMN_ACTION)
+                putNull(DBHelper.RulesTable.COLUMN_LEVEL)
             } else if (action is EnhanceAction) {
-                put(InventoryDBHelper.RulesTable.COLUMN_ACTION, "Enhance")
-                put(InventoryDBHelper.RulesTable.COLUMN_LEVEL, action.targetLevel)
+                put(DBHelper.RulesTable.COLUMN_ACTION, "Enhance")
+                put(DBHelper.RulesTable.COLUMN_LEVEL, action.targetLevel)
             } else {
-                put(InventoryDBHelper.RulesTable.COLUMN_ACTION, action.toString())
-                putNull(InventoryDBHelper.RulesTable.COLUMN_LEVEL)
+                put(DBHelper.RulesTable.COLUMN_ACTION, action.toString())
+                putNull(DBHelper.RulesTable.COLUMN_LEVEL)
             }
         }
 
-        val id = database.insert(InventoryDBHelper.RulesTable.TABLE_NAME, null, values)
+        val id = database.insert(DBHelper.RulesTable.TABLE_NAME, null, values)
 
         return id
     }
 
     fun fetchGroups(): Cursor {
         val columns = arrayOf(
-            InventoryDBHelper.RulesTable._ID,
-            InventoryDBHelper.RulesTable.COLUMN_POS,
-            InventoryDBHelper.RulesTable.COLUMN_FILTERS,
-            InventoryDBHelper.RulesTable.COLUMN_PARENT_ID,
-            InventoryDBHelper.RulesTable.COLUMN_ACTION,
-            InventoryDBHelper.RulesTable.COLUMN_LEVEL
+            DBHelper.RulesTable._ID,
+            DBHelper.RulesTable.COLUMN_POS,
+            DBHelper.RulesTable.COLUMN_FILTERS,
+            DBHelper.RulesTable.COLUMN_PARENT_ID,
+            DBHelper.RulesTable.COLUMN_ACTION,
+            DBHelper.RulesTable.COLUMN_LEVEL
         )
         val cursor = database.query(
-            InventoryDBHelper.RulesTable.TABLE_NAME,
+            DBHelper.RulesTable.TABLE_NAME,
             columns,
             null,
             null,
             null,
             null,
-            InventoryDBHelper.RulesTable.COLUMN_POS
+            DBHelper.RulesTable.COLUMN_POS
         )
         return cursor
     }
 
     fun updateGroup(group: ActionGroup): Int {
         val values = ContentValues().apply {
-            put(InventoryDBHelper.RulesTable.COLUMN_POS, group.position)
-            put(InventoryDBHelper.RulesTable.COLUMN_FILTERS, Json.encodeToString(group.filters))
+            put(DBHelper.RulesTable.COLUMN_POS, group.position)
+            put(DBHelper.RulesTable.COLUMN_FILTERS, Json.encodeToString(group.filters))
 
             if (group.parentGroup != null) {
-                put(InventoryDBHelper.RulesTable.COLUMN_PARENT_ID, group.parentGroup!!.id)
+                put(DBHelper.RulesTable.COLUMN_PARENT_ID, group.parentGroup!!.id)
             } else {
-                putNull(InventoryDBHelper.RulesTable.COLUMN_PARENT_ID)
+                putNull(DBHelper.RulesTable.COLUMN_PARENT_ID)
             }
 
             if (group.action == null) {
-                putNull(InventoryDBHelper.RulesTable.COLUMN_ACTION)
-                putNull(InventoryDBHelper.RulesTable.COLUMN_LEVEL)
+                putNull(DBHelper.RulesTable.COLUMN_ACTION)
+                putNull(DBHelper.RulesTable.COLUMN_LEVEL)
             } else if (group.action is EnhanceAction) {
-                put(InventoryDBHelper.RulesTable.COLUMN_ACTION, "Enhance")
-                put(InventoryDBHelper.RulesTable.COLUMN_LEVEL, (group.action as EnhanceAction).targetLevel)
+                put(DBHelper.RulesTable.COLUMN_ACTION, "Enhance")
+                put(DBHelper.RulesTable.COLUMN_LEVEL, (group.action as EnhanceAction).targetLevel)
             } else {
-                put(InventoryDBHelper.RulesTable.COLUMN_ACTION, group.action.toString())
-                putNull(InventoryDBHelper.RulesTable.COLUMN_LEVEL)
+                put(DBHelper.RulesTable.COLUMN_ACTION, group.action.toString())
+                putNull(DBHelper.RulesTable.COLUMN_LEVEL)
             }
         }
 
         return database.update(
-            InventoryDBHelper.RulesTable.TABLE_NAME,
+            DBHelper.RulesTable.TABLE_NAME,
             values,
-            "${InventoryDBHelper.RulesTable._ID} = ?",
+            "${DBHelper.RulesTable._ID} = ?",
             arrayOf(group.id.toString())
         )
     }
 
     fun deleteGroup(id: Long): Int {
         return database.delete(
-            InventoryDBHelper.RulesTable.TABLE_NAME,
-            "${InventoryDBHelper.RulesTable._ID} = ?",
+            DBHelper.RulesTable.TABLE_NAME,
+            "${DBHelper.RulesTable._ID} = ?",
             arrayOf(id.toString())
         )
     }
 
-    // INVENTORY TABLE
+
+
+    /* INVENTORY TABLE */
+
     fun insertRelic(
         relicSet: String,
         slot: String,
@@ -138,33 +144,33 @@ class InventoryDBManager(private val context: Context) {
         equipped: Boolean
     ): Long {
         val values = ContentValues().apply {
-            put(InventoryDBHelper.COLUMN_SET, relicSet)
-            put(InventoryDBHelper.COLUMN_SLOT, slot)
-            put(InventoryDBHelper.COLUMN_RARITY, rarity)
-            put(InventoryDBHelper.COLUMN_LEVEL, level)
-            put(InventoryDBHelper.COLUMN_MAINSTAT, mainStat)
-            put(InventoryDBHelper.COLUMN_MAINSTAT_VAL, mainStatVal)
-            put(InventoryDBHelper.COLUMN_STATUS, status)
-            put(InventoryDBHelper.COLUMN_EQUIPPED, equipped)
+            put(DBHelper.COLUMN_SET, relicSet)
+            put(DBHelper.COLUMN_SLOT, slot)
+            put(DBHelper.COLUMN_RARITY, rarity)
+            put(DBHelper.COLUMN_LEVEL, level)
+            put(DBHelper.COLUMN_MAINSTAT, mainStat)
+            put(DBHelper.COLUMN_MAINSTAT_VAL, mainStatVal)
+            put(DBHelper.COLUMN_STATUS, status)
+            put(DBHelper.COLUMN_EQUIPPED, equipped)
         }
-        val id = database.insert(InventoryDBHelper.TABLE_RELIC, null, values)
+        val id = database.insert(DBHelper.TABLE_RELIC, null, values)
         return id
     }
 
     fun fetchRelic(): Cursor {
         val columns = arrayOf(
-            InventoryDBHelper._ID,
-            InventoryDBHelper.COLUMN_SET,
-            InventoryDBHelper.COLUMN_SLOT,
-            InventoryDBHelper.COLUMN_RARITY,
-            InventoryDBHelper.COLUMN_LEVEL,
-            InventoryDBHelper.COLUMN_MAINSTAT,
-            InventoryDBHelper.COLUMN_MAINSTAT_VAL,
-            InventoryDBHelper.COLUMN_STATUS,
-            InventoryDBHelper.COLUMN_EQUIPPED
+            DBHelper._ID,
+            DBHelper.COLUMN_SET,
+            DBHelper.COLUMN_SLOT,
+            DBHelper.COLUMN_RARITY,
+            DBHelper.COLUMN_LEVEL,
+            DBHelper.COLUMN_MAINSTAT,
+            DBHelper.COLUMN_MAINSTAT_VAL,
+            DBHelper.COLUMN_STATUS,
+            DBHelper.COLUMN_EQUIPPED
         )
         val cursor = database.query(
-            InventoryDBHelper.TABLE_RELIC,
+            DBHelper.TABLE_RELIC,
             columns,
             null,
             null,
@@ -187,27 +193,27 @@ class InventoryDBManager(private val context: Context) {
         equipped: Boolean
     ): Int {
         val values = ContentValues().apply {
-            put(InventoryDBHelper.COLUMN_SET, relicSet)
-            put(InventoryDBHelper.COLUMN_SLOT, slot)
-            put(InventoryDBHelper.COLUMN_RARITY, rarity)
-            put(InventoryDBHelper.COLUMN_LEVEL, level)
-            put(InventoryDBHelper.COLUMN_MAINSTAT, mainStat)
-            put(InventoryDBHelper.COLUMN_MAINSTAT_VAL, mainStatVal)
-            put(InventoryDBHelper.COLUMN_STATUS, status)
-            put(InventoryDBHelper.COLUMN_EQUIPPED, equipped)
+            put(DBHelper.COLUMN_SET, relicSet)
+            put(DBHelper.COLUMN_SLOT, slot)
+            put(DBHelper.COLUMN_RARITY, rarity)
+            put(DBHelper.COLUMN_LEVEL, level)
+            put(DBHelper.COLUMN_MAINSTAT, mainStat)
+            put(DBHelper.COLUMN_MAINSTAT_VAL, mainStatVal)
+            put(DBHelper.COLUMN_STATUS, status)
+            put(DBHelper.COLUMN_EQUIPPED, equipped)
         }
         return database.update(
-            InventoryDBHelper.TABLE_RELIC,
+            DBHelper.TABLE_RELIC,
             values,
-            "${InventoryDBHelper._ID} = ?",
+            "${DBHelper._ID} = ?",
             arrayOf(id.toString())
         ) ?: 0
     }
 
     fun deleteRelic(id: Long) {
         database.delete(
-            InventoryDBHelper.TABLE_RELIC,
-            "${InventoryDBHelper._ID} = ?",
+            DBHelper.TABLE_RELIC,
+            "${DBHelper._ID} = ?",
             arrayOf(id.toString())
         )
     }
@@ -250,14 +256,14 @@ class InventoryDBManager(private val context: Context) {
         substats: Map<String, String>
     ): Long {
         val whereClause =
-            "${InventoryDBHelper.COLUMN_SET} = ? AND " +
-            "${InventoryDBHelper.COLUMN_SLOT} = ? AND " +
-            "${InventoryDBHelper.COLUMN_RARITY} = ? AND " +
-            "${InventoryDBHelper.COLUMN_LEVEL} = ? AND " +
-            "${InventoryDBHelper.COLUMN_MAINSTAT} = ? AND " +
-            "${InventoryDBHelper.COLUMN_MAINSTAT_VAL} = ? AND " +
-            "${InventoryDBHelper.COLUMN_STATUS} = ? AND " +
-            "${InventoryDBHelper.COLUMN_EQUIPPED} = ?"
+            "${DBHelper.COLUMN_SET} = ? AND " +
+            "${DBHelper.COLUMN_SLOT} = ? AND " +
+            "${DBHelper.COLUMN_RARITY} = ? AND " +
+            "${DBHelper.COLUMN_LEVEL} = ? AND " +
+            "${DBHelper.COLUMN_MAINSTAT} = ? AND " +
+            "${DBHelper.COLUMN_MAINSTAT_VAL} = ? AND " +
+            "${DBHelper.COLUMN_STATUS} = ? AND " +
+            "${DBHelper.COLUMN_EQUIPPED} = ?"
 
         val whereArgs = arrayOf(
             relicSet,
@@ -270,13 +276,13 @@ class InventoryDBManager(private val context: Context) {
             (if (equipped) 1 else 0).toString()
         )
 
-        Log.d("InventoryDBManager", "Querying database with WHERE CLAUSE\n" + whereClause)
-        Log.d("InventoryDBManager", "Args: " + whereArgs.joinToString(", "))
-        Log.d("InventoryDBManager", "Substats: " + substats)
+        Log.d("DBManager", "Querying database with WHERE CLAUSE\n" + whereClause)
+        Log.d("DBManager", "Args: " + whereArgs.joinToString(", "))
+        Log.d("DBManager", "Substats: " + substats)
 
         val cursor = database.query(
-            InventoryDBHelper.TABLE_RELIC,
-            arrayOf(InventoryDBHelper._ID),
+            DBHelper.TABLE_RELIC,
+            arrayOf(DBHelper._ID),
             whereClause,
             whereArgs,
             null,
@@ -288,7 +294,7 @@ class InventoryDBManager(private val context: Context) {
         var relic_id = -1L
 
         while (cursor.moveToNext()) {
-            relic_id = cursor.getLong(cursor.getColumnIndexOrThrow(InventoryDBHelper._ID))
+            relic_id = cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper._ID))
             if (fetchSubstatsForRelic(relic_id).equals(substats)) {
                 break
             }
@@ -296,10 +302,10 @@ class InventoryDBManager(private val context: Context) {
         }
 
         if (relic_id == -1L) {
-            Log.d("InventoryDBManager", "Cursor is empty!")
+            Log.d("DBManager", "Cursor is empty!")
         }
 
-        //val relic_id = if (cursor.moveToNext()) cursor.getLong(cursor.getColumnIndexOrThrow(InventoryDBHelper._ID)) else -1
+        //val relic_id = if (cursor.moveToNext()) cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper._ID)) else -1
 
         cursor.close()
 
@@ -313,9 +319,9 @@ class InventoryDBManager(private val context: Context) {
 
     fun deleteAllRelics() {
         arrayOf(
-            InventoryDBHelper.TABLE_RELIC,
-            InventoryDBHelper.TABLE_SUBSTATS,
-            InventoryDBHelper.TABLE_MANUAL_STATUS
+            DBHelper.TABLE_RELIC,
+            DBHelper.TABLE_SUBSTATS,
+            DBHelper.TABLE_MANUAL_STATUS
         ).forEach {
             database.delete(
                 it,
@@ -326,26 +332,28 @@ class InventoryDBManager(private val context: Context) {
     }
 
 
-    // SUBSTATS TABLE
+
+    /* SUBSTATS TABLE */
+
     fun insertSubstats(relicId: Long, substats: Map<String, String>) {
         val values = ContentValues()
 
         substats.forEach { (statName, statValue) ->
-            values.put(InventoryDBHelper.COLUMN_RELIC_ID, relicId)
-            values.put(InventoryDBHelper.COLUMN_SUBSTAT_NAME, statName)
-            values.put(InventoryDBHelper.COLUMN_SUBSTAT_VALUE, statValue)
-            database.insert(InventoryDBHelper.TABLE_SUBSTATS, null, values)
+            values.put(DBHelper.COLUMN_RELIC_ID, relicId)
+            values.put(DBHelper.COLUMN_SUBSTAT_NAME, statName)
+            values.put(DBHelper.COLUMN_SUBSTAT_VALUE, statValue)
+            database.insert(DBHelper.TABLE_SUBSTATS, null, values)
         }
     }
 
     fun updateSubstatValues(relicId: Long, substats: Map<String, String>) {
         substats.forEach { (statName, statValue) ->
             database.update(
-                InventoryDBHelper.TABLE_SUBSTATS,
+                DBHelper.TABLE_SUBSTATS,
                 ContentValues().apply {
-                    put(InventoryDBHelper.COLUMN_SUBSTAT_VALUE, statValue)
+                    put(DBHelper.COLUMN_SUBSTAT_VALUE, statValue)
                 },
-                "${InventoryDBHelper.COLUMN_RELIC_ID} = ? AND ${InventoryDBHelper.COLUMN_SUBSTAT_NAME} = ?",
+                "${DBHelper.COLUMN_RELIC_ID} = ? AND ${DBHelper.COLUMN_SUBSTAT_NAME} = ?",
                 arrayOf(relicId.toString(), statName)
             )
         }
@@ -355,13 +363,13 @@ class InventoryDBManager(private val context: Context) {
         val substats = mutableMapOf<String, String>()
 
         val columns = arrayOf(
-            InventoryDBHelper.COLUMN_SUBSTAT_NAME,
-            InventoryDBHelper.COLUMN_SUBSTAT_VALUE
+            DBHelper.COLUMN_SUBSTAT_NAME,
+            DBHelper.COLUMN_SUBSTAT_VALUE
         )
         val cursor = database.query(
-            InventoryDBHelper.TABLE_SUBSTATS,
+            DBHelper.TABLE_SUBSTATS,
             columns,
-            "${InventoryDBHelper.COLUMN_RELIC_ID} = ?",
+            "${DBHelper.COLUMN_RELIC_ID} = ?",
             arrayOf(relicId.toString()),
             null,
             null,
@@ -371,9 +379,9 @@ class InventoryDBManager(private val context: Context) {
         cursor?.use {
             while (it.moveToNext()) {
                 val statName =
-                    it.getString(it.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_SUBSTAT_NAME))
+                    it.getString(it.getColumnIndexOrThrow(DBHelper.COLUMN_SUBSTAT_NAME))
                 val statValue =
-                    it.getString(it.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_SUBSTAT_VALUE))
+                    it.getString(it.getColumnIndexOrThrow(DBHelper.COLUMN_SUBSTAT_VALUE))
                 substats[statName] = statValue
             }
         }
@@ -383,25 +391,26 @@ class InventoryDBManager(private val context: Context) {
 
 
 
-    // MANUAL STATUS TABLE
+    /* MANUAL STATUS TABLE */
+
     fun insertStatus(relicId: Long, statuses: List<String>) {
         statuses.forEach {
             val values = ContentValues().apply {
-                put(InventoryDBHelper.COLUMN_RELIC_ID, relicId)
-                put(InventoryDBHelper.COLUMN_NEW_STATUS, it)
+                put(DBHelper.COLUMN_RELIC_ID, relicId)
+                put(DBHelper.COLUMN_NEW_STATUS, it)
             }
-            database.insert(InventoryDBHelper.TABLE_MANUAL_STATUS, null, values)
+            database.insert(DBHelper.TABLE_MANUAL_STATUS, null, values)
         }
     }
 
     fun fetchStatusForRelic(relicId: Long): List<Relic.Status> {
         val statuses = mutableListOf<Relic.Status>()
 
-        val columns = arrayOf(InventoryDBHelper.COLUMN_NEW_STATUS)
+        val columns = arrayOf(DBHelper.COLUMN_NEW_STATUS)
         val cursor = database.query(
-            InventoryDBHelper.TABLE_MANUAL_STATUS,
+            DBHelper.TABLE_MANUAL_STATUS,
             columns,
-            "${InventoryDBHelper.COLUMN_RELIC_ID} = ?",
+            "${DBHelper.COLUMN_RELIC_ID} = ?",
             arrayOf(relicId.toString()),
             null,
             null,
@@ -410,7 +419,7 @@ class InventoryDBManager(private val context: Context) {
 
         cursor?.use {
             while (it.moveToNext()) {
-                val statusValue = it.getString(it.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_NEW_STATUS))
+                val statusValue = it.getString(it.getColumnIndexOrThrow(DBHelper.COLUMN_NEW_STATUS))
                 val status = Relic.Status.valueOf(statusValue)
                 statuses.add(status)
             }
@@ -422,8 +431,8 @@ class InventoryDBManager(private val context: Context) {
     fun deleteStatus(relicId: Long, statuses: List<String>) {
         statuses.forEach {
             database.delete(
-                InventoryDBHelper.TABLE_MANUAL_STATUS,
-                "${InventoryDBHelper.COLUMN_RELIC_ID} = ? AND ${InventoryDBHelper.COLUMN_NEW_STATUS} = ?",
+                DBHelper.TABLE_MANUAL_STATUS,
+                "${DBHelper.COLUMN_RELIC_ID} = ? AND ${DBHelper.COLUMN_NEW_STATUS} = ?",
                 arrayOf(relicId.toString(), it)
             )
         }
@@ -475,6 +484,7 @@ class InventoryDBManager(private val context: Context) {
             statuses
         )
     }
+
     fun insertInventory(relic: Relic) {
         lateinit var statusString: String
 

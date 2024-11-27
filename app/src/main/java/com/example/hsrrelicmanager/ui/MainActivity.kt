@@ -18,7 +18,7 @@ import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
 import com.example.hsrrelicmanager.model.rules.action.StatusAction
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
-import com.example.hsrrelicmanager.ui.db.inventory.InventoryDBManager
+import com.example.hsrrelicmanager.ui.db.inventory.DBManager
 
 open class MainActivity : AppCompatActivity() {
 
@@ -29,7 +29,7 @@ open class MainActivity : AppCompatActivity() {
 
     lateinit var groupData: MutableList<ActionGroup>
 
-    var dbManager = InventoryDBManager(this)
+    var dbManager = DBManager(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +61,7 @@ open class MainActivity : AppCompatActivity() {
 
         // TEMP ONLY! Refactor when database has been implemented
         dbManager.open()
-//        createDummyGroupData()
+        createDummyGroupData()
     }
 
     override fun onDestroy() {
