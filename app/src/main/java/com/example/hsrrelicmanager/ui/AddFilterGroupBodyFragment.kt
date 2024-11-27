@@ -354,15 +354,17 @@ class AddFilterGroupBodyFragment : Fragment() {
         }
 
         // Newly-Created Group
-        val group = ActionGroup(
-            filters=filterMap,
-            action=action
-        )
+        if (filterMap.isNotEmpty() || action != null) {
+            val group = ActionGroup(
+                filters=filterMap,
+                action=action
+            )
 
-        val resultBundle = Bundle().apply {
-            putParcelable("group", group)
+            val resultBundle = Bundle().apply {
+                putParcelable("group", group)
+            }
+
+            parentFragmentManager.setFragmentResult("new_group", resultBundle)
         }
-
-        parentFragmentManager.setFragmentResult("new_group", resultBundle)
     }
 }
