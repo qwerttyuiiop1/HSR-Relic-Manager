@@ -318,6 +318,11 @@ class AddFilterGroupBodyFragment : Fragment() {
                 creatingChild = true
 
                 parentFragmentManager.beginTransaction()
+                    .setCustomAnimations(
+                        R.anim.slide_in_delayed,
+                        android.R.anim.fade_out,
+                        R.anim.fade_in_delayed,
+                        R.anim.slide_out)
                     .replace(R.id.body_fragment_container, AddFilterGroupBodyFragment())
                     .addToBackStack(null)
                     .commit()
