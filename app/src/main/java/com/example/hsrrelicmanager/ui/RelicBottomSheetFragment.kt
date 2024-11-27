@@ -137,12 +137,20 @@ class RelicBottomSheetFragment : BottomSheetDialogFragment() {
                             if (old == Relic.Status.UPGRADE) {
                                 level = prev.level
                             }
+                            if (Relic.Status.LOCK !in this && Relic.Status.TRASH !in this) {
+                                add(Relic.Status.DEFAULT)
+                            }
                         } else {
                             add(old)
                             if (old == Relic.Status.LOCK) {
                                 remove(Relic.Status.TRASH)
+                                remove(Relic.Status.DEFAULT)
                             } else if (old == Relic.Status.TRASH) {
                                 remove(Relic.Status.LOCK)
+                                remove(Relic.Status.DEFAULT)
+                            } else if (old == Relic.Status.DEFAULT) {
+                                remove(Relic.Status.LOCK)
+                                remove(Relic.Status.TRASH)
                             } else if (old == Relic.Status.UPGRADE) {
                                 val lprev = level
                                 level = ((lprev/3 + 1)*3).coerceAtMost(relic.rarity * 3)
