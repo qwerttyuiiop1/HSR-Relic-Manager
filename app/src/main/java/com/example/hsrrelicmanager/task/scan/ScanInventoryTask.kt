@@ -7,6 +7,7 @@ import com.example.hsrrelicmanager.core.exe.MyResult
 import com.example.hsrrelicmanager.core.exe.ResetRunner
 import com.example.hsrrelicmanager.core.exe.TaskInstance
 import com.example.hsrrelicmanager.core.exe.default
+import com.example.hsrrelicmanager.ui.db.inventory.DBManager
 import java.util.regex.Pattern
 
 class ScanInventoryTask: ResetRunner() {
@@ -42,11 +43,16 @@ class ScanInventoryTask: ResetRunner() {
 //        }
     override suspend fun run(): MyResult<String> {
             awaitTick()
-            // TODO: truncate database
+
+            val dbManager = DBManager(uiCtx.ctx).open()
+            // truncate database
+            dbManager.deleteAllRelics()
+
             join(InventoryIterator(ui) {
                 TaskInstance.default {
                     val relic = join(ScanInst(ui))
-                    // TODO: save to db
+                    // save to db
+                    dbManager.insertInventory(relic)
                     MyResult.Success("Scan Inventory")
                 }
             })
