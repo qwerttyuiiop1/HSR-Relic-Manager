@@ -212,6 +212,100 @@ class InventoryDBManager(private val context: Context) {
         )
     }
 
+    fun findRelicId(relic: Relic): Long {
+        lateinit var statusString: String
+
+        if (Relic.Status.TRASH in relic.status) {
+            statusString = "TRASH"
+        } else if (Relic.Status.LOCK in relic.status) {
+            statusString = "LOCK"
+        } else if (Relic.Status.DEFAULT in relic.status){
+            statusString = "DEFAULT"
+        } else {
+            throw IllegalStateException("Relic $relic does not have valid status ${relic.status}")
+        }
+
+        return findRelicId(
+            relic.set.name,
+            relic.slot,
+            relic.rarity,
+            relic.level,
+            relic.mainstat,
+            relic.mainstatVal,
+            statusString,
+            Relic.Status.EQUIPPED in relic.status,
+            relic.substats
+        )
+    }
+
+    fun findRelicId(
+        relicSet: String,
+        slot: String,
+        rarity: Int,
+        level: Int,
+        mainStat: String,
+        mainStatVal: String,
+        status: String,
+        equipped: Boolean,
+        substats: Map<String, String>
+    ): Long {
+        val whereClause =
+            "${InventoryDBHelper.COLUMN_SET} = ? AND " +
+            "${InventoryDBHelper.COLUMN_SLOT} = ? AND " +
+            "${InventoryDBHelper.COLUMN_RARITY} = ? AND " +
+            "${InventoryDBHelper.COLUMN_LEVEL} = ? AND " +
+            "${InventoryDBHelper.COLUMN_MAINSTAT} = ? AND " +
+            "${InventoryDBHelper.COLUMN_MAINSTAT_VAL} = ? AND " +
+            "${InventoryDBHelper.COLUMN_STATUS} = ? AND " +
+            "${InventoryDBHelper.COLUMN_EQUIPPED} = ?"
+
+        val whereArgs = arrayOf(
+            relicSet,
+            slot,
+            rarity.toString(),
+            level.toString(),
+            mainStat,
+            mainStatVal,
+            status,
+            (if (equipped) 1 else 0).toString()
+        )
+
+        Log.d("InventoryDBManager", "Querying database with WHERE CLAUSE\n" + whereClause)
+        Log.d("InventoryDBManager", "Args: " + whereArgs.joinToString(", "))
+        Log.d("InventoryDBManager", "Substats: " + substats)
+
+        val cursor = database.query(
+            InventoryDBHelper.TABLE_RELIC,
+            arrayOf(InventoryDBHelper._ID),
+            whereClause,
+            whereArgs,
+            null,
+            null,
+            null,
+            null
+        )
+
+        var relic_id = -1L
+
+        while (cursor.moveToNext()) {
+            relic_id = cursor.getLong(cursor.getColumnIndexOrThrow(InventoryDBHelper._ID))
+            if (fetchSubstatsForRelic(relic_id).equals(substats)) {
+                break
+            }
+            relic_id = -1L
+        }
+
+        if (relic_id == -1L) {
+            Log.d("InventoryDBManager", "Cursor is empty!")
+        }
+
+        //val relic_id = if (cursor.moveToNext()) cursor.getLong(cursor.getColumnIndexOrThrow(InventoryDBHelper._ID)) else -1
+
+        cursor.close()
+
+        return relic_id
+    }
+
     fun getRelicSetByName(relicSet: String): RelicSet {
         return relicSets.find { it.name == relicSet }
             ?: throw IllegalArgumentException("Relic set not found: $relicSet")
@@ -228,6 +322,19 @@ class InventoryDBManager(private val context: Context) {
             values.put(InventoryDBHelper.COLUMN_SUBSTAT_NAME, statName)
             values.put(InventoryDBHelper.COLUMN_SUBSTAT_VALUE, statValue)
             database.insert(InventoryDBHelper.TABLE_SUBSTATS, null, values)
+        }
+    }
+
+    fun updateSubstatValues(relicId: Long, substats: Map<String, String>) {
+        substats.forEach { (statName, statValue) ->
+            database.update(
+                InventoryDBHelper.TABLE_SUBSTATS,
+                ContentValues().apply {
+                    put(InventoryDBHelper.COLUMN_SUBSTAT_VALUE, statValue)
+                },
+                "${InventoryDBHelper.COLUMN_RELIC_ID} = ? AND ${InventoryDBHelper.COLUMN_SUBSTAT_NAME} = ?",
+                arrayOf(relicId.toString(), statName)
+            )
         }
     }
 
