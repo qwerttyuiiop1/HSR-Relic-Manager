@@ -86,6 +86,7 @@ class OrganizeInventoryTask: ResetRunner() {
                             bldr.status = newStatus
                         }
                     }
+                    awaitTick()
 
                     val relic = join(ScanInst(ui))
                     val new_relic_builder = RelicBuilder(relic, true)
