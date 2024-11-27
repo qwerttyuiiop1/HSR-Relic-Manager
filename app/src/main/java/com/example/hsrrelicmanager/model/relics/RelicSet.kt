@@ -3,6 +3,7 @@ package com.example.hsrrelicmanager.model.relics
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import com.example.hsrrelicmanager.R
+import com.example.hsrrelicmanager.core.ext.norm
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
@@ -494,6 +495,6 @@ val relicNameToSet = listOf(
 ).let { list ->
     val nameToSet = relicSets.associateBy { it.name }
     list.flatMap { (set, items) ->
-        items.map { it.lowercase() to nameToSet[set]!! }
+        items.map { it.norm to nameToSet[set]!! }
     }.toMap()
 }

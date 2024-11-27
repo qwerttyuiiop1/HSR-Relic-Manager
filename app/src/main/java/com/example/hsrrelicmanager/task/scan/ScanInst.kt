@@ -7,9 +7,11 @@ import com.example.hsrrelicmanager.core.exe.TaskInstance
 import com.example.hsrrelicmanager.core.exe.flatten
 import com.example.hsrrelicmanager.core.exe.instant
 import com.example.hsrrelicmanager.core.exe.multi
+import com.example.hsrrelicmanager.core.ext.norm
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicBuilder
 import com.example.hsrrelicmanager.model.relics.relicNameToSet
+import com.google.android.datatransport.runtime.logging.Logging
 
 class ScanInst(
     val ui: ScanInventoryUIBinding
@@ -48,7 +50,7 @@ class ScanInst(
                 bldr.mstatus.add(Relic.Status.LOCK)
             else
                 bldr.mstatus.add(Relic.Status.DEFAULT)
-            if (ui.equipped.isRecognized())
+            if (ui.relicEquipped.isRecognized())
                 bldr.mstatus.add(Relic.Status.EQUIPPED)
             for (i in 0 until 4) {
                 if (!ui.substatIcons[i].isPresent()) break
@@ -66,7 +68,8 @@ class ScanInst(
         val substatLabelsRes = (res[1] as ResList<String>).flatten()
         val substatValuesRes = (res[2] as ResList<String>).flatten()
 
-        bldr.set = relicNameToSet[textRes[0].lowercase()]!!
+        Logging.d("<Relic!!>", textRes[0].norm)
+        bldr.set = relicNameToSet[textRes[0].norm]!!
         bldr.slot = textRes[1]
         val pttrn = "\\d+".toRegex()
         bldr.level = pttrn.find(textRes[2])!!.value.toInt()

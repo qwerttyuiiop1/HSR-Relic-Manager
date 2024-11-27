@@ -10,6 +10,7 @@ import com.example.hsrrelicmanager.core.exe.TaskRunner
 import com.example.hsrrelicmanager.core.exe.invoke
 import com.example.hsrrelicmanager.core.io.IBubbleController
 import com.example.hsrrelicmanager.task.autobattle.AutobattleTask
+import com.example.hsrrelicmanager.task.scan.OrganizeInventoryTask
 import com.example.hsrrelicmanager.task.scan.ScanInventoryTask
 import com.example.hsrrelicmanager.ui.MainActivity
 import com.example.hsrrelicmanager.ui.bubble.BubbleController
@@ -32,9 +33,6 @@ class HSRAutoClickService : AutoclickService() {
         )
     }
 
-    /**
-     *         Task(true, "ORGANIZE") to view.btnOrganizeInventory,
-     */
     override fun onInit() {
         addHandler(TaskRunner(Task.NONE) {
             throw IllegalStateException("Task NONE should not be handled")
@@ -69,5 +67,6 @@ class HSRAutoClickService : AutoclickService() {
 
         addHandler(AutobattleTask())
         addHandler(ScanInventoryTask())
+        addHandler(OrganizeInventoryTask())
     }
 }

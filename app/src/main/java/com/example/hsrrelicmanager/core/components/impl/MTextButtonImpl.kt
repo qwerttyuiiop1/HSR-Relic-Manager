@@ -64,4 +64,7 @@ internal open class MTextButtonImpl(
         val words = text.toWords()
         return (label!! - words).isEmpty()
     }
+    override fun isRecognized(words: Set<String>): Boolean {
+        return (label!! - words).isEmpty()
+    }
 }

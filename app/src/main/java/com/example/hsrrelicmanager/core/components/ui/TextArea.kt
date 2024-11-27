@@ -47,6 +47,7 @@ interface TextArea: UIElement {
     suspend fun getText(tick: Bitmap = ctx.tick): Text
     suspend fun isRecognized(tick: Bitmap = ctx.tick): Boolean
     fun isRecognized(text: Text): Boolean
+    fun isRecognized(words: Set<String>): Boolean
 }
 interface MTextArea: TextArea, MUIElement {
     companion object {

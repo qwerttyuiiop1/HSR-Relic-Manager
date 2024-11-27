@@ -67,9 +67,9 @@ class ScanInventoryUIBinding private constructor(
                 tick.getPixel(r.right + 3, cy),
             )
             val white = 0xFFFFFFFF.toInt()
-            return px.all {
+            return px.count {
                 it.similarTo(white, 2)
-            }
+            } >= 3
         }
     }
     inner class RelicContainer(
@@ -96,25 +96,56 @@ class ScanInventoryUIBinding private constructor(
             // scam vertival line for 5 consecutive white pixels
             val tick = ctx.tick
             val white = 0xFFFFFFFF.toInt()
-            var count = 0
-            var pos = -1
-            for (y in rect.top..rect.bottom) {
+
+            for (y in rect.top..rect.bottom step 5) {
                 val px = tick.getPixel(cx, y)
                 if (px.similarTo(white, 2)) {
-                    count++
-                    if (count == 5) {
-                        pos = y - 6
-                        break
+                    // check the previous 4 pixels
+                    var countWhite = 5
+                    for (i in 1..4) {
+                        val prev = tick.getPixel(cx, y - i)
+                        if (!prev.similarTo(white, 2)) {
+                            countWhite = i
+                            break
+                        }
                     }
-                } else {
-                    count = 0
+                    if (countWhite == 5) {
+                        setY(y - 5 - itemH)
+                        return@default MyResult.Success(true)
+                    }
+                    val pos = y - countWhite - itemH
+                    for (i in 1..(5 - countWhite)) {
+                        val next = tick.getPixel(cx, y + i)
+                        if (!next.similarTo(white, 2))
+                            break
+                        countWhite++
+                    }
+                    if (countWhite == 5) {
+                        setY(pos)
+                        return@default MyResult.Success(true)
+                    }
                 }
             }
-
-            if (pos == -1)
-                return@default MyResult.Fail("Could not calibrate relic container")
-            setY(pos - itemH)
-            MyResult.Success(true)
+            return@default MyResult.Fail("Could not calibrate relic container")
+//
+//            var count = 0
+//            for (y in rect.top..rect.bottom) {
+//                val px = tick.getPixel(cx, y)
+//                if (px.similarTo(white, 2)) {
+//                    count++
+//                    if (count == 5) {
+//                        pos = y - 6
+//                        break
+//                    }
+//                } else {
+//                    count = 0
+//                }
+//            }
+//
+//            if (pos == -1)
+//                return@default MyResult.Fail("Could not calibrate relic container")
+//            setY(pos - itemH)
+//            MyResult.Success(true)
         }
 
         fun moveNextRow() {
@@ -220,7 +251,10 @@ class ScanInventoryUIBinding private constructor(
 
     val numRelics = UIBldr(binding.numRelics, ctx).textArea
 
-    val equipped = UIBldr(binding.lblRelicEquipped, ctx).textArea
+    val relicEquipped = UIBldr(binding.lblRelicEquipped, ctx).textArea
+
+    val exitBtn = UIBldr(binding.btnExit, ctx).button
+    val enhanceBtn = UIBldr(binding.btnEnhance, ctx).textButton
     
     val relicScrollBar = RelicScrollBar(binding.scrollBar)
     inner class RelicScrollBar(
@@ -243,6 +277,10 @@ class ScanInventoryUIBinding private constructor(
                 delay(500)
                 awaitTick()
             }
+            fastSwiper.swipeV(-scrollDist)
+            delay(500)
+            fastSwiper.swipeV(-scrollDist)
+            delay(3000)
             MyResult.Success(true)
         }
 

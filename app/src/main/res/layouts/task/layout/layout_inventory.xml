@@ -4,8 +4,9 @@
     android:layout_height="1080px"
     android:layout_width="2400px"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/inventory_reference"
+    android:background="@drawable/autobattle_reference"
     tools:ignore="PxUsage">
+    <!-- use your own background image -->
     <com.google.android.flexbox.FlexboxLayout
         android:id="@+id/grid_layout"
         android:background="@drawable/border_red"
@@ -322,6 +323,7 @@
             android:layout_height="0px"
             android:layout_weight="1"/>
         <TextView
+            android:id="@+id/btn_enhance"
             android:layout_width="0px"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -344,5 +346,14 @@
             android:layout_width="200px"
             android:layout_height="match_parent"/>
     </FrameLayout>
+    <Button
+        android:id="@+id/btn_exit"
+        android:layout_width="62px"
+        android:layout_height="62px"
+        android:layout_marginEnd="125px"
+        android:layout_marginTop="26px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/border_red" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
