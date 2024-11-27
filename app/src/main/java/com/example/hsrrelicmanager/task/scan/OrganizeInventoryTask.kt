@@ -93,15 +93,45 @@ class OrganizeInventoryTask: ResetRunner() {
                     val new_relic_builder = RelicBuilder(relic, true)
                     val dbManager = DBManager(uiCtx.ctx).open()
 
-                    // 1. Find relic id to check if manual statuses need to be applied
-                    // If there are, apply them and skip 2
+                    // 1. APPLY ALL RULES 1 BY 1
+                    // TODO: FETCH ALL GROUPS AND ITERATE
+                    // val cursor = dbManager.fetchGroups()
+                    // cursor.close()
+
+                    // HARDCODED ACTION GROUP FOR TESTING
+                    val rules = mutableListOf(
+                        ActionGroup(
+                            -1,
+                            mutableMapOf(
+                                Filter.Type.RARITY to Filter.RarityFilter(mutableSetOf(2, 3, 4))
+                            ),
+                            0,
+                            null,
+                            mutableListOf(),
+                            StatusAction(Relic.Status.TRASH)
+                        )
+                    )
+
+                    for (rule in rules) {
+                        var action = rule.checkActionToPerform(relic)
+
+                        if (action != null) {
+                            if (action is EnhanceAction) {
+                                action = EnhanceAction(action.targetLevel.coerceAtMost(relic.rarity * 3))
+                            }
+
+                            performAction(toActionString(action))
+                            applyToRelic(action, new_relic_builder)
+                        }
+                    }
+
+                    // 2. Find relic id to check if manual statuses need to be applied
+                    // If there are, apply them
                     val relic_id = dbManager.findRelicId(relic)
-                    var applyManual = false
                     if (relic_id != -1L) {
                         val statuses = dbManager.fetchStatusForRelic(relic_id)
 
                         if (statuses.isNotEmpty()) {
-                            applyManual = true
                             for (status in statuses) {
                                 val targetLevel: Int = ((relic.level / 3 + 1) * 3).coerceAtMost(relic.rarity * 3)
                                 val action: Action? = when (status) {
@@ -117,41 +147,6 @@ class OrganizeInventoryTask: ResetRunner() {
                             }
 
                             dbManager.deleteStatus(relic_id, statuses.map { it.name })
-                        }
-                    }
-
-                    // 2. No manual statuses to apply: proceed as normal,
-                    // Get all rules and apply one by one
-                    if (!applyManual) {
-                        // TODO: FETCH ALL GROUPS AND ITERATE
-                        // val cursor = dbManager.fetchGroups()
-                        // cursor.close()
-
-                        // HARDCODED ACTION GROUP FOR TESTING
-                        val rules = mutableListOf(
-                            ActionGroup(
-                                -1,
-                                mutableMapOf(
-                                    Filter.Type.RARITY to Filter.RarityFilter(mutableSetOf(2, 3, 4))
-                                ),
-                                0,
-                                null,
-                                mutableListOf(),
-                                StatusAction(Relic.Status.TRASH)
-                            )
-                        )
-
-                        for (rule in rules) {
-                            var action = rule.checkActionToPerform(relic)
-
-                            if (action != null) {
-                                if (action is EnhanceAction) {
-                                    action = EnhanceAction(action.targetLevel.coerceAtMost(relic.rarity * 3))
-                                }
-
-                                performAction(toActionString(action))
-                                applyToRelic(action, new_relic_builder)
-                            }
                         }
                     }
 
