@@ -7,6 +7,7 @@ import com.example.hsrrelicmanager.core.exe.MyResult
 import com.example.hsrrelicmanager.core.exe.ResetRunner
 import com.example.hsrrelicmanager.core.exe.TaskInstance
 import com.example.hsrrelicmanager.core.exe.default
+import com.example.hsrrelicmanager.ui.db.inventory.DBManager
 import kotlinx.coroutines.delay
 
 class OrganizeInventoryTask: ResetRunner() {
@@ -53,14 +54,17 @@ class OrganizeInventoryTask: ResetRunner() {
         }
         override suspend fun run(): MyResult<String> {
             awaitTick()
+            val dbManager = DBManager(uiCtx.ctx).open()
             join(InventoryIterator(ui) {
                 TaskInstance.default {
-//                    val relic = join(ScanInst(ui))
+                    var relic = join(ScanInst(ui))
                     // TODO: predict action
                     val action = "ENHANCE-3"
                     performAction(action)
-                    // TODO: perform onSuccess (if needed, like updating db / deleting manual rules)
-
+                    delay(3000)
+                    awaitTick()
+                    relic = join(ScanInst(ui))
+                    dbManager.insertInventory(relic)
                     MyResult.Success("Organize Inventory")
                 }
             })
