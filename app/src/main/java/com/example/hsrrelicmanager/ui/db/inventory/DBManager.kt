@@ -510,4 +510,35 @@ class DBManager(private val context: Context) {
             Relic.Status.EQUIPPED in relic.status
         )
     }
+
+    fun updateInventory(relic: Relic) {
+        lateinit var statusString: String
+
+        if (Relic.Status.TRASH in relic.status) {
+            statusString = "TRASH"
+        } else if (Relic.Status.LOCK in relic.status) {
+            statusString = "LOCK"
+        } else if (Relic.Status.DEFAULT in relic.status){
+            statusString = "DEFAULT"
+        } else {
+            throw IllegalStateException("Relic $relic does not have valid status ${relic.status}")
+        }
+
+        updateRelic(
+            relic.id,
+            relic.set.name,
+            relic.slot,
+            relic.rarity,
+            relic.level,
+            relic.mainstat,
+            relic.mainstatVal,
+            statusString,
+            Relic.Status.EQUIPPED in relic.status
+        )
+
+        updateSubstatValues(relic.id, relic.substats)
+
+        deleteStatus(relic.id, fetchStatusForRelic(relic.id).map{it.name})
+        insertStatus(relic.id, relic.status.map{it.name})
+    }
 }
