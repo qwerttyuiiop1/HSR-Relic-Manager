@@ -21,6 +21,24 @@ class ActionGroup(
     var groupList: MutableList<ActionGroup> = mutableListOf(),
     var action: @RawValue Action? = null
 ) : Parcelable {
+    fun checkActionToPerform(relic: Relic): Action? {
+        for (filter in filters.values) {
+            if (filter != null && !filter.accepts(relic)) {
+                Log.d("ActionGroup", "Relic $relic not accepted by filter ${filter.description}")
+                return null
+            }
+        }
+
+        for (child in groupList) {
+            val childAction = child.checkActionToPerform(relic)
+            if (childAction != null) {
+                return childAction
+            }
+        }
+
+        return action
+    }
+
     fun addGroup(child: ActionGroup) {
         child.parentGroup = this
         groupList.add(child)
