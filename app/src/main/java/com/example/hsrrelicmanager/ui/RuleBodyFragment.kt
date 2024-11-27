@@ -75,9 +75,15 @@ class RuleBodyFragment : Fragment() {
         parentFragmentManager.setFragmentResultListener("new_group", viewLifecycleOwner) { _, bundle ->
             val group = bundle.getParcelable<ActionGroup>("group")
 
+            // Check if a new group was created
             if (group != null) {
                 groupData.add(group)
                 groupAdapter.notifyDataSetChanged()
+
+                // Update list position indices
+                for (index in 0..<groupData.size) {
+                    groupData[index].position = index
+                }
             }
         }
 

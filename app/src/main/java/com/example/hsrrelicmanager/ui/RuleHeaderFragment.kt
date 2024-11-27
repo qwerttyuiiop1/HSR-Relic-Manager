@@ -34,7 +34,7 @@ class RuleHeaderFragment : Fragment() {
 //            blurBackground()
 //            showAddRuleDialog()
 
-            requireActivity().supportFragmentManager.beginTransaction()
+            parentFragmentManager.beginTransaction()
                 .replace(R.id.header_fragment_container, AddFilterGroupHeaderFragment())
                 .replace(R.id.body_fragment_container, AddFilterGroupBodyFragment())
                 .addToBackStack(null)
