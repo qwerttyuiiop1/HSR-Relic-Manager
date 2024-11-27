@@ -510,27 +510,34 @@ class AddFilterGroupBodyFragment : Fragment() {
             filter.filterType?.let { filterMap.put(it, filter) }
         }
 
+//        // Group List
+//        var groupList: MutableList<ActionGroup> = mutableListOf()
+//        if (actionGroups.isNotEmpty()) {
+//            groupList = actionGroups
+//        }
+
         // Default Action
         var action: Action? = null
-        if (actionItem[0] != "") {
-            if (actionItem[0] == "Enhance") {
-                action = EnhanceAction(adapterAction.getLevelNumber())
-            } else if (actionItem[0] == "Reset")
-                action = StatusAction(Relic.Status.DEFAULT)
-            else
-                action = StatusAction(Relic.Status.valueOf(actionItem[0].uppercase()))
+        if (actionItem[0].isNotEmpty()) {
+            action = when (actionItem[0]) {
+                "Enhance" -> EnhanceAction(adapterAction.getLevelNumber())
+                "Reset" -> StatusAction(Relic.Status.DEFAULT)
+                else -> StatusAction(Relic.Status.valueOf(actionItem[0].uppercase()))
+            }
         }
 
         // Newly-Created Group
-        if (filterMap.isNotEmpty() || action != null) {
+        if (filterMap.isNotEmpty() ||
+//            groupList.isNotEmpty() ||
+            action != null) {
             val group = ActionGroup(
                 filters=filterMap,
+//                groupList=groupList,
                 action=action
             )
 
             val resultBundle = Bundle().apply {
                 putParcelable("group", group)
-                putBoolean("isChild", creatingChild)
             }
 
             parentFragmentManager.setFragmentResult("new_group", resultBundle)
