@@ -73,6 +73,10 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         public void bind(ActionGroup group) {
             tvGroupName.setText(group.getViewName());
             filterContainer.removeAllViews();
+
+            // Load group icon based on default action (if it has one)
+            groupIcon.setImageResource(group.getImageResource());
+
             // check class of group is filter / action group
             for (Filter filter : group.getFilters().values()) {
                 if (filter != null) {
@@ -80,7 +84,6 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
                     binding.rowName.setText(filter.getName() + ':');
                     binding.rowValue.setText(filter.getDescription());
                     filterContainer.addView(binding.getRoot());
-                    groupIcon.setImageResource(group.getImageResource());
                 }
 //                switch (group.getViewName().replaceAll(" .*", "")) {
 //                    case "Filter":
