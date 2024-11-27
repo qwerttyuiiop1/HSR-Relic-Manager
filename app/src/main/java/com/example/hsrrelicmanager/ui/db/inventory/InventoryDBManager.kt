@@ -311,6 +311,19 @@ class InventoryDBManager(private val context: Context) {
             ?: throw IllegalArgumentException("Relic set not found: $relicSet")
     }
 
+    fun deleteAllRelics() {
+        arrayOf(
+            InventoryDBHelper.TABLE_RELIC,
+            InventoryDBHelper.TABLE_SUBSTATS,
+            InventoryDBHelper.TABLE_MANUAL_STATUS
+        ).forEach {
+            database.delete(
+                it,
+                null,
+                null
+            )
+        }
+    }
 
 
     // SUBSTATS TABLE
@@ -460,6 +473,31 @@ class InventoryDBManager(private val context: Context) {
         insertStatus(
             relic_id,
             statuses
+        )
+    }
+    fun insertInventory(relic: Relic) {
+        lateinit var statusString: String
+
+        if (Relic.Status.TRASH in relic.status) {
+            statusString = "TRASH"
+        } else if (Relic.Status.LOCK in relic.status) {
+            statusString = "LOCK"
+        } else if (Relic.Status.DEFAULT in relic.status){
+            statusString = "DEFAULT"
+        } else {
+            throw IllegalStateException("Relic $relic does not have valid status ${relic.status}")
+        }
+
+        insertInventory(
+            relic.set.name,
+            relic.slot,
+            relic.rarity,
+            relic.level,
+            relic.mainstat,
+            relic.mainstatVal,
+            relic.substats,
+            statusString,
+            Relic.Status.EQUIPPED in relic.status
         )
     }
 }
