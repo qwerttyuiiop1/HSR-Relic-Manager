@@ -80,11 +80,11 @@ class AddFilterGroupBodyFragment : Fragment() {
         binding.apply {
             creatingChild = false
 
-            // Create the group
-            dbManager.open()
-            thisId = dbManager.insertGroup(mutableMapOf(), null, null, null)
-            thisGroup = ActionGroup(thisId)
-            dbManager.close()
+//            // Create the group
+//            dbManager.open()
+//            thisId = dbManager.insertGroup(mutableMapOf(), null, null, null)
+//            thisGroup = ActionGroup(thisId)
+//            dbManager.close()
 
 
             // Listen for new groups
@@ -93,19 +93,8 @@ class AddFilterGroupBodyFragment : Fragment() {
                     val group = bundle.getParcelable<ActionGroup>("group")
 
                     if (group != null) {
-                        group.position = actionGroups.size
-
-                        dbManager.open()
-                        val id = dbManager.insertGroup(
-                            group.filters,
-                            group.position,
-                            group.action,
-                            group.parentGroup?.id
-                        )
-
-                        group.id = id
-
-                        dbManager.close()
+                        actionGroups.add(group)
+                        adapterGroup.notifyDataSetChanged()
                     }
                 }
             }
@@ -554,29 +543,29 @@ class AddFilterGroupBodyFragment : Fragment() {
         if (filterMap.isNotEmpty() ||
 //            groupList.isNotEmpty() ||
             action != null) {
-            thisGroup = ActionGroup(
-                id=thisId,
+            val group = ActionGroup(
                 filters=filterMap,
                 groupList=groupList,
                 action=action
             )
 
-            dbManager.open()
-            dbManager.updateGroup(thisGroup)
-            dbManager.close()
+//            dbManager.open()
+//            dbManager.updateGroup(group)
+//            dbManager.close()
 
             val resultBundle = Bundle().apply {
-                putParcelable("group", thisGroup)
+                putParcelable("group", group)
                 putBoolean("isChild", creatingChild)
             }
 
             parentFragmentManager.setFragmentResult("new_group", resultBundle)
 
-        } else {
-            dbManager.open()
-            dbManager.deleteGroup(thisId)
-            dbManager.close()
         }
+//        else {
+//            dbManager.open()
+//            dbManager.deleteGroup(thisId)
+//            dbManager.close()
+//        }
     }
 
     private fun blurBackground() {

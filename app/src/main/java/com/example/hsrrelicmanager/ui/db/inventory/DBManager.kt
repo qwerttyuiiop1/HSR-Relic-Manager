@@ -112,6 +112,7 @@ class DBManager(private val context: Context) {
                 putNull(DBHelper.RulesTable.COLUMN_LEVEL)
             }
         }
+        Log.d("TEST", "UPDATED")
 
         return database.update(
             DBHelper.RulesTable.TABLE_NAME,
@@ -122,6 +123,7 @@ class DBManager(private val context: Context) {
     }
 
     fun deleteGroup(id: Long): Int {
+        Log.d("TEST", "DELETED")
         return database.delete(
             DBHelper.RulesTable.TABLE_NAME,
             "${DBHelper.RulesTable._ID} = ?",

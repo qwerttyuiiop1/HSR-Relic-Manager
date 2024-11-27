@@ -54,34 +54,31 @@ class RuleBodyFragment : Fragment() {
         val cursor = dbManager.fetchGroups()
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                if (cursor.isNull(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_PARENT_ID))) {
+                // Action
+                var action: Action? = null
+                var actionDb: String
 
-                    // Action
-                    var action: Action? = null
-                    var actionDb: String
+                if (!cursor.isNull(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_ACTION))) {
+                    actionDb =
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_ACTION))
 
-                    if (!cursor.isNull(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_ACTION))) {
-                        actionDb =
-                            cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_ACTION))
-
-                        action = if (actionDb == "Enhance") {
-                            EnhanceAction(cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_LEVEL)))
-                        } else {
-                            StatusAction(Relic.Status.valueOf(actionDb.uppercase()))
-                        }
+                    action = if (actionDb == "Enhance") {
+                        EnhanceAction(cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_LEVEL)))
+                    } else {
+                        StatusAction(Relic.Status.valueOf(actionDb.uppercase()))
                     }
-
-                    groupData.add(
-                        ActionGroup(
-                            cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper.RulesTable._ID)),
-                            Json.decodeFromString<MutableMap<Filter.Type, Filter?>>(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_FILTERS))),
-                            cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_POS)),
-                            null,
-                            mutableListOf(),
-                            action,
-                        )
-                    )
                 }
+
+                groupData.add(
+                    ActionGroup(
+                        cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper.RulesTable._ID)),
+                        Json.decodeFromString<MutableMap<Filter.Type, Filter?>>(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_FILTERS))),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_POS)),
+                        null,
+                        mutableListOf(),
+                        action,
+                    )
+                )
             }
         }
 
@@ -107,12 +104,17 @@ class RuleBodyFragment : Fragment() {
             if (action == "confirm" && index >= 0) {
                 groupAdapter.groupData.removeAt(index)
 
+                dbManager.open()
+                dbManager.deleteGroup(index.toLong())
+                dbManager.close()
+
                 for (i in index until groupAdapter.groupData.size) {
                     groupData[i].position = i
                 }
 
                 groupAdapter.notifyItemRemoved(index)
                 groupAdapter.notifyItemRangeChanged(index, groupAdapter.groupData.size - index)
+
 
                 Toast.makeText(requireContext(), "Rule trashed.", Toast.LENGTH_SHORT).show()
 
@@ -142,8 +144,6 @@ class RuleBodyFragment : Fragment() {
                 group.id = id
 
                 dbManager.close()
-
-                Log.d("TEST", "CREATED!")
 
                 for (index in 0..<groupData.size) {
                     groupData[index].position = index
