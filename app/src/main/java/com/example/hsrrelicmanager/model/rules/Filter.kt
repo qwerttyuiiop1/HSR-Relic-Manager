@@ -37,7 +37,8 @@ sealed class Filter {
     ): Filter() {
         override val filterType: Type = Type.SET
         override val name: String = "Relic Set"
-        override val description: String = "Filter by relic set"
+        override val description: String
+            get() = sets.joinToString(", ") { it.name.split(" ").first() }
 
         override fun accepts(relic: Relic): Boolean {
             return sets.contains(relic.set)
@@ -87,7 +88,30 @@ sealed class Filter {
 
         override fun accepts(relic: Relic): Boolean {
             //return stats.any { relic.substats.containsKey(it) }
-            TODO("Take into account weights")
+
+            if (minWeight != -1) {
+                // Get weight of each relic substat, and compare to minimum weight required
+                var totalWeight = 0
+
+                for (relicSubstat in relic.substats) {
+                    if (relicSubstat.key in stats) {
+                        totalWeight += stats[relicSubstat.key]!!
+                    }
+                }
+
+                return totalWeight >= minWeight
+            } else {
+                // Check if each stat in filter is in relic also
+                return stats.keys.all { it in relic.substats }
+
+//                for (filterSubstat in stats.keys) {
+//                    if (filterSubstat !in relic.substats) {
+//                        return false
+//                    }
+//                }
+//
+//                return true
+            }
         }
     }
 

@@ -34,10 +34,11 @@ class RuleHeaderFragment : Fragment() {
 //            blurBackground()
 //            showAddRuleDialog()
 
-            val addFilterGroupHeaderFragment  = AddFilterGroupHeaderFragment()
-            val addFilterGroupBodyFragment = AddFilterGroupBodyFragment()
-
-            (requireActivity() as MainActivity).loadFragment(addFilterGroupHeaderFragment, addFilterGroupBodyFragment)
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.header_fragment_container, AddFilterGroupHeaderFragment())
+                .replace(R.id.body_fragment_container, AddFilterGroupBodyFragment())
+                .addToBackStack(null)
+                .commit()
         }
 
         return view

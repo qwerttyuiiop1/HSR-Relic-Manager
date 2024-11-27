@@ -18,6 +18,7 @@ import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
 import com.example.hsrrelicmanager.model.rules.action.StatusAction
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
+import com.example.hsrrelicmanager.ui.db.inventory.InventoryDBManager
 
 open class MainActivity : AppCompatActivity() {
 
@@ -27,6 +28,8 @@ open class MainActivity : AppCompatActivity() {
     private var selectedFrame: View? = null
 
     lateinit var groupData: MutableList<ActionGroup>
+
+    var dbManager = InventoryDBManager(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,8 +57,16 @@ open class MainActivity : AppCompatActivity() {
         setupClickListeners()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
+        groupData = mutableListOf<ActionGroup>()
+
         // TEMP ONLY! Refactor when database has been implemented
-        createDummyGroupData()
+        dbManager.open()
+//        createDummyGroupData()
+    }
+
+    override fun onDestroy() {
+        dbManager.close()
+        super.onDestroy()
     }
 
     // navigation
@@ -122,7 +133,6 @@ open class MainActivity : AppCompatActivity() {
 
     // Only while DB has not been implemented
     private fun createDummyGroupData() {
-        groupData = mutableListOf<ActionGroup>()
         for (i in 1..3) {
             val filterGroup =
                 ActionGroup().apply {

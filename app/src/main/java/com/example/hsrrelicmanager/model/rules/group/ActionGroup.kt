@@ -1,6 +1,7 @@
 package com.example.hsrrelicmanager.model.rules.group
 
 import android.os.Parcelable
+import android.util.Log
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.rules.Filter
@@ -46,12 +47,11 @@ class ActionGroup(
                     Relic.Status.LOCK -> R.drawable.sticker_ppg_07_pom_pom_04
                     Relic.Status.TRASH -> R.drawable.sticker_ppg_12_other_01
                     Relic.Status.DEFAULT -> R.drawable.sticker_ppg_13_acheron_03
-                    else -> -1
+                    else -> 0
                 }
             }
         }
-
-        return -1
+        return 0
     }
 
     override fun toString(): String {

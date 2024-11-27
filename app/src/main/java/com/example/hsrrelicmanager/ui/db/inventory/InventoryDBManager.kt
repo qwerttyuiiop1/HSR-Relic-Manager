@@ -9,6 +9,8 @@ import android.util.Log
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicSet
 import com.example.hsrrelicmanager.model.relics.relicSets
+import com.example.hsrrelicmanager.model.rules.Filter
+import com.example.hsrrelicmanager.model.rules.action.Action
 import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 import kotlinx.serialization.json.Json
@@ -31,10 +33,15 @@ class InventoryDBManager(private val context: Context) {
     }
 
     // RULES
-    fun insertGroup(group: ActionGroup, parentId: Long? = null): Long {
+    fun insertGroup(
+        filters: MutableMap<Filter.Type, Filter>,
+        position: Int,
+        action: Action?,
+        parentId: Long? = null
+    ): Long {
         val values = ContentValues().apply {
-            put(InventoryDBHelper.RulesTable.COLUMN_POS, group.position)
-            put(InventoryDBHelper.RulesTable.COLUMN_FILTERS, Json.encodeToString(group.filters)) // json
+            put(InventoryDBHelper.RulesTable.COLUMN_POS, position)
+            put(InventoryDBHelper.RulesTable.COLUMN_FILTERS, Json.encodeToString(filters))
 
             if (parentId != null) {
                 put(InventoryDBHelper.RulesTable.COLUMN_PARENT_ID, parentId)
@@ -42,7 +49,59 @@ class InventoryDBManager(private val context: Context) {
                 putNull(InventoryDBHelper.RulesTable.COLUMN_PARENT_ID)
             }
 
-            if (group.action is EnhanceAction) {
+            if (action == null) {
+                putNull(InventoryDBHelper.RulesTable.COLUMN_ACTION)
+                putNull(InventoryDBHelper.RulesTable.COLUMN_LEVEL)
+            } else if (action is EnhanceAction) {
+                put(InventoryDBHelper.RulesTable.COLUMN_ACTION, "Enhance")
+                put(InventoryDBHelper.RulesTable.COLUMN_LEVEL, action.targetLevel)
+            } else {
+                put(InventoryDBHelper.RulesTable.COLUMN_ACTION, action.toString())
+                putNull(InventoryDBHelper.RulesTable.COLUMN_LEVEL)
+            }
+        }
+
+        val id = database.insert(InventoryDBHelper.RulesTable.TABLE_NAME, null, values)
+
+        return id
+    }
+
+    fun fetchGroups(): Cursor {
+        val columns = arrayOf(
+            InventoryDBHelper.RulesTable._ID,
+            InventoryDBHelper.RulesTable.COLUMN_POS,
+            InventoryDBHelper.RulesTable.COLUMN_FILTERS,
+            InventoryDBHelper.RulesTable.COLUMN_PARENT_ID,
+            InventoryDBHelper.RulesTable.COLUMN_ACTION,
+            InventoryDBHelper.RulesTable.COLUMN_LEVEL
+        )
+        val cursor = database.query(
+            InventoryDBHelper.RulesTable.TABLE_NAME,
+            columns,
+            null,
+            null,
+            null,
+            null,
+            InventoryDBHelper.RulesTable.COLUMN_POS
+        )
+        return cursor
+    }
+
+    fun updateGroup(group: ActionGroup): Int {
+        val values = ContentValues().apply {
+            put(InventoryDBHelper.RulesTable.COLUMN_POS, group.position)
+            put(InventoryDBHelper.RulesTable.COLUMN_FILTERS, Json.encodeToString(group.filters))
+
+            if (group.parentGroup != null) {
+                put(InventoryDBHelper.RulesTable.COLUMN_PARENT_ID, group.parentGroup!!.id)
+            } else {
+                putNull(InventoryDBHelper.RulesTable.COLUMN_PARENT_ID)
+            }
+
+            if (group.action == null) {
+                putNull(InventoryDBHelper.RulesTable.COLUMN_ACTION)
+                putNull(InventoryDBHelper.RulesTable.COLUMN_LEVEL)
+            } else if (group.action is EnhanceAction) {
                 put(InventoryDBHelper.RulesTable.COLUMN_ACTION, "Enhance")
                 put(InventoryDBHelper.RulesTable.COLUMN_LEVEL, (group.action as EnhanceAction).targetLevel)
             } else {
@@ -51,13 +110,20 @@ class InventoryDBManager(private val context: Context) {
             }
         }
 
-        val id = database.insert(InventoryDBHelper.RulesTable.TABLE_NAME, null, values)
+        return database.update(
+            InventoryDBHelper.RulesTable.TABLE_NAME,
+            values,
+            "${InventoryDBHelper.RulesTable._ID} = ?",
+            arrayOf(group.id.toString())
+        )
+    }
 
-        for (child in group.groupList) {
-            insertGroup(child, id)
-        }
-
-        return id
+    fun deleteGroup(id: Long): Int {
+        return database.delete(
+            InventoryDBHelper.RulesTable.TABLE_NAME,
+            "${InventoryDBHelper.RulesTable._ID} = ?",
+            arrayOf(id.toString())
+        )
     }
 
     // INVENTORY TABLE
