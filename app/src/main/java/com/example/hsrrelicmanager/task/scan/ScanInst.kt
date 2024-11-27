@@ -11,7 +11,6 @@ import com.example.hsrrelicmanager.core.ext.norm
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicBuilder
 import com.example.hsrrelicmanager.model.relics.relicNameToSet
-import com.google.android.datatransport.runtime.logging.Logging
 
 class ScanInst(
     val ui: ScanInventoryUIBinding
@@ -68,8 +67,12 @@ class ScanInst(
         val substatLabelsRes = (res[1] as ResList<String>).flatten()
         val substatValuesRes = (res[2] as ResList<String>).flatten()
 
-        Logging.d("<Relic!!>", textRes[0].norm)
-        bldr.set = relicNameToSet[textRes[0].norm]!!
+        var name = textRes[0].norm
+        while (relicNameToSet[name] == null) {
+            awaitTick()
+            name = ui.relicName.getText().text.norm
+        }
+        bldr.set = relicNameToSet[name]!!
         bldr.slot = textRes[1]
         val pttrn = "\\d+".toRegex()
         bldr.level = pttrn.find(textRes[2])!!.value.toInt()

@@ -159,7 +159,7 @@ class ScanInventoryUIBinding private constructor(
     }
     val container = RelicContainer(binding.gridLayout)
 
-    val relicName = UIBldr(binding.lblRelicName, ctx).textArea
+    val relicName = UIBldr(binding.lblRelicName, ctx, scale = 1.0f).textArea
     val relicType = UIBldr(binding.lblType, ctx).textArea
     val relicLevel = UIBldr(binding.lblLevel, ctx).textArea
     inner class RelicRarity(
@@ -268,6 +268,7 @@ class ScanInventoryUIBinding private constructor(
         fun isAtTop() = pxContainsScroll(scrollTop + 3)
         fun isAtBottom() = pxContainsScroll(scrollBot - 3)
         fun scrollToTop() = TaskInstance.default {
+            awaitTick()
             val scrollDist = container.rect.height() / 2
             val fastSwiper = SwipeArea(
                 container.rect, ctx, speed = 3.0f, hold = 0

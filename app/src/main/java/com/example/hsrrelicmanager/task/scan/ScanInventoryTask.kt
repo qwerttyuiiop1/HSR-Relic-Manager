@@ -50,6 +50,7 @@ class ScanInventoryTask: ResetRunner() {
 
             join(InventoryIterator(ui) {
                 TaskInstance.default {
+                    awaitTick()
                     val relic = join(ScanInst(ui))
                     // save to db
                     dbManager.insertInventory(relic)
