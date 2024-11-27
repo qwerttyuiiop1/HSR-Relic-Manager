@@ -2,6 +2,7 @@ package com.example.hsrrelicmanager.model.relics
 
 import android.os.Parcelable
 import com.example.hsrrelicmanager.R
+import com.example.hsrrelicmanager.model.substatSets
 import kotlinx.parcelize.Parcelize
 
 
@@ -37,13 +38,7 @@ data class Relic (
         get() = substatResource(mainstat)
 
     fun substatResource(s: String): Int {
-        return when (s) {
-            "ATK", "ATK%" -> R.drawable.icon_atk
-            "DEF" -> R.drawable.icon_def
-            "SPD" -> R.drawable.icon_spd
-            "CRIT Rate" -> R.drawable.icon_crit_rate
-            else -> throw IllegalArgumentException("Invalid stat")
-        }
+        return substatSets.find { it.name == s }?.image ?: R.drawable.stat_hp
     }
     fun statusResource(s: Status): Int {
         return when (s) {

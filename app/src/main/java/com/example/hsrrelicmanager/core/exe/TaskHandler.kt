@@ -61,7 +61,7 @@ class TaskHandler(private val uiCtx: UIContext) {
             return
 
         setTask(task)
-        val newTask = handler[task] ?: throw IllegalArgumentException("Task not found")
+        val newTask = handler[task] ?: throw IllegalArgumentException("Task not found: $task")
 
         if (task == Task.NONE) {
             // pass
