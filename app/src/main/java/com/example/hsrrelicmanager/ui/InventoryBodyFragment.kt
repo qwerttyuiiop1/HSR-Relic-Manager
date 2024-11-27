@@ -139,6 +139,27 @@ class InventoryBodyFragment : Fragment() {
 
         cursor.close()
 
+//        dbManager.updateSubstatValues(5,
+//            mapOf(
+//                "ATK" to "3.0",
+//                "SPD" to "11.0",
+//                "DEF" to "1.2",
+//                "CRIT Rate" to "0.8"
+//            )
+//        )
+
+        // TEST: fetching from DB
+//        for (relic in dbRelics) {
+//            val found_id = dbManager.findRelicId(relic)
+//            Log.d("InventoryBodyFragment", "Found id $found_id for relic $relic")
+//
+//            if (relic.id == found_id) {
+//                Log.d("InventoryBodyFragment", "id matches with relic id!")
+//            } else {
+//                throw IllegalStateException("found_id $found_id does not match relic id ${relic.id}")
+//            }
+//        }
+
         // APPLY RULES OR SOMETHING
         dbRelics.forEach { prevRelic ->
             relicData.add(

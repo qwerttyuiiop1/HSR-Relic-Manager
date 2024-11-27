@@ -21,25 +21,41 @@ class ActionGroup(
     var groupList: MutableList<ActionGroup> = mutableListOf(),
     var action: @RawValue Action? = null
 ) : Parcelable {
+    fun checkActionToPerform(relic: Relic): Action? {
+        for (filter in filters.values) {
+            if (filter != null && !filter.accepts(relic)) {
+                Log.d("ActionGroup", "Relic $relic not accepted by filter ${filter.description}")
+                return null
+            }
+        }
+
+        for (child in groupList) {
+            val childAction = child.checkActionToPerform(relic)
+            if (childAction != null) {
+                return childAction
+            }
+        }
+
+        return action
+    }
+
     fun addGroup(child: ActionGroup) {
         child.parentGroup = this
         groupList.add(child)
     }
 
     fun getViewName() : String {
-        if (!groupList.isEmpty()) {
-            return "Filter Group"
-        } else if (action != null) {
+        if (action != null) {
             return action.toString()
+        } else if (filters.isNotEmpty()) {
+            return "Filter Group"
         }
 
         return "None"
     }
 
     fun getImageResource() : Int {
-        if (!groupList.isEmpty()) {
-            return R.drawable.sticker_ppg_11_other_01
-        } else if (action != null) {
+        if (action != null) {
             if (action is EnhanceAction) {
                 return R.drawable.sticker_ppg_09_topaz_and_numby_03
             } else if (action is StatusAction) {
@@ -50,6 +66,8 @@ class ActionGroup(
                     else -> 0
                 }
             }
+        } else if (filters.isNotEmpty()) {
+            return R.drawable.sticker_ppg_11_other_01
         }
         return 0
     }
