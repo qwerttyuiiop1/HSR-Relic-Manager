@@ -27,19 +27,17 @@ class ActionGroup(
     }
 
     fun getViewName() : String {
-        if (!groupList.isEmpty()) {
-            return "Filter Group"
-        } else if (action != null) {
+        if (action != null) {
             return action.toString()
+        } else if (filters.isNotEmpty()) {
+            return "Filter Group"
         }
 
         return "None"
     }
 
     fun getImageResource() : Int {
-        if (!groupList.isEmpty()) {
-            return R.drawable.sticker_ppg_11_other_01
-        } else if (action != null) {
+        if (action != null) {
             if (action is EnhanceAction) {
                 return R.drawable.sticker_ppg_09_topaz_and_numby_03
             } else if (action is StatusAction) {
@@ -50,6 +48,8 @@ class ActionGroup(
                     else -> 0
                 }
             }
+        } else if (filters.isNotEmpty()) {
+            return R.drawable.sticker_ppg_11_other_01
         }
         return 0
     }

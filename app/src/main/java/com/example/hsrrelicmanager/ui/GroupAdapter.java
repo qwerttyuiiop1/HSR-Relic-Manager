@@ -85,23 +85,6 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
                     binding.rowValue.setText(filter.getDescription());
                     filterContainer.addView(binding.getRoot());
                 }
-//                switch (group.getViewName().replaceAll(" .*", "")) {
-//                    case "Filter":
-//                        groupIcon.setImageResource(R.drawable.filter_group);
-//                        break;
-//                    case "Lock":
-//                        groupIcon.setImageResource(R.drawable.lock);
-//                        break;
-//                    case "Reset":
-//                        groupIcon.setImageResource(R.drawable.reset);
-//                        break;
-//                    case "Enhance":
-//                        groupIcon.setImageResource(R.drawable.enhance);
-//                        break;
-//                    case "Trash":
-//                        groupIcon.setImageResource(R.drawable.trash);
-//                        break;
-//                }
             }
         }
 

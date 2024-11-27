@@ -342,8 +342,6 @@ class AddFilterGroupBodyFragment : Fragment() {
             filter.filterType?.let { filterMap.put(it, filter) }
         }
 
-        Log.d("TEST", filterMap.toString())
-
         // Default Action
         var action: Action? = null
         if (actionItem[0] != "") {
