@@ -14,10 +14,8 @@ import com.example.hsrrelicmanager.model.rules.action.Action
 import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
 import com.example.hsrrelicmanager.model.rules.action.StatusAction
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
-import com.example.hsrrelicmanager.task.HSRAutoClickService
 import com.example.hsrrelicmanager.ui.db.inventory.DBManager
 import kotlinx.coroutines.delay
-import kotlin.math.floor
 
 class OrganizeInventoryTask: ResetRunner() {
     inner class OrganizeInst: Instance<String>() {
