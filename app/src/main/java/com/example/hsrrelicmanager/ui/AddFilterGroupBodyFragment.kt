@@ -19,8 +19,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.model.FilterItem
 import com.example.hsrrelicmanager.databinding.FragmentFilterGroupBodyBinding
+import com.example.hsrrelicmanager.model.FilterItem
 import com.example.hsrrelicmanager.model.Mainstat
 import com.example.hsrrelicmanager.model.Slot
 import com.example.hsrrelicmanager.model.Status
@@ -32,8 +32,8 @@ import com.example.hsrrelicmanager.model.rules.action.Action
 import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
 import com.example.hsrrelicmanager.model.rules.action.StatusAction
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.util.Collections
 
 class AddFilterGroupBodyFragment : Fragment() {
@@ -97,7 +97,7 @@ class AddFilterGroupBodyFragment : Fragment() {
             recyclerViewActionItem.adapter = adapterAction
 
             // Initialize Group Adapter
-            adapterGroup = GroupAdapter(actionGroups)
+            adapterGroup = GroupAdapter(actionGroups, this@AddFilterGroupBodyFragment)
             recyclerViewActionGroup.layoutManager = LinearLayoutManager(context)
             recyclerViewActionGroup.adapter = adapterGroup
 

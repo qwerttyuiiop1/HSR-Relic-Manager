@@ -36,7 +36,7 @@ class RuleBodyFragment : Fragment() {
 
         // Dummy group data
         val groupData = (activity as MainActivity).groupData
-        val groupAdapter = GroupAdapter(groupData)
+        val groupAdapter = GroupAdapter(groupData, this)
 
         Log.d(this::class.toString(), groupData.joinToString(",\n"))
 

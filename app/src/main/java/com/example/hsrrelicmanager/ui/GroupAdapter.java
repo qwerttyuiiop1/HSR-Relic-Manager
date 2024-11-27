@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hsrrelicmanager.R;
@@ -19,9 +20,10 @@ import java.util.List;
 
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> {
     private List<ActionGroup> groupData;
-
-    public GroupAdapter(List<ActionGroup> groupData) {
+    private Fragment ruleBodyFragment;
+    public GroupAdapter(List<ActionGroup> groupData, Fragment ruleBodyFragment) {
         this.groupData = groupData;
+        this.ruleBodyFragment = ruleBodyFragment;
     }
 
     @NonNull
@@ -29,7 +31,6 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
     public GroupAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.action_group_layout, parent, false);
-
         return new GroupAdapter.ViewHolder(view);
     }
 
@@ -58,6 +59,8 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         private ViewGroup filterContainer;
         private LinearLayout card;
         private ImageView ivTrash;
+        private View root;
+        private int pos = 0;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -68,6 +71,14 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             filterContainer = itemView.findViewById(R.id.filter_container);
             card = itemView.findViewById(R.id.group_card);
             ivTrash = itemView.findViewById(R.id.trash_icon);
+            itemView.getRootView().setOnClickListener(v -> {
+                ruleBodyFragment.getParentFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.header_fragment_container, new AddFilterGroupHeaderFragment())
+                        .replace(R.id.body_fragment_container, new AddFilterGroupBodyFragment())
+                        .addToBackStack(null)
+                        .commit();
+            });
         }
 
         public void bind(ActionGroup group) {
@@ -89,6 +100,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         }
 
         public void updatePosition(int position) {
+            this.pos = position;
             tvPosition.setText(Integer.toString(position + 1));
         }
     }
