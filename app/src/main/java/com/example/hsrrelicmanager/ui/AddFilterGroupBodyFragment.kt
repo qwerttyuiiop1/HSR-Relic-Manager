@@ -538,6 +538,7 @@ class AddFilterGroupBodyFragment : Fragment() {
 
             val resultBundle = Bundle().apply {
                 putParcelable("group", group)
+                putBoolean("isChild", creatingChild)
             }
 
             parentFragmentManager.setFragmentResult("new_group", resultBundle)
