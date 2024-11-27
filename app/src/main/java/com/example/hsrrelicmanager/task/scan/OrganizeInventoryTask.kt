@@ -7,8 +7,17 @@ import com.example.hsrrelicmanager.core.exe.MyResult
 import com.example.hsrrelicmanager.core.exe.ResetRunner
 import com.example.hsrrelicmanager.core.exe.TaskInstance
 import com.example.hsrrelicmanager.core.exe.default
+import com.example.hsrrelicmanager.model.relics.Relic
+import com.example.hsrrelicmanager.model.relics.RelicBuilder
+import com.example.hsrrelicmanager.model.rules.Filter
+import com.example.hsrrelicmanager.model.rules.action.Action
+import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
+import com.example.hsrrelicmanager.model.rules.action.StatusAction
+import com.example.hsrrelicmanager.model.rules.group.ActionGroup
+import com.example.hsrrelicmanager.task.HSRAutoClickService
 import com.example.hsrrelicmanager.ui.db.inventory.DBManager
 import kotlinx.coroutines.delay
+import kotlin.math.floor
 
 class OrganizeInventoryTask: ResetRunner() {
     inner class OrganizeInst: Instance<String>() {
@@ -57,14 +66,104 @@ class OrganizeInventoryTask: ResetRunner() {
             val dbManager = DBManager(uiCtx.ctx).open()
             join(InventoryIterator(ui) {
                 TaskInstance.default {
-                    var relic = join(ScanInst(ui))
-                    // TODO: predict action
-                    val action = "ENHANCE-3"
-                    performAction(action)
-                    delay(3000)
-                    awaitTick()
-                    relic = join(ScanInst(ui))
-                    dbManager.insertInventory(relic)
+                    fun toActionString(action: Action): String {
+                        if (action is EnhanceAction) {
+                            return "ENHANCE-" + action.targetLevel.toString()
+                        }
+
+                        // action is StatusAction
+                        return (action as StatusAction).targetStatus.name
+                    }
+                    fun applyToRelic(action: Action, bldr: RelicBuilder) {
+                        if (action is EnhanceAction) {
+                            bldr.level = action.targetLevel
+                        } else {
+                            val newStatus = mutableListOf<Relic.Status>()
+
+                            if (Relic.Status.EQUIPPED in bldr.status) {
+                                newStatus.add(Relic.Status.EQUIPPED)
+                            }
+                            newStatus.add((action as StatusAction).targetStatus)
+
+                            bldr.status = newStatus
+                        }
+                    }
+
+                    val relic = join(ScanInst(ui))
+                    val new_relic_builder = RelicBuilder(relic, true)
+                    val dbManager = DBManager(uiCtx.ctx).open()
+
+                    // 1. Find relic id to check if manual statuses need to be applied
+                    // If there are, apply them and skip 2
+                    val relic_id = dbManager.findRelicId(relic)
+                    var applyManual = false
+                    if (relic_id != -1L) {
+                        val statuses = dbManager.fetchStatusForRelic(relic_id)
+
+                        if (statuses.isNotEmpty()) {
+                            applyManual = true
+                            for (status in statuses) {
+                                val targetLevel: Int = ((relic.level / 3 + 1) * 3).coerceAtMost(relic.rarity * 3)
+                                val action: Action? = when (status) {
+                                    Relic.Status.UPGRADE -> EnhanceAction(targetLevel)
+                                    Relic.Status.EQUIPPED -> null
+                                    else -> StatusAction(status)
+                                }
+
+                                if (action != null) {
+                                    performAction(toActionString(action))
+                                    applyToRelic(action, new_relic_builder)
+                                }
+                            }
+
+                            dbManager.deleteStatus(relic_id, statuses.map { it.name })
+                        }
+                    }
+
+                    // 2. No manual statuses to apply: proceed as normal,
+                    // Get all rules and apply one by one
+                    if (!applyManual) {
+                        // TODO: FETCH ALL GROUPS AND ITERATE
+                        // val cursor = dbManager.fetchGroups()
+                        // cursor.close()
+
+                        // HARDCODED ACTION GROUP FOR TESTING
+                        val rules = mutableListOf(
+                            ActionGroup(
+                                -1,
+                                mutableMapOf(
+                                    Filter.Type.RARITY to Filter.RarityFilter(mutableSetOf(2, 3, 4))
+                                ),
+                                0,
+                                null,
+                                mutableListOf(),
+                                StatusAction(Relic.Status.TRASH)
+                            )
+                        )
+
+                        for (rule in rules) {
+                            var action = rule.checkActionToPerform(relic)
+
+                            if (action != null) {
+                                if (action is EnhanceAction) {
+                                    action = EnhanceAction(action.targetLevel.coerceAtMost(relic.rarity * 3))
+                                }
+
+                                performAction(toActionString(action))
+                                applyToRelic(action, new_relic_builder)
+                            }
+                        }
+                    }
+
+                    // TODO: if upgraded, read new substats and update new_relic_builder
+
+                    // 3. If new relic already exists, update; otherwise, insert
+                    if (relic_id != -1L) {
+                        dbManager.updateInventory(new_relic_builder.build())
+                    } else {
+                        dbManager.insertInventory(new_relic_builder.build())
+                    }
+
                     MyResult.Success("Organize Inventory")
                 }
             })
