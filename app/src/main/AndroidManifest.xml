@@ -20,26 +20,20 @@
         android:theme="@style/Theme.HSRRelicManager"
         tools:targetApi="31">
 
-<!--        <activity-->
-<!--            android:name=".ui.bubble.PermissionLauncher"-->
-<!--            android:exported="true"-->
-<!--            android:launchMode="singleTop" />-->
-            <activity
-                android:name=".ui.MainActivity"
-                android:exported="true"
-                android:launchMode="singleTop" />
+        <activity
+            android:name=".ui.bubble.PermissionLauncher"
+            android:exported="true"
+            android:launchMode="singleTop" />
 
         <service
             android:name=".ui.bubble.HSRBubbleService"
             android:enabled="true"
             android:exported="false"
-            android:canPerformGestures="true"
             android:foregroundServiceType="specialUse"
             android:configChanges="orientation|screenSize|keyboardHidden|locale"/>
 
-        <!--            android:name=".ui.MainActivity"-->
         <activity
-            android:name=".ui.bubble.PermissionLauncher"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
