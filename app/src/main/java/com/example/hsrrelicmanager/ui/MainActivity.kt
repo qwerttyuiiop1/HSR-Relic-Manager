@@ -88,7 +88,7 @@ open class MainActivity : AppCompatActivity() {
         }
     }
 
-    public fun loadFragment(header: Fragment?, body: Fragment) {
+     fun loadFragment(header: Fragment?, body: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
         header?.let { transaction.replace(R.id.header_fragment_container, it) }
         transaction.replace(R.id.body_fragment_container, body)
