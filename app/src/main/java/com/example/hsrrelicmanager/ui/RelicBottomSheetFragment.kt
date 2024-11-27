@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,7 @@ import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.RelicBottomSheetBinding
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicBuilder
-import com.example.hsrrelicmanager.ui.db.inventory.InventoryDBManager
+import com.example.hsrrelicmanager.ui.db.inventory.DBManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class RelicBottomSheetFragment : BottomSheetDialogFragment() {
@@ -227,7 +226,7 @@ class RelicBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun updateStatusInDB(relic: Relic) {
-        lateinit var dbManager: InventoryDBManager
+        lateinit var dbManager: DBManager
 
         dbManager = (requireContext() as MainActivity).dbManager
         dbManager.open()

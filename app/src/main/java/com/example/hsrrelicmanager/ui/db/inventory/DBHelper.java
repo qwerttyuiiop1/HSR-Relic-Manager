@@ -5,33 +5,39 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
-public class InventoryDBHelper extends SQLiteOpenHelper {
+public class DBHelper extends SQLiteOpenHelper {
 
     static final int DB_VERSION = 2;
     static final String DB_NAME = "HSR_RELIC_MANAGER.DB";
 
-    // RULES TABLE
+
+    /* RULES TABLE */
+
     public static class RulesTable implements BaseColumns {
-        public static final String TABLE_NAME = "rule"; // "GROUP" is SQL keyword
-        public static final String COLUMN_POS = "pos";
-        public static final String COLUMN_FILTERS = "filters";
-        public static final String COLUMN_PARENT_ID = "parent_id";
-        public static final String COLUMN_ACTION = "action_chosen"; // "ACTION" is SQL keyword
-        public static final String COLUMN_LEVEL = "level";
+        public static final String
+                TABLE_NAME = "rule",  // "GROUP" is SQL keyword
+                COLUMN_POS = "pos",
+                COLUMN_FILTERS = "filters",
+                COLUMN_PARENT_ID = "parent_id",
+                COLUMN_ACTION = "action_chosen",  // "ACTION" is SQL keyword
+                COLUMN_LEVEL = "level";
     }
 
     public static final String CREATE_GROUP_TABLE =
             "CREATE TABLE " + RulesTable.TABLE_NAME + " (" +
                     RulesTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     RulesTable.COLUMN_POS + " INTEGER NOT NULL, " +
-                    RulesTable.COLUMN_FILTERS + " TEXT, " + // JSON stored as text
-                    RulesTable.COLUMN_PARENT_ID + " INTEGER, " + // FOREIGN KEY
+                    RulesTable.COLUMN_FILTERS + " TEXT, " +  // JSON stored as text
+                    RulesTable.COLUMN_PARENT_ID + " INTEGER, " +  // FOREIGN KEY
                     RulesTable.COLUMN_ACTION + " TEXT, " +
-                    RulesTable.COLUMN_LEVEL + " LEVEL, " +
+                    RulesTable.COLUMN_LEVEL + " INTEGER, " +
                     "FOREIGN KEY (" + RulesTable.COLUMN_PARENT_ID + ") REFERENCES " + RulesTable.TABLE_NAME + " (" + RulesTable._ID + ") " +
                     ");";
 
-    // RELIC TABLE
+
+
+    /* RELIC TABLE */
+
     public static final String
             TABLE_RELIC = "relic",
             _ID = "_id",
@@ -60,7 +66,8 @@ public class InventoryDBHelper extends SQLiteOpenHelper {
 
 
 
-    // SUBSTATS TABLE
+    /* SUBSTATS TABLE */
+
     public static final String
             TABLE_SUBSTATS = "substats",
             COLUMN_RELIC_ID = "relic_id",
@@ -77,7 +84,8 @@ public class InventoryDBHelper extends SQLiteOpenHelper {
 
 
 
-    // MANUAL STATUS TABLE
+    /* MANUAL STATUS TABLE */
+
     public static final String
             TABLE_MANUAL_STATUS = "manual_status",
 //            COLUMN_RELIC_ID = "relic_id",  // same as in SUBSTATS TABLE
@@ -92,7 +100,7 @@ public class InventoryDBHelper extends SQLiteOpenHelper {
 
 
 
-    public InventoryDBHelper(Context context) {
+    public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 

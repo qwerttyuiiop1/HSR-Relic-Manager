@@ -1,7 +1,6 @@
 package com.example.hsrrelicmanager.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.relicSets
-import com.example.hsrrelicmanager.ui.db.inventory.InventoryDBHelper
-import com.example.hsrrelicmanager.ui.db.inventory.InventoryDBManager
+import com.example.hsrrelicmanager.ui.db.inventory.DBHelper
+import com.example.hsrrelicmanager.ui.db.inventory.DBManager
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -19,7 +18,7 @@ import com.google.android.flexbox.JustifyContent
 
 
 class InventoryBodyFragment : Fragment() {
-    private lateinit var dbManager: InventoryDBManager
+    private lateinit var dbManager: DBManager
 
     val relicData = mutableListOf<Relic>()
     val dbRelics = mutableListOf<Relic>()
@@ -112,24 +111,24 @@ class InventoryBodyFragment : Fragment() {
         val cursor = dbManager.fetchRelic()
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                val relic_id = cursor.getLong(cursor.getColumnIndexOrThrow(InventoryDBHelper._ID))
+                val relic_id = cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper._ID))
 
                 val statuses = mutableListOf<Relic.Status>()
-                statuses.add(Relic.Status.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_STATUS))))
+                statuses.add(Relic.Status.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_STATUS))))
 
-                if (cursor.getInt(cursor.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_EQUIPPED)) == 1) {
+                if (cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_EQUIPPED)) == 1) {
                     statuses.add(Relic.Status.EQUIPPED)
                 }
 
                 dbRelics.add(
                     Relic(
                         relic_id,
-                        dbManager.getRelicSetByName(cursor.getString(cursor.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_SET))),
-                        cursor.getString(cursor.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_SLOT)),
-                        cursor.getInt(cursor.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_RARITY)),
-                        cursor.getInt(cursor.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_LEVEL)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_MAINSTAT)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(InventoryDBHelper.COLUMN_MAINSTAT_VAL)),
+                        dbManager.getRelicSetByName(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_SET))),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_SLOT)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_RARITY)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_LEVEL)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_MAINSTAT)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_MAINSTAT_VAL)),
                         dbManager.fetchSubstatsForRelic(relic_id),
                         statuses,
                     )
