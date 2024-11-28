@@ -1,5 +1,8 @@
 package com.example.hsrrelicmanager.model.rules
 
+import com.example.hsrrelicmanager.model.Mainstat
+import com.example.hsrrelicmanager.model.Slot
+import com.example.hsrrelicmanager.model.Substat
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicSet
 import kotlinx.serialization.SerialName
@@ -24,7 +27,7 @@ sealed class Filter {
     // RARITY: 1-5
     // LEVEL: 0-15
     // STATUS: based on Relic.Status
-    abstract val filterType: Type?
+    abstract val filterType: Type
     abstract val name: String
     abstract val description: String
 
@@ -32,7 +35,7 @@ sealed class Filter {
 
     @Serializable
     @SerialName("SET")
-    class SetFilter(
+    data class SetFilter(
         var sets: MutableSet<RelicSet> = mutableSetOf()
     ): Filter() {
         override val filterType: Type = Type.SET
@@ -47,8 +50,8 @@ sealed class Filter {
 
     @Serializable
     @SerialName("SLOT")
-    class SlotFilter(
-        var types: MutableSet<String> = mutableSetOf()
+    data class SlotFilter(
+        var types: MutableSet<Slot> = mutableSetOf()
     ): Filter() {
         override val filterType: Type = Type.SLOT
         override val name: String = "Relic Type"
@@ -62,8 +65,8 @@ sealed class Filter {
 
     @Serializable
     @SerialName("MAINSTAT")
-    class MainStatFilter(
-        var stats: MutableSet<String> = mutableSetOf()
+    data class MainStatFilter(
+        var stats: MutableSet<Mainstat> = mutableSetOf()
     ): Filter() {
         override val filterType: Type = Type.MAIN_STAT
         override val name: String = "Main Stat"
@@ -77,8 +80,8 @@ sealed class Filter {
 
     @Serializable
     @SerialName("SUBSTAT")
-    class SubStatFilter(
-        var stats: MutableMap<String, Int> = mutableMapOf(),
+    data class SubStatFilter(
+        var stats: MutableMap<Substat, Int> = mutableMapOf(),
         var minWeight: Int = -1
     ): Filter() {
         override val filterType: Type = Type.SUB_STATS
@@ -94,8 +97,8 @@ sealed class Filter {
                 var totalWeight = 0
 
                 for (relicSubstat in relic.substats) {
-                    if (relicSubstat.key in stats) {
-                        totalWeight += stats[relicSubstat.key]!!
+                    if (relicSubstat in stats) {
+                        totalWeight += stats[relicSubstat]!!
                     }
                 }
 
@@ -117,7 +120,7 @@ sealed class Filter {
 
     @Serializable
     @SerialName("RARITY")
-    class RarityFilter(
+    data class RarityFilter(
         var rarities: MutableSet<Int> = mutableSetOf()
     ): Filter() {
         override val filterType: Type = Type.RARITY
@@ -132,7 +135,7 @@ sealed class Filter {
 
     @Serializable
     @SerialName("LEVEL")
-    class LevelFilter(
+    data class LevelFilter(
         var atLeast: Int? = null,
         var atMost: Int? = null
     ): Filter() {
@@ -157,7 +160,7 @@ sealed class Filter {
 
     @Serializable
     @SerialName("STATUS")
-    class StatusFilter(
+    data class StatusFilter(
         var statuses: MutableSet<Relic.Status> = mutableSetOf()
     ): Filter() {
         override val filterType: Type = Type.STATUS

@@ -15,51 +15,49 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.model.FilterBuilder
 import com.example.hsrrelicmanager.databinding.DialogSubstatFilterBinding
 import com.example.hsrrelicmanager.databinding.ItemSubstatRowBinding
 import com.example.hsrrelicmanager.model.Substat
+import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.substatSets
 
 class SubstatboxAdapter(
     val sets: List<Substat>,
-    val selectedSubstats: MutableList<Substat>,
+    val selectedSubstats: MutableMap<Substat, Int>
 ): RecyclerView.Adapter<SubstatboxAdapter.ViewHolder>() {
+    val levels = sets.associateWith {
+        if (it in selectedSubstats) selectedSubstats[it]!! else 1
+    }.toMutableMap()
     inner class ViewHolder(val binding: ItemSubstatRowBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(set: Substat) {
             binding.apply {
-                var level = set.level
-
                 icon.setColorFilter(android.graphics.Color.parseColor("#4A4A4A"))
                 icon.setImageResource(set.image)
 
-                if (!selectedSubstats.contains(set)) {
-                    set.level = 1
-                }
-
                 checkbox.setOnCheckedChangeListener{_, isChecked ->
                     if (isChecked) {
-                        if (!selectedSubstats.contains(set)){
-                            selectedSubstats.add(set)
-                            sortSelectedSets()
-                        }
+                        selectedSubstats[set] = -1
                     } else {
                         selectedSubstats.remove(set)
                     }
                 }
 
                 subtractLevel.setOnClickListener {
+                    val level = levels[set]!!
                     if (level > 1) {
-                        level--
-                        levelNumber.text = level.toString()
-                        set.level = level
+                        levels[set] = level - 1
+                        levelNumber.text = levels[set].toString()
+                        if (set in selectedSubstats) {
+                            selectedSubstats[set] = levels[set]!!
+                        }
                     }
                 }
 
                 addLevel.setOnClickListener {
-                    level++
-                    levelNumber.text = level.toString()
-                    set.level = level
+                    levels[set] = levels[set]!! + 1
+                    if (set in selectedSubstats) {
+                        selectedSubstats[set] = levels[set]!!
+                    }
                 }
 
 
@@ -68,7 +66,7 @@ class SubstatboxAdapter(
                     checkbox.isChecked = !checkbox.isChecked
                 }
                 checkbox.isChecked = selectedSubstats.contains(set)
-                levelNumber.text = sets[sets.indexOf(set)].level.toString()
+                levelNumber.text = sets[sets.indexOf(set)].toString()
 
                 name.text = set.name
             }
@@ -84,16 +82,19 @@ class SubstatboxAdapter(
 
     override fun getItemCount() = sets.size
 
-    private fun sortSelectedSets() {
-        selectedSubstats.sortWith(compareBy { sets.indexOf(it) })
-    }
+//    private fun sortSelectedSets() {
+//        selectedSubstats.sortWith(compareBy { sets.indexOf(it) })
+//    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(sets[position])
     }
 }
 
-class AddSubstatDialog(private val items: MutableList<FilterBuilder>): DialogFragment() {
+class AddSubstatDialog(
+    private val items: Filter.SubStatFilter,
+    private val callback: AddFilterListener,
+): DialogFragment() {
 
     val binding: DialogSubstatFilterBinding by lazy {
         DialogSubstatFilterBinding.inflate(
@@ -109,12 +110,10 @@ class AddSubstatDialog(private val items: MutableList<FilterBuilder>): DialogFra
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
         var isExact = true
-        var index = items.indexOfFirst { it.title == "Substat" }
-        val selectedSubstats = if (index != -1) items[index].Substat else mutableListOf<Substat>()
-        val origWeight = if (index != -1) items[index].weightLevel else -1
-        val selectedSubstatsCopy = selectedSubstats.toMutableList()
+        val origWeight = items.minWeight
+        val selectedSubstats = items.stats.toMutableMap()
 
-        if (index != -1 && origWeight != -1) {
+        if (origWeight != -1) {
             binding.radioButtonExact.setImageResource(R.drawable.ic_radio_button_unchecked)
             binding.radioButtonWeight.setImageResource(R.drawable.ic_radio_button_checked)
             binding.weightNumber.text = origWeight.toString()
@@ -165,40 +164,14 @@ class AddSubstatDialog(private val items: MutableList<FilterBuilder>): DialogFra
 
             cancelActionGroupDialogButton.setOnClickListener {
                 adapter.selectedSubstats.clear()
-                if (index == -1){
-                    val addFilterDialog = AddFilterDialog(items)
-                    addFilterDialog.show(requireActivity().supportFragmentManager, "AddSetDialog")
-                }
-
-                requireActivity().supportFragmentManager.setFragmentResult(
-                    "substat",
-                    Bundle().apply {
-                        putParcelableArrayList("substat", ArrayList(selectedSubstatsCopy))
-                        putInt("weightLevel", origWeight)
-                    }
-                )
+                adapter.notifyDataSetChanged()
                 dismiss()
             }
 
             confirmActionGroupDialogButton.setOnClickListener {
-
-                if (adapter.selectedSubstats.isEmpty() && index != -1) {
-                    items.removeAt(index)
-                }
-
-                requireActivity().supportFragmentManager.setFragmentResult(
-                    "substat",
-                    Bundle().apply {
-                        putParcelableArrayList("substat", ArrayList(adapter.selectedSubstats))
-                        if (isExact) {
-                            putInt("weightLevel", -1)
-                        } else {
-                            putInt("weightLevel", level)
-                        }
-                    }
-                )
+                val items = Filter.SubStatFilter(adapter.selectedSubstats, if (isExact) -1 else level)
+                callback.onAddFilter(items)
                 dismiss()
-                index = items.indexOfFirst { it.title == "Substat" }
             }
 
         }

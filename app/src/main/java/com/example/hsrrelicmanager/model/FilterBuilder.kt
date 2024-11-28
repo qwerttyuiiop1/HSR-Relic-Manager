@@ -4,7 +4,7 @@ import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicSet
 import com.example.hsrrelicmanager.model.rules.Filter
 
-data class FilterBuilder(
+data class FilterBuilderToDelete(
     val title: String,
     val RelicSet: MutableList<RelicSet>,
     val Slot: MutableList<Slot>,

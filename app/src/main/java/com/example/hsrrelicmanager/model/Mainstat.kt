@@ -3,8 +3,9 @@ package com.example.hsrrelicmanager.model
 import android.os.Parcelable
 import com.example.hsrrelicmanager.R
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
-@Parcelize
+@Parcelize@Serializable
 data class Mainstat(
     val name: String,
     val image: Int

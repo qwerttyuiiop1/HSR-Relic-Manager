@@ -9,10 +9,14 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.model.FilterBuilder
 import com.example.hsrrelicmanager.databinding.DialogSelectFilterBinding
+import com.example.hsrrelicmanager.model.rules.Filter
+import com.example.hsrrelicmanager.model.rules.group.FilterMap
 
-class AddFilterDialog(private val items: MutableList<FilterBuilder>): DialogFragment() {
+class AddFilterDialog(
+    private val items: FilterMap,
+    private val listener: AddFilterListener
+): DialogFragment() {
 
     val binding: DialogSelectFilterBinding by lazy {
         DialogSelectFilterBinding.inflate(
@@ -27,47 +31,45 @@ class AddFilterDialog(private val items: MutableList<FilterBuilder>): DialogFrag
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        val relicSetIndex = items.indexOfFirst { it.title == "Relic Set" }
-        val slotIndex = items.indexOfFirst { it.title == "Slot" }
-        val mainstatIndex = items.indexOfFirst { it.title == "Mainstat" }
-        val substatIndex = items.indexOfFirst { it.title == "Substat" }
-        val rarityIndex = items.indexOfFirst { it.title == "Rarity" }
-        val levelIndex = items.indexOfFirst { it.title == "Level" }
-        val statusIndex = items.indexOfFirst { it.title == "Status" }
-
         binding.apply {
             closeDialogButton.setOnClickListener {
                 dismiss()
             }
 
-            if (relicSetIndex != -1) {
+            if (Filter.Type.SET in items) {
                 addRelicSet.isEnabled = false
                 addRelicSet.alpha = 0.5f
             } else {
                 addRelicSet.setOnClickListener {
-                    val addSetDialog = AddSetDialog(items)
+                    val filter = items[Filter.Type.SET] as Filter.SetFilter?
+                        ?: Filter.SetFilter()
+                    val addSetDialog = AddSetDialog(filter, listener)
                     addSetDialog.show(requireActivity().supportFragmentManager, "AddSetDialog")
                     dismiss()
                 }
             }
 
-            if (slotIndex != -1) {
+            if (Filter.Type.SLOT in items) {
                 addSlot.isEnabled = false
                 addSlot.alpha = 0.5f
             } else {
                 addSlot.setOnClickListener {
-                    val addSlotDialog = AddSlotDialog(items)
+                    val filter = items[Filter.Type.SLOT] as Filter.SlotFilter?
+                        ?: Filter.SlotFilter()
+                    val addSlotDialog = AddSlotDialog(filter, listener)
                     addSlotDialog.show(requireActivity().supportFragmentManager, "AddSlotDialog")
                     dismiss()
                 }
             }
 
-            if (mainstatIndex != -1) {
+            if (Filter.Type.MAIN_STAT in items) {
                 addMainStat.isEnabled = false
                 addMainStat.alpha = 0.5f
             } else {
                 addMainStat.setOnClickListener {
-                    val addMainStatDialog = AddMainstatDialog(items)
+                    val filter = items[Filter.Type.MAIN_STAT] as Filter.MainStatFilter?
+                        ?: Filter.MainStatFilter()
+                    val addMainStatDialog = AddMainstatDialog(filter, listener)
                     addMainStatDialog.show(
                         requireActivity().supportFragmentManager,
                         "AddMainstatDialog"
@@ -76,12 +78,14 @@ class AddFilterDialog(private val items: MutableList<FilterBuilder>): DialogFrag
                 }
             }
 
-            if (substatIndex != -1) {
+            if (Filter.Type.SUB_STATS in items) {
                 addSubStat.isEnabled = false
                 addSubStat.alpha = 0.5f
             } else {
                 addSubStat.setOnClickListener {
-                    val addSubStatDialog = AddSubstatDialog(items)
+                    val filter = items[Filter.Type.SUB_STATS] as Filter.SubStatFilter?
+                        ?: Filter.SubStatFilter()
+                    val addSubStatDialog = AddSubstatDialog(filter, listener)
                     addSubStatDialog.show(
                         requireActivity().supportFragmentManager,
                         "AddSubstatDialog"
@@ -90,34 +94,40 @@ class AddFilterDialog(private val items: MutableList<FilterBuilder>): DialogFrag
                 }
             }
 
-            if (rarityIndex != -1) {
+            if (Filter.Type.RARITY in items) {
                 addRarity.isEnabled = false
                 addRarity.alpha = 0.5f
             } else {
                 addRarity.setOnClickListener {
-                    val addRarityDialog = AddRarityDialog(items)
+                    val filter = items[Filter.Type.RARITY] as Filter.RarityFilter?
+                        ?: Filter.RarityFilter()
+                    val addRarityDialog = AddRarityDialog(filter, listener)
                     addRarityDialog.show(requireActivity().supportFragmentManager, "AddRarityDialog")
                     dismiss()
                 }
             }
 
-            if (levelIndex != -1) {
+            if (Filter.Type.LEVEL in items) {
                 addLevel.isEnabled = false
                 addLevel.alpha = 0.5f
             } else {
-                addLevel.setOnClickListener() {
-                    val addLevelDialog = AddLevelDialog(items);
+                addLevel.setOnClickListener {
+                    val filter = items[Filter.Type.LEVEL] as Filter.LevelFilter?
+                        ?: Filter.LevelFilter()
+                    val addLevelDialog = AddLevelDialog(filter, listener)
                     addLevelDialog.show(requireActivity().supportFragmentManager,"AddLevelDialog")
                     dismiss()
                 }
             }
 
-            if (statusIndex != -1) {
+            if (Filter.Type.STATUS in items) {
                 addStatus.isEnabled = false
                 addStatus.alpha = 0.5f
             } else {
                 addStatus.setOnClickListener {
-                    val addStatusDialog = AddStatusDialog(items)
+                    val filter = items[Filter.Type.STATUS] as Filter.StatusFilter?
+                        ?: Filter.StatusFilter()
+                    val addStatusDialog = AddStatusDialog(filter, listener)
                     addStatusDialog.show(requireActivity().supportFragmentManager, "AddStatusDialog")
                     dismiss()
                 }

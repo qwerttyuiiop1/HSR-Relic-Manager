@@ -9,10 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.model.FilterBuilder
 import com.example.hsrrelicmanager.databinding.DialogStatusFilterBinding
+import com.example.hsrrelicmanager.model.relics.Relic
+import com.example.hsrrelicmanager.model.rules.Filter
 
-class AddStatusDialog(private val items: MutableList<FilterBuilder>): DialogFragment() {
+class AddStatusDialog(
+    private val items: Filter.StatusFilter,
+    private val callback: AddFilterListener
+): DialogFragment() {
 
     val binding: DialogStatusFilterBinding by lazy {
         DialogStatusFilterBinding.inflate(
@@ -27,21 +31,14 @@ class AddStatusDialog(private val items: MutableList<FilterBuilder>): DialogFrag
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        var index = -1
-        index = items.indexOfFirst { it.title == "Status" }
-
-        if (index != -1){
-            for (item in items[index].statusList) {
-                if (item.name == "Lock") {
-                    binding.check1.isChecked = true
-                }
-                if (item.name == "Trash") {
-                    binding.check2.isChecked = true
-                }
-                if (item.name == "None") {
-                    binding.check3.isChecked = true
-                }
-            }
+        if (Relic.Status.LOCK in items.statuses) {
+            binding.check1.isChecked = true
+        }
+        if (Relic.Status.TRASH in items.statuses) {
+            binding.check2.isChecked = true
+        }
+        if (Relic.Status.DEFAULT in items.statuses) {
+            binding.check3.isChecked = true
         }
 
         binding.apply {
@@ -56,33 +53,21 @@ class AddStatusDialog(private val items: MutableList<FilterBuilder>): DialogFrag
             }
 
             cancelActionGroupDialogButton.setOnClickListener{
-                if (index == -1){
-                    val addFilterDialog = AddFilterDialog(items)
-                    addFilterDialog.show(requireActivity().supportFragmentManager, "AddFilterDialog")
-                }
+                callback.onCancel()
                 dismiss()
             }
             confirmActionGroupDialogButton.setOnClickListener{
-                val check = check1.isChecked || check2.isChecked || check3.isChecked
-
-                if (!check) {
-                    items.removeAt(index)
+                val statuses = mutableSetOf<Relic.Status>()
+                if (check1.isChecked) {
+                    statuses.add(Relic.Status.LOCK)
                 }
-
-                requireActivity().supportFragmentManager.setFragmentResult("status", Bundle().apply {
-                    if (check1.isChecked) {
-                        putString("Lock", "Lock")
-                        putInt("lockImage", R.drawable.lock)
-                    }
-                    if (check2.isChecked) {
-                        putString("Trash", "Trash")
-                        putInt("trashImage", R.drawable.trash)
-                    }
-                    if (check3.isChecked) {
-                        putString("None", "None")
-                        putInt("noneImage", R.drawable.transparent)
-                    }
-                })
+                if (check2.isChecked) {
+                    statuses.add(Relic.Status.TRASH)
+                }
+                if (check3.isChecked) {
+                    statuses.add(Relic.Status.DEFAULT)
+                }
+                callback.onAddFilter(Filter.StatusFilter(statuses))
                 dismiss()
             }
         }

@@ -9,10 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.model.FilterBuilder
 import com.example.hsrrelicmanager.databinding.DialogLevelFilterBinding
+import com.example.hsrrelicmanager.model.rules.Filter
 
-class AddLevelDialog(private val items: MutableList<FilterBuilder>): DialogFragment() {
+class AddLevelDialog(
+    private val items: Filter.LevelFilter,
+    private val callback: AddFilterListener
+): DialogFragment() {
 
     val binding: DialogLevelFilterBinding by lazy {
         DialogLevelFilterBinding.inflate(
@@ -27,39 +30,23 @@ class AddLevelDialog(private val items: MutableList<FilterBuilder>): DialogFragm
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        var leastLevel = 0
-        var mostLevel = 0
-        var isAtLeast = true
-        var isAtMost = false
-
-        var index = -1
-        index = items.indexOfFirst { it.title == "Level" }
-
-        if (index != -1){
-            val lvl = items[index].levelNum.toString()
-            val type = items[index].levelType
-            if (type) {
-                binding.radioLevelAtLeast.isChecked = true
-                binding.radioLevelAtMost.isChecked = false
-                leastLevel = lvl.toInt()
-                binding.lblNumberAtLeast.text = lvl
-            }
-            else {
-                binding.radioLevelAtLeast.isChecked = false
-                binding.radioLevelAtMost.isChecked = true
-                mostLevel = lvl.toInt()
-                binding.lblNumberAtMost.text = lvl
-            }
-        }
-        else{
+        var atLeast = 0
+        var atMost = 0
+        if (items.atLeast != null) {
             binding.radioLevelAtLeast.isChecked = true
             binding.radioLevelAtMost.isChecked = false
+            binding.lblNumberAtLeast.text = items.atLeast.toString()
+        }
+        else {
+            binding.radioLevelAtLeast.isChecked = false
+            binding.radioLevelAtMost.isChecked = true
+            binding.lblNumberAtMost.text = items.atMost.toString()
         }
 
         binding.apply {
 
-            lblNumberAtMost.text = mostLevel.toString()
-            lblNumberAtLeast.text = leastLevel.toString()
+            lblNumberAtMost.text = atMost.toString()
+            lblNumberAtLeast.text = atLeast.toString()
 
             val setRadioAtLeast = {
                 radioLevelAtLeast.isChecked = true
@@ -85,49 +72,40 @@ class AddLevelDialog(private val items: MutableList<FilterBuilder>): DialogFragm
             }
 
             btnPlusAtMost.setOnClickListener{
-                if (mostLevel < 15) {
-                    mostLevel += 3
-                    lblNumberAtMost.text = mostLevel.toString()
+                if (atMost < 15) {
+                    atMost += 3
+                    lblNumberAtMost.text = atMost.toString()
                 }
             }
             btnMinusAtMost.setOnClickListener{
-                if(mostLevel > 0){
-                    mostLevel -= 3
-                    lblNumberAtMost.text = mostLevel.toString()
+                if(atLeast > 0){
+                    atLeast -= 3
+                    lblNumberAtMost.text = atLeast.toString()
                 }
             }
             btnPlusAtLeast.setOnClickListener{
-                if (leastLevel < 15) {
-                    leastLevel += 3
-                    lblNumberAtLeast.text = leastLevel.toString()
+                if (atLeast < 15) {
+                    atLeast += 3
+                    lblNumberAtLeast.text = atLeast.toString()
                 }
             }
             btnMinusAtLeast.setOnClickListener{
-                if(leastLevel > 0){
-                    leastLevel-=3
-                    lblNumberAtLeast.text = leastLevel.toString()
+                if(atLeast > 0){
+                    atLeast-=3
+                    lblNumberAtLeast.text = atLeast.toString()
                 }
             }
 
             cancelActionGroupDialogButton.setOnClickListener{
-                if (index == -1){
-                    val addFilterDialog = AddFilterDialog(items)
-                    addFilterDialog.show(requireActivity().supportFragmentManager, "AddFilterDialog")
-                }
+                callback.onCancel()
                 dismiss()
             }
             confirmActionGroupDialogButton.setOnClickListener{
-                requireActivity().supportFragmentManager.setFragmentResult("level", Bundle().apply {
-                    isAtLeast = radioLevelAtLeast.isChecked
-
-                    if (isAtLeast) {
-                        putInt("level", leastLevel)
-                    }
-                    else{
-                        putInt("level", mostLevel)
-                    }
-                    putBoolean("isAtLeast", isAtLeast)
-                })
+                val isAtLeast = radioLevelAtLeast.isChecked
+                val least = if (isAtLeast) atLeast else null
+                val most = if (!isAtLeast) atMost else null
+                val items = Filter.LevelFilter(least, most)
+                callback.onAddFilter(items)
                 dismiss()
             }
         }

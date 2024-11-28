@@ -3,7 +3,9 @@ package com.example.hsrrelicmanager.model
 import android.os.Parcelable
 import com.example.hsrrelicmanager.R
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
+@Serializable
 @Parcelize
 data class Slot(
     val name: String,

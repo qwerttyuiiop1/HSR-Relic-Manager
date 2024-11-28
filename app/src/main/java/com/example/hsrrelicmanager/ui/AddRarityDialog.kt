@@ -9,10 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.model.FilterBuilder
 import com.example.hsrrelicmanager.databinding.DialogRarityFilterBinding
+import com.example.hsrrelicmanager.model.rules.Filter
 
-class AddRarityDialog(private val items: MutableList<FilterBuilder>): DialogFragment() {
+class AddRarityDialog(
+    private val items: Filter.RarityFilter,
+    private val callback: AddFilterListener
+): DialogFragment() {
 
     val binding: DialogRarityFilterBinding by lazy {
         DialogRarityFilterBinding.inflate(
@@ -27,27 +30,16 @@ class AddRarityDialog(private val items: MutableList<FilterBuilder>): DialogFrag
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        var index = -1
-        index = items.indexOfFirst { it.title == "Rarity" }
-
-        if (index != -1){
-            for (item in items[index].rarityList) {
-                if (item == 1) {
-                    binding.check1.isChecked = true
-                }
-                if (item == 2) {
-                    binding.check2.isChecked = true
-                }
-                if (item == 3) {
-                    binding.check3.isChecked = true
-                }
-                if (item == 4) {
-                    binding.check4.isChecked = true
-                }
-                if (item == 5) {
-                    binding.check5.isChecked = true
-                }
-            }
+        val rarity = items.rarities.toMutableSet()
+        val checks = arrayOf(
+            binding.check1,
+            binding.check2,
+            binding.check3,
+            binding.check4,
+            binding.check5
+        )
+        for (i in 0..4) {
+            checks[i].isChecked = i + 1 in rarity
         }
 
         binding.apply {
@@ -67,51 +59,17 @@ class AddRarityDialog(private val items: MutableList<FilterBuilder>): DialogFrag
                 check5.isChecked = !check5.isChecked
             }
             cancelActionGroupDialogButton.setOnClickListener{
-                if (index == -1){
-                    val addFilterDialog = AddFilterDialog(items)
-                    addFilterDialog.show(requireActivity().supportFragmentManager, "AddFilterDialog")
-                }
+                callback.onCancel()
                 dismiss()
             }
             confirmActionGroupDialogButton.setOnClickListener{
-                val check = check1.isChecked || check2.isChecked || check3.isChecked || check4.isChecked || check5.isChecked
-
-                if (!check){
-                    items.removeAt(index)
+                val rarities = mutableSetOf<Int>()
+                for (i in 0..4) {
+                    if (checks[i].isChecked)
+                        rarities.add(i + 1)
                 }
-
-                requireActivity().supportFragmentManager.setFragmentResult("rarity", Bundle().apply {
-                    if (check1.isChecked) {
-                        putInt("1 Star", 1)
-                    }
-                    else {
-                        putInt("1 Star", 0)
-                    }
-                    if (check2.isChecked) {
-                        putInt("2 Star", 2)
-                    }
-                    else {
-                        putInt("2 Star", 0)
-                    }
-                    if (check3.isChecked) {
-                        putInt("3 Star", 3)
-                    }
-                    else {
-                        putInt("3 Star", 0)
-                    }
-                    if (check4.isChecked) {
-                        putInt("4 Star", 4)
-                    }
-                    else {
-                        putInt("4 Star", 0)
-                    }
-                    if (check5.isChecked) {
-                        putInt("5 Star", 5)
-                    }
-                    else {
-                        putInt("5 Star", 0)
-                    }
-                })
+                val items = Filter.RarityFilter(rarities)
+                callback.onAddFilter(items)
                 dismiss()
             }
         }

@@ -10,12 +10,12 @@ import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
 import com.example.hsrrelicmanager.model.rules.action.StatusAction
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
-import java.util.EnumMap
 
+typealias FilterMap = MutableMap<Filter.Type, Filter>
 @Parcelize
 class ActionGroup(
     var id: Long = -1,
-    var filters: @RawValue MutableMap<Filter.Type, Filter?> = EnumMap(Filter.Type.entries.associateWith { null }),
+    var filters: @RawValue FilterMap = mutableMapOf(),
     var position: Int = -1,
     var parentGroup: ActionGroup? = null,
     var groupList: MutableList<ActionGroup> = mutableListOf(),
@@ -23,7 +23,7 @@ class ActionGroup(
 ) : Parcelable {
     fun checkActionToPerform(relic: Relic): Action? {
         for (filter in filters.values) {
-            if (filter != null && !filter.accepts(relic)) {
+            if (!filter.accepts(relic)) {
                 Log.d("ActionGroup", "Relic $relic not accepted by filter ${filter.description}")
                 return null
             }

@@ -15,11 +15,11 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.model.FilterBuilder
 import com.example.hsrrelicmanager.databinding.DialogSetFilterBinding
 import com.example.hsrrelicmanager.databinding.ItemRelicSetRowBinding
 import com.example.hsrrelicmanager.model.relics.RelicSet
 import com.example.hsrrelicmanager.model.relics.relicSets
+import com.example.hsrrelicmanager.model.rules.Filter
 
 class RelicCheckboxAdapter(
     val sets: List<RelicSet>,
@@ -84,7 +84,10 @@ class RelicCheckboxAdapter(
     }
 }
 
-class AddSetDialog(private val items: MutableList<FilterBuilder>) : DialogFragment() {
+class AddSetDialog(
+    private val items: Filter.SetFilter,
+    private val callback: AddFilterListener
+) : DialogFragment() {
 
     val binding: DialogSetFilterBinding by lazy {
         DialogSetFilterBinding.inflate(
@@ -99,10 +102,7 @@ class AddSetDialog(private val items: MutableList<FilterBuilder>) : DialogFragme
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        var index = -1
-        index = items.indexOfFirst { it.title == "Relic Set" }
-        val relicSetList = if (index != -1) items[index].RelicSet else mutableListOf()
-        val relicSetListCopy = relicSetList.toMutableList()
+        val relicSetList = items.sets.toMutableList()
 
         binding.apply {
             val adapter = RelicCheckboxAdapter(relicSets, relicSetList)
@@ -121,34 +121,14 @@ class AddSetDialog(private val items: MutableList<FilterBuilder>) : DialogFragme
 
             cancelActionGroupDialogButton.setOnClickListener {
                 adapter.selectedSets.clear()
-
-                if (index == -1) {
-                    val addFilterDialog = AddFilterDialog(items)
-                    addFilterDialog.show(requireActivity().supportFragmentManager, "AddSetDialog")
-                } else {
-                    requireActivity().supportFragmentManager.setFragmentResult(
-                        "selectedSets",
-                        Bundle().apply {
-                            putParcelableArrayList("selectedSets", ArrayList(relicSetListCopy))
-                        }
-                    )
-                }
+                callback.onCancel()
                 dismiss()
             }
 
             confirmActionGroupDialogButton.setOnClickListener {
-                if (adapter.selectedSets.isEmpty() && index != -1) {
-                    items.removeAt(index)
-                }
-
-                requireActivity().supportFragmentManager.setFragmentResult(
-                    "selectedSets",
-                    Bundle().apply {
-                        putParcelableArrayList("selectedSets", ArrayList(adapter.selectedSets))
-                    }
-                )
+                val items = Filter.SetFilter(adapter.selectedSets.toMutableSet())
+                callback.onAddFilter(items)
                 dismiss()
-                index = items.indexOfFirst { it.title == "Relic Set" }
             }
 
         }

@@ -15,11 +15,11 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.model.FilterBuilder
 import com.example.hsrrelicmanager.databinding.DialogMainstatFilterBinding
 import com.example.hsrrelicmanager.databinding.ItemMainstatRowBinding
 import com.example.hsrrelicmanager.model.Mainstat
 import com.example.hsrrelicmanager.model.mainstatSets
+import com.example.hsrrelicmanager.model.rules.Filter
 
 class MainstatboxAdapter(
     val sets: List<Mainstat>,
@@ -70,7 +70,10 @@ class MainstatboxAdapter(
     }
 }
 
-class AddMainstatDialog(private val items: MutableList<FilterBuilder>): DialogFragment() {
+class AddMainstatDialog(
+    private val items: Filter.MainStatFilter,
+    private val callback: AddFilterListener,
+): DialogFragment() {
 
     val binding: DialogMainstatFilterBinding by lazy {
         DialogMainstatFilterBinding.inflate(
@@ -85,9 +88,10 @@ class AddMainstatDialog(private val items: MutableList<FilterBuilder>): DialogFr
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        var index = items.indexOfFirst { it.title == "Mainstat" }
-        val selectedMainstats = if (index != -1) items[index].Mainstat else mutableListOf<Mainstat>()
-        val selectedMainstatsCopy = selectedMainstats.toMutableList()
+        val selectedMainstats = items.stats.toMutableList()
+//        var index = items.indexOfFirst { it.title == "Mainstat" }
+//        val selectedMainstats = if (index != -1) items[index].Mainstat else mutableListOf<Mainstat>()
+//        val selectedMainstatsCopy = selectedMainstats.toMutableList()
 
         binding.apply {
             val adapter = MainstatboxAdapter(mainstatSets, selectedMainstats)
@@ -106,34 +110,14 @@ class AddMainstatDialog(private val items: MutableList<FilterBuilder>): DialogFr
 
             cancelActionGroupDialogButton.setOnClickListener {
                 adapter.selectedMainstats.clear()
-                if (index == -1){
-                    val addFilterDialog = AddFilterDialog(items)
-                    addFilterDialog.show(requireActivity().supportFragmentManager, "AddSetDialog")
-                }
-
-                requireActivity().supportFragmentManager.setFragmentResult(
-                    "mainstat",
-                    Bundle().apply {
-                        putParcelableArrayList("mainstat", ArrayList(selectedMainstatsCopy))
-                    }
-                )
+                callback.onCancel()
                 dismiss()
             }
 
             confirmActionGroupDialogButton.setOnClickListener {
-
-                if (adapter.selectedMainstats.isEmpty() && index != -1) {
-                    items.removeAt(index)
-                }
-
-                requireActivity().supportFragmentManager.setFragmentResult(
-                    "mainstat",
-                    Bundle().apply {
-                        putParcelableArrayList("mainstat", ArrayList(adapter.selectedMainstats))
-                    }
-                )
+                val items = Filter.MainStatFilter(adapter.selectedMainstats.toMutableSet())
+                callback.onAddFilter(items)
                 dismiss()
-                index = items.indexOfFirst { it.title == "Mainstat" }
             }
 
         }

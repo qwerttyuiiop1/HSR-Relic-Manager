@@ -2,6 +2,9 @@ package com.example.hsrrelicmanager.model.relics
 
 import android.os.Parcelable
 import com.example.hsrrelicmanager.R
+import com.example.hsrrelicmanager.model.Mainstat
+import com.example.hsrrelicmanager.model.Slot
+import com.example.hsrrelicmanager.model.Substat
 import com.example.hsrrelicmanager.model.substatSets
 import kotlinx.parcelize.Parcelize
 
@@ -10,12 +13,12 @@ import kotlinx.parcelize.Parcelize
 data class Relic (
     val id: Long,
     val set: RelicSet,
-    val slot: String,
+    val slot: Slot,
     val rarity: Int,
     val level: Int,
-    val mainstat: String,
+    val mainstat: Mainstat,
     val mainstatVal: String,
-    val substats: Map<String, String>,
+    val substats: Set<Substat>,
     val status: List<Status>,
     val prev: Relic? = null
 ): Parcelable {
@@ -35,7 +38,7 @@ data class Relic (
         }
 
     val mainstatResource: Int
-        get() = substatResource(mainstat)
+        get() = substatResource(mainstat.name)
 
     fun substatResource(s: String): Int {
         return substatSets.find { it.name == s }?.image ?: R.drawable.stat_hp
@@ -56,12 +59,12 @@ data class Relic (
 class RelicBuilder(
     var id: Long = 0,
     var set: RelicSet = RelicSet("", 0, ""),
-    var slot: String = "",
+    var slot: Slot? = null,
     var rarity: Int = 0,
     var level: Int = 0,
-    var mainstat: String = "",
+    var mainstat: Mainstat? = null,
     var mainstatVal: String = "",
-    var msubstats: MutableMap<String, String> = mutableMapOf(),
+    var msubstats: MutableSet<Substat> = mutableSetOf(),
     var mstatus: MutableList<Relic.Status> = mutableListOf(),
     prev: RelicBuilder? = null,
     val isPrev: Boolean = false,
@@ -74,7 +77,7 @@ class RelicBuilder(
         r.level,
         r.mainstat,
         r.mainstatVal,
-        r.substats.toMutableMap(),
+        r.substats.toMutableSet(),
         r.status.toMutableList(),
         if (isPrev) {
             null
@@ -92,7 +95,7 @@ class RelicBuilder(
         r.level,
         r.mainstat,
         r.mainstatVal,
-        r.msubstats.toMutableMap(),
+        r.msubstats.toMutableSet(),
         r.mstatus.toMutableList(),
         if (isPrev) {
             null
@@ -115,10 +118,10 @@ class RelicBuilder(
             _prev = value
         }
 
-    var substats: Map<String, String>
+    var substats: Set<Substat>
         get() = msubstats
         set(value) {
-            msubstats = value.toMutableMap()
+            msubstats = value.toMutableSet()
         }
     var status: List<Relic.Status>
         get() = mstatus
@@ -128,6 +131,6 @@ class RelicBuilder(
 
     fun build(): Relic {
         val prev = if (isPrev) null else this.prev.build()
-        return Relic(id, set, slot, rarity, level, mainstat, mainstatVal, msubstats, mstatus, prev)
+        return Relic(id, set, slot!!, rarity, level, mainstat!!, mainstatVal, msubstats, mstatus, prev)
     }
 }

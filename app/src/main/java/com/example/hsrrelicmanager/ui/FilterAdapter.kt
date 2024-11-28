@@ -11,9 +11,14 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.model.FilterBuilder
+import com.example.hsrrelicmanager.model.rules.Filter
+import com.example.hsrrelicmanager.model.rules.group.FilterMap
 
-class FilterAdapter(private val items: MutableList<FilterBuilder>) : RecyclerView.Adapter<FilterAdapter.FilterViewHolder>() {
+class FilterAdapter(
+    private val items: FilterMap,
+    private val callback: AddFilterListener
+) : RecyclerView.Adapter<FilterAdapter.FilterViewHolder>() {
+    private val types = Filter.Type.entries.toTypedArray()
 
     class FilterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val choiceText: TextView = itemView.findViewById(R.id.item_filter_text)
@@ -28,13 +33,25 @@ class FilterAdapter(private val items: MutableList<FilterBuilder>) : RecyclerVie
     }
 
     override fun onBindViewHolder(holder: FilterViewHolder, position: Int) {
-        val filterItem = items[position]
-        val weightLevel = filterItem.weightLevel
+        var _filterItem: Filter? = null
+        var i = 0
+        for (item in types) {
+            if (item in items) {
+                if (i == position) {
+                    _filterItem = items[item]!!
+                    break
+                }
+                i++
+            }
+        }
+        val filterItem = _filterItem!!
 
-        holder.choiceText.text = filterItem.title
 
-        if (filterItem.title == "Substat") {
+        holder.choiceText.text = filterItem.name
+
+        if (filterItem is Filter.SubStatFilter) {
             holder.substatText.visibility = View.VISIBLE
+            val weightLevel = filterItem.minWeight
             if (weightLevel != -1) {
                 holder.substatText.text = "(>= ${weightLevel})"
             }
@@ -52,7 +69,7 @@ class FilterAdapter(private val items: MutableList<FilterBuilder>) : RecyclerVie
         }
     }
 
-    private fun showDialog(context: Context, filterBuilder: FilterBuilder) {
+    private fun showDialog(context: Context, filter: Filter) {
 
         if (filterBuilder.title == "Relic Set") {
             val addSetDialog = AddSetDialog(items)

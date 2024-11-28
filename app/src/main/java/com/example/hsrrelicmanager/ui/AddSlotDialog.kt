@@ -15,10 +15,10 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.model.FilterBuilder
 import com.example.hsrrelicmanager.databinding.DialogSlotFilterBinding
 import com.example.hsrrelicmanager.databinding.ItemSlotRowBinding
 import com.example.hsrrelicmanager.model.Slot
+import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.slotSets
 
 class SlotboxAdapter(
@@ -70,7 +70,10 @@ class SlotboxAdapter(
     }
 }
 
-class AddSlotDialog(private val items: MutableList<FilterBuilder>): DialogFragment() {
+class AddSlotDialog(
+    private val items: Filter.SlotFilter,
+    private val callback: AddFilterListener,
+): DialogFragment() {
 
     val binding: DialogSlotFilterBinding by lazy {
         DialogSlotFilterBinding.inflate(
@@ -85,9 +88,7 @@ class AddSlotDialog(private val items: MutableList<FilterBuilder>): DialogFragme
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        var index = items.indexOfFirst { it.title == "Slot" }
-        val selectedSlots = if (index != -1) items[index].Slot else mutableListOf<Slot>()
-        val selectedSlotsCopy = selectedSlots.toMutableList()
+        val selectedSlots = items.types.toMutableList()
 
         binding.apply {
             val adapter = SlotboxAdapter(slotSets, selectedSlots)
@@ -106,34 +107,14 @@ class AddSlotDialog(private val items: MutableList<FilterBuilder>): DialogFragme
 
             cancelActionGroupDialogButton.setOnClickListener {
                 adapter.selectedSlots.clear()
-                if (index == -1){
-                    val addFilterDialog = AddFilterDialog(items)
-                    addFilterDialog.show(requireActivity().supportFragmentManager, "AddSetDialog")
-                }
-
-                requireActivity().supportFragmentManager.setFragmentResult(
-                    "slot",
-                    Bundle().apply {
-                        putParcelableArrayList("slot", ArrayList(selectedSlotsCopy))
-                    }
-                )
+                callback.onCancel()
                 dismiss()
             }
 
             confirmActionGroupDialogButton.setOnClickListener {
-
-                if (adapter.selectedSlots.isEmpty() && index != -1) {
-                    items.removeAt(index)
-                }
-
-                requireActivity().supportFragmentManager.setFragmentResult(
-                    "slot",
-                    Bundle().apply {
-                        putParcelableArrayList("slot", ArrayList(adapter.selectedSlots))
-                    }
-                )
+                val items = Filter.SlotFilter(adapter.selectedSlots.toMutableSet())
+                callback.onAddFilter(items)
                 dismiss()
-                index = items.indexOfFirst { it.title == "Slot" }
             }
 
         }
