@@ -9,10 +9,10 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.model.FilterItem
+import com.example.hsrrelicmanager.model.FilterBuilder
 import com.example.hsrrelicmanager.databinding.DialogSelectFilterBinding
 
-class AddFilterDialog(private val items: MutableList<FilterItem>): DialogFragment() {
+class AddFilterDialog(private val items: MutableList<FilterBuilder>): DialogFragment() {
 
     val binding: DialogSelectFilterBinding by lazy {
         DialogSelectFilterBinding.inflate(

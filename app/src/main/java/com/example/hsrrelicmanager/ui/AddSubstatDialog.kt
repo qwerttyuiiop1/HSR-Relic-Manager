@@ -15,7 +15,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.model.FilterItem
+import com.example.hsrrelicmanager.model.FilterBuilder
 import com.example.hsrrelicmanager.databinding.DialogSubstatFilterBinding
 import com.example.hsrrelicmanager.databinding.ItemSubstatRowBinding
 import com.example.hsrrelicmanager.model.Substat
@@ -93,7 +93,7 @@ class SubstatboxAdapter(
     }
 }
 
-class AddSubstatDialog(private val items: MutableList<FilterItem>): DialogFragment() {
+class AddSubstatDialog(private val items: MutableList<FilterBuilder>): DialogFragment() {
 
     val binding: DialogSubstatFilterBinding by lazy {
         DialogSubstatFilterBinding.inflate(

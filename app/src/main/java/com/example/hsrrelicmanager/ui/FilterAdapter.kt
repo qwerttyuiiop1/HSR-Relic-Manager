@@ -11,9 +11,9 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.model.FilterItem
+import com.example.hsrrelicmanager.model.FilterBuilder
 
-class FilterAdapter(private val items: MutableList<FilterItem>) : RecyclerView.Adapter<FilterAdapter.FilterViewHolder>() {
+class FilterAdapter(private val items: MutableList<FilterBuilder>) : RecyclerView.Adapter<FilterAdapter.FilterViewHolder>() {
 
     class FilterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val choiceText: TextView = itemView.findViewById(R.id.item_filter_text)
@@ -52,51 +52,51 @@ class FilterAdapter(private val items: MutableList<FilterItem>) : RecyclerView.A
         }
     }
 
-    private fun showDialog(context: Context, filterItem: FilterItem) {
+    private fun showDialog(context: Context, filterBuilder: FilterBuilder) {
 
-        if (filterItem.title == "Relic Set") {
+        if (filterBuilder.title == "Relic Set") {
             val addSetDialog = AddSetDialog(items)
             val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
             fragmentManager?.let {
                 addSetDialog.show(it, "AddSetDialog")
             }
         }
-        else if (filterItem.title == "Slot") {
+        else if (filterBuilder.title == "Slot") {
             val addSlotDialog = AddSlotDialog(items)
             val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
             fragmentManager?.let {
                 addSlotDialog.show(it, "AddSlotDialog")
             }
         }
-        else if (filterItem.title == "Mainstat") {
+        else if (filterBuilder.title == "Mainstat") {
             val addMainstatDialog = AddMainstatDialog(items)
             val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
             fragmentManager?.let {
                 addMainstatDialog.show(it, "AddMainstatDialog")
             }
         }
-        else if (filterItem.title == "Substat") {
+        else if (filterBuilder.title == "Substat") {
             val addSubstatDialog = AddSubstatDialog(items)
             val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
             fragmentManager?.let {
                 addSubstatDialog.show(it, "AddSubstatDialog")
             }
         }
-        else if (filterItem.title == "Rarity") {
+        else if (filterBuilder.title == "Rarity") {
             val addRarityDialog = AddRarityDialog(items)
             val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
             fragmentManager?.let {
                 addRarityDialog.show(it, "AddRarityDialog")
             }
         }
-        else if (filterItem.title == "Level") {
+        else if (filterBuilder.title == "Level") {
             val addLevelDialog = AddLevelDialog(items)
             val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
             fragmentManager?.let {
                 addLevelDialog.show(it, "AddLevelDialog")
             }
         }
-        else if (filterItem.title == "Status") {
+        else if (filterBuilder.title == "Status") {
             val addStatusDialog = AddStatusDialog(items)
             val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
             fragmentManager?.let {

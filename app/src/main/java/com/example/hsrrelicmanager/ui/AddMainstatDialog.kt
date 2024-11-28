@@ -15,7 +15,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.model.FilterItem
+import com.example.hsrrelicmanager.model.FilterBuilder
 import com.example.hsrrelicmanager.databinding.DialogMainstatFilterBinding
 import com.example.hsrrelicmanager.databinding.ItemMainstatRowBinding
 import com.example.hsrrelicmanager.model.Mainstat
@@ -70,7 +70,7 @@ class MainstatboxAdapter(
     }
 }
 
-class AddMainstatDialog(private val items: MutableList<FilterItem>): DialogFragment() {
+class AddMainstatDialog(private val items: MutableList<FilterBuilder>): DialogFragment() {
 
     val binding: DialogMainstatFilterBinding by lazy {
         DialogMainstatFilterBinding.inflate(

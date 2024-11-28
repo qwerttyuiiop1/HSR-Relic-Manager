@@ -15,7 +15,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.model.FilterItem
+import com.example.hsrrelicmanager.model.FilterBuilder
 import com.example.hsrrelicmanager.databinding.DialogSetFilterBinding
 import com.example.hsrrelicmanager.databinding.ItemRelicSetRowBinding
 import com.example.hsrrelicmanager.model.relics.RelicSet
@@ -84,7 +84,7 @@ class RelicCheckboxAdapter(
     }
 }
 
-class AddSetDialog(private val items: MutableList<FilterItem>) : DialogFragment() {
+class AddSetDialog(private val items: MutableList<FilterBuilder>) : DialogFragment() {
 
     val binding: DialogSetFilterBinding by lazy {
         DialogSetFilterBinding.inflate(

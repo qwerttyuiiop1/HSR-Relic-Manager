@@ -8,9 +8,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.model.FilterItem
+import com.example.hsrrelicmanager.model.FilterBuilder
 
-class SubFilterAdapter(private val items: FilterItem) : RecyclerView.Adapter<SubFilterAdapter.SubFilterViewHolder>() {
+class SubFilterAdapter(private val items: FilterBuilder) : RecyclerView.Adapter<SubFilterAdapter.SubFilterViewHolder>() {
 
     class SubFilterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val filterImage: ImageView = itemView.findViewById(R.id.chosenFilterImage)

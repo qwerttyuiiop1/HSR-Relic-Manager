@@ -9,10 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.model.FilterItem
+import com.example.hsrrelicmanager.model.FilterBuilder
 import com.example.hsrrelicmanager.databinding.DialogRarityFilterBinding
 
-class AddRarityDialog(private val items: MutableList<FilterItem>): DialogFragment() {
+class AddRarityDialog(private val items: MutableList<FilterBuilder>): DialogFragment() {
 
     val binding: DialogRarityFilterBinding by lazy {
         DialogRarityFilterBinding.inflate(
