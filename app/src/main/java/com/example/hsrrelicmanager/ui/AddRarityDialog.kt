@@ -14,7 +14,7 @@ import com.example.hsrrelicmanager.model.rules.Filter
 
 class AddRarityDialog(
     private val items: Filter.RarityFilter,
-    private val callback: AddFilterListener
+    private val callback: GroupChangeListener
 ): DialogFragment() {
 
     val binding: DialogRarityFilterBinding by lazy {

@@ -8,9 +8,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.model.FilterBuilder
+import com.example.hsrrelicmanager.model.rules.Filter
 
-class SubFilterAdapter(private val items: FilterBuilder) : RecyclerView.Adapter<SubFilterAdapter.SubFilterViewHolder>() {
+class SubFilterAdapter(private val items: Filter) : RecyclerView.Adapter<SubFilterAdapter.SubFilterViewHolder>() {
 
     class SubFilterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val filterImage: ImageView = itemView.findViewById(R.id.chosenFilterImage)
@@ -25,78 +25,64 @@ class SubFilterAdapter(private val items: FilterBuilder) : RecyclerView.Adapter<
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: SubFilterViewHolder, position: Int) {
-        val title = items.title
-
-        if (title == "Relic Set") {
-            val relicSet = items.RelicSet[position]
-            holder.filterText.text = relicSet.name
-            holder.filterImage.setImageResource(relicSet.icon)
-        }
-        else if (title == "Slot"){
-            val slot = items.Slot[position]
-            holder.filterText.text = slot.name
-            holder.filterImage.setImageResource(slot.image)
-        }
-        else if (title == "Mainstat") {
-            val mainstat = items.Mainstat[position]
-            holder.filterText.text = mainstat.name
-            holder.filterImage.setImageResource(mainstat.image)
-        }
-        else if (title == "Substat") {
-            val substat = items.Substat[position]
-            holder.filterText.text = substat.name
-            holder.weightText.text = substat.level.toString()
-            holder.weightText.visibility = View.VISIBLE
-            holder.filterImage.setImageResource(substat.image)
-        }
-        else if (title == "Rarity") {
-            val rarity = items.rarityList[position]
-            holder.filterText.text = "${rarity} Star"
-            (holder.filterText.layoutParams as ViewGroup.MarginLayoutParams).marginStart = 0
-            holder.filterImage.visibility = View.GONE
-        }
-        else if (title == "Level") {
-            val level = items.levelNum
-            val type = items.levelType
-            if (type == true) {
-                holder.filterText.text = "At Least $level"
-            } else {
-                holder.filterText.text = "At Most $level"
-            }
-            (holder.filterText.layoutParams as ViewGroup.MarginLayoutParams).marginStart = 0
-            holder.filterImage.visibility = View.GONE
-        }
-        else if (title == "Status") {
-            val status = items.statusList[position]
-            holder.filterText.text = status.name
-            holder.filterImage.setImageResource(status.image)
-        }
+//        when (items) {
+//            is Filter.SetFilter -> {
+//                val relicSet = items.sets[position]
+//                holder.filterText.text = relicSet.name
+//                holder.filterImage.setImageResource(relicSet.icon)
+//            }
+//            is Filter.SlotFilter -> {
+//                val slot = items.types[position]
+//                holder.filterText.text = slot.name
+//                holder.filterImage.setImageResource(slot.image)
+//            }
+//            is Filter.MainStatFilter -> {
+//                val mainstat = items.stats[position]
+//                holder.filterText.text = mainstat.name
+//                holder.filterImage.setImageResource(mainstat.image)
+//            }
+//            is Filter.SubStatFilter -> {
+//                val substat = items.stats[position]
+//                holder.filterText.text = substat.name
+//                holder.weightText.text = substat.level.toString()
+//                holder.weightText.visibility = View.VISIBLE
+//                holder.filterImage.setImageResource(substat.image)
+//            }
+//            is Filter.RarityFilter -> {
+//                val rarity = items.rarities[position]
+//                holder.filterText.text = "${rarity} Star"
+//                (holder.filterText.layoutParams as ViewGroup.MarginLayoutParams).marginStart = 0
+//                holder.filterImage.visibility = View.GONE
+//            }
+//            is Filter.LevelFilter -> {
+//                val atLeast = items.atLeast
+//                val atMost = items.atMost
+//                if (atLeast != null) {
+//                    holder.filterText.text = "At Least $atLeast"
+//                } else {
+//                    holder.filterText.text = "At Most $atMost"
+//                }
+//                (holder.filterText.layoutParams as ViewGroup.MarginLayoutParams).marginStart = 0
+//                holder.filterImage.visibility = View.GONE
+//            }
+//            is Filter.StatusFilter -> {
+//                val status = items.statuses[position]
+//                holder.filterText.text = status.name
+//                holder.filterImage.setImageResource(status.image)
+//            }
+//        }
     }
 
     override fun getItemCount(): Int {
-        return if (items.title == "Relic Set") {
-            items.RelicSet.size
-        }
-        else if (items.title == "Slot") {
-            items.Slot.size
-        }
-        else if (items.title == "Mainstat") {
-            items.Mainstat.size
-        }
-        else if (items.title == "Status") {
-            items.statusList.size
-        }
-        else if (items.title == "Rarity") {
-            items.rarityList.size
-        }
-        else if (items.title == "Substat") {
-            items.Substat.size
-        }
-        else if (items.title == "Level") {
-            1
-        }
-        else {
-            1
+        return when (items) {
+            is Filter.SetFilter -> items.sets.size
+            is Filter.SlotFilter -> items.types.size
+            is Filter.MainStatFilter -> items.stats.size
+            is Filter.SubStatFilter -> items.stats.size
+            is Filter.RarityFilter -> items.rarities.size
+            is Filter.LevelFilter -> 1
+            is Filter.StatusFilter -> items.statuses.size
+            else -> 0
         }
     }
 }

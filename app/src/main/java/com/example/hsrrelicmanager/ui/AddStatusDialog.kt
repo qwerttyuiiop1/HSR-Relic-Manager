@@ -15,7 +15,7 @@ import com.example.hsrrelicmanager.model.rules.Filter
 
 class AddStatusDialog(
     private val items: Filter.StatusFilter,
-    private val callback: AddFilterListener
+    private val callback: GroupChangeListener
 ): DialogFragment() {
 
     val binding: DialogStatusFilterBinding by lazy {

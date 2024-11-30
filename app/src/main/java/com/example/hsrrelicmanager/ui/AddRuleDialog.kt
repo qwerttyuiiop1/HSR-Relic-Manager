@@ -11,6 +11,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.hsrrelicmanager.R
+import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 
 class AddRuleDialogFragment : DialogFragment() {
 
@@ -38,7 +39,8 @@ class AddRuleDialogFragment : DialogFragment() {
         val addActionGroupFragment: View = dialogView.findViewById(R.id.add_action_group)
         addActionGroupFragment.setOnClickListener {
             val addActionGroupHeaderFragment  = AddActionGroupHeaderFragment()
-            val addActionGroupBodyFragment = AddActionGroupBodyFragment()
+            TODO()
+            val addActionGroupBodyFragment = AddActionGroupBodyFragment(ActionGroup())
 
             (requireActivity() as MainActivity).loadFragment(addActionGroupHeaderFragment, addActionGroupBodyFragment)
             dismiss()

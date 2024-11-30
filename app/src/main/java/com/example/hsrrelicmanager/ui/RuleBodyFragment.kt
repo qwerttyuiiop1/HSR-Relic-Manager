@@ -95,6 +95,7 @@ class RuleBodyFragment : Fragment() {
         var swipedItemIndex: Int = -1
 
         // Listens for action from delete dialog
+        // TODO: refactor to use listener
         parentFragmentManager.setFragmentResultListener("delete_rule_request", viewLifecycleOwner) { _, bundle ->
             val index = bundle.getInt("index")
             val action = bundle.getString("action")
@@ -124,7 +125,7 @@ class RuleBodyFragment : Fragment() {
             swipedItemIndex = -1
         }
 
-        // Listens for new rules created
+        // TODO: refactor to use listener
         parentFragmentManager.setFragmentResultListener("new_group", viewLifecycleOwner) { _, bundle ->
             val group = bundle.getParcelable<ActionGroup>("group")
 

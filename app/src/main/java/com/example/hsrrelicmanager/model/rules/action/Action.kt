@@ -1,7 +1,8 @@
-package com.example.hsrrelicmanager.model.rules.action;
+package com.example.hsrrelicmanager.model.rules.action
 
-import com.example.hsrrelicmanager.model.relics.Relic;
+import com.example.hsrrelicmanager.model.relics.Relic
 
-public interface Action {
-    Relic apply(Relic relic);
+sealed class Action {
+    abstract val name: String
+    abstract fun apply(relic: Relic?): Relic?
 }

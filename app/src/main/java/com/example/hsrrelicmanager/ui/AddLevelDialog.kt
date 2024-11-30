@@ -14,7 +14,7 @@ import com.example.hsrrelicmanager.model.rules.Filter
 
 class AddLevelDialog(
     private val items: Filter.LevelFilter,
-    private val callback: AddFilterListener
+    private val callback: GroupChangeListener
 ): DialogFragment() {
 
     val binding: DialogLevelFilterBinding by lazy {

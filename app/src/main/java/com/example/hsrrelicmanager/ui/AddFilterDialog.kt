@@ -15,7 +15,7 @@ import com.example.hsrrelicmanager.model.rules.group.FilterMap
 
 class AddFilterDialog(
     private val items: FilterMap,
-    private val listener: AddFilterListener
+    private val listener: GroupChangeListener
 ): DialogFragment() {
 
     val binding: DialogSelectFilterBinding by lazy {

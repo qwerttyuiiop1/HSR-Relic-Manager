@@ -14,6 +14,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
 
+// TODO: update String to Action
 class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.Adapter<ActionItemAdapter.ActionViewHolder>() {
 
     private var selectedOption: String = ""

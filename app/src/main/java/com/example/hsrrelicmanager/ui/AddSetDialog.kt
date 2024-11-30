@@ -86,7 +86,7 @@ class RelicCheckboxAdapter(
 
 class AddSetDialog(
     private val items: Filter.SetFilter,
-    private val callback: AddFilterListener
+    private val callback: GroupChangeListener
 ) : DialogFragment() {
 
     val binding: DialogSetFilterBinding by lazy {

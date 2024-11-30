@@ -10,75 +10,18 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.FragmentActionGroupBodyBinding
-import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 import com.example.hsrrelicmanager.model.rules.group.FilterMap
 
-interface AddFilterListener {
-    fun onAddFilter(filter: Filter)
-    fun onCancel()
-}
 class AddActionGroupBodyFragment(
-    private val group: ActionGroup
-): Fragment(), AddFilterListener {
-    override fun onAddFilter(filter: Filter) {
-        var ret = false
-        when (filter) {
-            is Filter.SetFilter -> {
-                if (filter.sets.isEmpty()) {
-                    group.filters.remove(filter.filterType)
-                    ret = true
-                }
-            }
-            is Filter.SlotFilter -> {
-
-                if (filter.types.isEmpty()) {
-                    group.filters.remove(filter.filterType)
-                    ret = true
-                }
-            }
-            is Filter.MainStatFilter -> {
-                if (filter.stats.isEmpty()) {
-                    group.filters.remove(filter.filterType)
-                    ret = true
-                }
-            }
-            is Filter.SubStatFilter -> {
-                if (filter.stats.isEmpty()) {
-                    group.filters.remove(filter.filterType)
-                    ret = true
-                }
-            }
-            is Filter.RarityFilter -> {
-                if (filter.rarities.isEmpty()) {
-                    group.filters.remove(filter.filterType)
-                    ret = true
-                }
-            }
-            is Filter.StatusFilter -> {
-                if (filter.statuses.isEmpty()) {
-                    group.filters.remove(filter.filterType)
-                    ret = true
-                }
-                
-            }
-            is Filter.LevelFilter -> {
-            }
+    private val group: ActionGroup,
+    private val _groupChangeHandler: GroupChangeHandler = GroupChangeHandler(group)
+): Fragment(), GroupChangeListener by _groupChangeHandler {
+    init {
+        _groupChangeHandler.fragment = this
+        _groupChangeHandler.onFilterChanged = {
+            adapterFilter.notifyDataSetChanged()
         }
-        adapterFilter.notifyDataSetChanged()
-        if (ret) return
-        group.filters[filter.filterType] = filter
-    }
-
-    override fun onCancel() {
-        val dialog = AddFilterDialog(group.filters, this)
-        dialog.show(parentFragmentManager, "AddFilterDialog")
-
-        val activity = context as MainActivity
-        val bgView = activity.findViewById<View>(R.id.activity_main_layout)
-        bgView.setRenderEffect(
-            RenderEffect.createBlurEffect(20f, 20f, Shader.TileMode.CLAMP)
-        )
     }
 
     private var _binding: FragmentActionGroupBodyBinding? = null

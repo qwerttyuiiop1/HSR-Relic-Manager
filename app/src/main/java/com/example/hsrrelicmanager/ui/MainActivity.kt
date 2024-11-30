@@ -8,16 +8,18 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
-import com.example.hsrrelicmanager.task.HSRAutoClickService
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.core.AutoclickService
 import com.example.hsrrelicmanager.databinding.ActivityMainBinding
 import com.example.hsrrelicmanager.databinding.NavbarBinding
+import com.example.hsrrelicmanager.model.Slot
+import com.example.hsrrelicmanager.model.mainstatSets
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
 import com.example.hsrrelicmanager.model.rules.action.StatusAction
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
+import com.example.hsrrelicmanager.task.HSRAutoClickService
 import com.example.hsrrelicmanager.ui.db.inventory.DBManager
 
 open class MainActivity : AppCompatActivity() {
@@ -159,7 +161,7 @@ open class MainActivity : AppCompatActivity() {
                 ActionGroup().apply {
                     action = StatusAction(Relic.Status.TRASH)
                     filters[Filter.Type.SLOT] = Filter.SlotFilter(
-                        mutableSetOf("Boots")
+                        mutableSetOf(Slot.fromName("Feet")!!)
                     )
                 }
             val resetActionGroup =
@@ -173,7 +175,7 @@ open class MainActivity : AppCompatActivity() {
                 ActionGroup().apply {
                     action = EnhanceAction(15)
                     filters[Filter.Type.MAIN_STAT] = Filter.MainStatFilter(
-                        mutableSetOf("SPD")
+                        mutableSetOf(mainstatSets[0])
                     )
                 }
 

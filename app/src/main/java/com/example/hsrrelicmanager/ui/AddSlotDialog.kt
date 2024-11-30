@@ -72,7 +72,7 @@ class SlotboxAdapter(
 
 class AddSlotDialog(
     private val items: Filter.SlotFilter,
-    private val callback: AddFilterListener,
+    private val callback: GroupChangeListener,
 ): DialogFragment() {
 
     val binding: DialogSlotFilterBinding by lazy {

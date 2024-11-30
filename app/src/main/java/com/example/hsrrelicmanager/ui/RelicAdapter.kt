@@ -37,7 +37,7 @@ class RelicAdapter(
         fun bind(relic: Relic, position: Int) {
             binding.apply {
                 lblRelicName.text = relic.set.name
-                lblRelicMainStatType.text = relic.mainstat
+                lblRelicMainStatType.text = relic.mainstat.name
                 lblRelicMainStatValue.text = relic.mainstatVal
                 imgRelicMainStat.setImageResource(relic.mainstatResource)
 
@@ -117,11 +117,11 @@ class RelicAdapter(
                         containers[i].visibility = View.INVISIBLE
                 }
 
-                val entries = relic.substats.entries
+                val entries = relic.substats.toList()
                 for (i in entries.indices) {
                     val substat = entries.elementAt(i)
-                    icons[i].setImageResource(relic.substatResource(substat.key))
-                    types[i].text = substat.key
+                    icons[i].setImageResource(relic.substatResource(substat.name))
+                    types[i].text = substat.name
                     values[i].text = substat.value
                 }
 

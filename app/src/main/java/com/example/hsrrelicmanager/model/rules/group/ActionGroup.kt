@@ -21,6 +21,15 @@ data class ActionGroup(
     var groupList: MutableList<ActionGroup> = mutableListOf(),
     var action: @RawValue Action? = null
 ) : Parcelable {
+    fun copyFrom(other: ActionGroup) {
+        id = other.id
+        filters = other.filters
+        position = other.position
+        parentGroup = other.parentGroup
+        groupList = other.groupList
+        action = other.action
+    }
+
     fun checkActionToPerform(relic: Relic): Action? {
         for (filter in filters.values) {
             if (!filter.accepts(relic)) {

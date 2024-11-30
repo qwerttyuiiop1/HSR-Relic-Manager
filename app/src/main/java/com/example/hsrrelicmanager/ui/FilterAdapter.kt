@@ -15,7 +15,7 @@ import com.example.hsrrelicmanager.model.rules.group.FilterMap
 
 class FilterAdapter(
     private val items: FilterMap,
-    private val callback: AddFilterListener
+    private val callback: GroupChangeListener
 ) : RecyclerView.Adapter<FilterAdapter.FilterViewHolder>() {
     private val types = Filter.Type.entries.toTypedArray()
 

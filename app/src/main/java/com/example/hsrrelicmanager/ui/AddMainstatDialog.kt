@@ -72,7 +72,7 @@ class MainstatboxAdapter(
 
 class AddMainstatDialog(
     private val items: Filter.MainStatFilter,
-    private val callback: AddFilterListener,
+    private val callback: GroupChangeListener,
 ): DialogFragment() {
 
     val binding: DialogMainstatFilterBinding by lazy {

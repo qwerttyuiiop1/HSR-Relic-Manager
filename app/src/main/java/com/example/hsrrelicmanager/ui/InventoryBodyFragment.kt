@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
+import com.example.hsrrelicmanager.model.Mainstat
+import com.example.hsrrelicmanager.model.Slot
+import com.example.hsrrelicmanager.model.Substat
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.relicSets
 import com.example.hsrrelicmanager.ui.db.inventory.DBHelper
@@ -124,12 +127,14 @@ class InventoryBodyFragment : Fragment() {
                     Relic(
                         relic_id,
                         dbManager.getRelicSetByName(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_SET))),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_SLOT)),
+                        Slot.fromName(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_SLOT)))!!,
                         cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_RARITY)),
                         cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_LEVEL)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_MAINSTAT)),
+                        Mainstat.fromName(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_MAINSTAT)))!!,
                         cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_MAINSTAT_VAL)),
-                        dbManager.fetchSubstatsForRelic(relic_id),
+                        dbManager.fetchSubstatsForRelic(relic_id).map {
+                            Substat.fromName(it.key)!!.copy(value = it.value)
+                        }.toSet(),
                         statuses,
                     )
                 )

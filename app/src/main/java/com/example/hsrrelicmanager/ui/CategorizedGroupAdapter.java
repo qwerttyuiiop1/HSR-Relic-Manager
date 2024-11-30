@@ -42,7 +42,7 @@ public class CategorizedGroupAdapter extends RecyclerView.Adapter<RecyclerView.V
                 if (action instanceof EnhanceAction) {
                     enhanceGroups.add(new GroupItem(group));
                 } else if (action instanceof StatusAction) {
-                    switch (((StatusAction) action).getTargetStatus()) {
+                    switch (((StatusAction) action).targetStatus) {
                         case LOCK:
                             lockGroups.add(new GroupItem(group));
                             break;

@@ -93,7 +93,7 @@ class SubstatboxAdapter(
 
 class AddSubstatDialog(
     private val items: Filter.SubStatFilter,
-    private val callback: AddFilterListener,
+    private val callback: GroupChangeListener,
 ): DialogFragment() {
 
     val binding: DialogSubstatFilterBinding by lazy {
