@@ -45,11 +45,11 @@ val substatSets = listOf(
         R.drawable.stat_def
     ),
     Substat(
-        "Crit Rate",
+        "CRIT Rate",
         R.drawable.stat_critrate
     ),
     Substat(
-        "Crit DMG",
+        "CRIT DMG",
         R.drawable.stat_critdmg
     ),
     Substat(
@@ -65,7 +65,7 @@ val substatSets = listOf(
         R.drawable.stat_break
     ),
     Substat(
-        "Speed",
+        "SPD",
         R.drawable.stat_speed
     )
 )

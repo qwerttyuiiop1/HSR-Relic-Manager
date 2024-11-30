@@ -39,15 +39,15 @@ val mainstatSets = listOf(
         R.drawable.stat_def
     ),
     Mainstat(
-        "Crit Rate",
+        "CRIT Rate",
         R.drawable.stat_critrate
     ),
     Mainstat(
-        "Crit DMG",
+        "CRIT DMG",
         R.drawable.stat_critdmg
     ),
     Mainstat(
-        "Outgoing Healing",
+        "Outgoing Healing Boost",
         R.drawable.stat_outgoing_healing
     ),
     Mainstat(
@@ -55,7 +55,7 @@ val mainstatSets = listOf(
         R.drawable.stat_effecthit
     ),
     Mainstat(
-        "Speed",
+        "SPD",
         R.drawable.stat_speed
     ),
     Mainstat(
@@ -91,7 +91,7 @@ val mainstatSets = listOf(
         R.drawable.stat_break
     ),
     Mainstat(
-        "Energy Regen Rate",
+        "Energy Regeneration Rate",
         R.drawable.stat_energy
     ),
 )
