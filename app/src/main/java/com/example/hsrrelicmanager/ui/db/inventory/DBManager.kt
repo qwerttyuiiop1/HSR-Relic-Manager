@@ -13,8 +13,8 @@ import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.rules.action.Action
 import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 class DBManager(private val context: Context) {
 
@@ -37,7 +37,7 @@ class DBManager(private val context: Context) {
     /* RULES TABLE */
 
     fun insertGroup(
-        filters: MutableMap<Filter.Type, Filter?>,
+        filters: MutableMap<Filter.Type, Filter>,
         position: Int?,
         action: Action?,
         parentId: Long? = null
@@ -235,14 +235,16 @@ class DBManager(private val context: Context) {
 
         return findRelicId(
             relic.set.name,
-            relic.slot,
+            relic.slot.name,
             relic.rarity,
             relic.level,
-            relic.mainstat,
+            relic.mainstat.name,
             relic.mainstatVal,
             statusString,
             Relic.Status.EQUIPPED in relic.status,
-            relic.substats
+            relic.substats.map {
+                it.name to it.value
+            }.toMap()
         )
     }
 
@@ -502,12 +504,14 @@ class DBManager(private val context: Context) {
 
         insertInventory(
             relic.set.name,
-            relic.slot,
+            relic.slot.name,
             relic.rarity,
             relic.level,
-            relic.mainstat,
+            relic.mainstat.name,
             relic.mainstatVal,
-            relic.substats,
+            relic.substats.map {
+                it.name to it.value
+            }.toMap(),
             statusString,
             Relic.Status.EQUIPPED in relic.status
         )
@@ -529,16 +533,18 @@ class DBManager(private val context: Context) {
         updateRelic(
             relic.id,
             relic.set.name,
-            relic.slot,
+            relic.slot.name,
             relic.rarity,
             relic.level,
-            relic.mainstat,
+            relic.mainstat.name,
             relic.mainstatVal,
             statusString,
             Relic.Status.EQUIPPED in relic.status
         )
 
-        updateSubstatValues(relic.id, relic.substats)
+        updateSubstatValues(relic.id, relic.substats.map {
+            it.name to it.value
+        }.toMap())
 
         deleteStatus(relic.id, fetchStatusForRelic(relic.id).map{it.name})
         insertStatus(relic.id, relic.status.map{it.name})

@@ -4,13 +4,16 @@ import com.example.hsrrelicmanager.core.exe.Instance
 import com.example.hsrrelicmanager.core.exe.MyResult
 import com.example.hsrrelicmanager.core.exe.ResList
 import com.example.hsrrelicmanager.core.exe.TaskInstance
+import com.example.hsrrelicmanager.core.exe.default
 import com.example.hsrrelicmanager.core.exe.flatten
 import com.example.hsrrelicmanager.core.exe.instant
 import com.example.hsrrelicmanager.core.exe.multi
-import com.example.hsrrelicmanager.core.ext.norm
+import com.example.hsrrelicmanager.model.Mainstat
+import com.example.hsrrelicmanager.model.Slot
+import com.example.hsrrelicmanager.model.Substat
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicBuilder
-import com.example.hsrrelicmanager.model.relics.relicNameToSet
+import com.example.hsrrelicmanager.model.relics.RelicSet
 
 class ScanInst(
     val ui: ScanInventoryUIBinding
@@ -20,16 +23,14 @@ class ScanInst(
         awaitTick()
         val bldr = RelicBuilder(isPrev=true)
         val textFields = listOf(
-            ui.relicName,
-            ui.relicType,
             ui.relicLevel,
-            ui.mainStat,
             ui.mainStatValue,
         ).map {
             TaskInstance.instant {
                 MyResult.Success(it.getText().text)
             }
         }
+
         val substatLabels = ui.substatLabels.map {
             TaskInstance.instant {
                 MyResult.Success(it.getText().text)
@@ -57,29 +58,61 @@ class ScanInst(
             }
             MyResult.Success(Unit)
         }
+        val relicSet = TaskInstance.default {
+            var set: RelicSet?
+            do {
+                awaitTick()
+                val name = ui.relicName.getText().text
+                set = RelicSet.fromTypeName(name)
+            } while (set == null)
+            MyResult.Success(set)
+        }
+        val relicSlot = TaskInstance.default {
+            var slot: Slot?
+            do {
+                awaitTick()
+                slot = Slot.fromName(ui.relicType.getText().text)
+            } while (slot == null)
+            MyResult.Success(slot)
+        }
+        val relicMainstat = TaskInstance.default {
+            var mainstat: Mainstat?
+            do {
+                awaitTick()
+                mainstat = Mainstat.fromName(ui.mainStat.getText().text)
+            } while (mainstat == null)
+            MyResult.Success(mainstat)
+        }
         val res = join(TaskInstance.multi(
             TaskInstance.multi(textFields),
             TaskInstance.multi(substatLabels),
             TaskInstance.multi(substatValues),
             custom,
+            relicSet,
+            relicSlot,
+            relicMainstat,
         )).flatten()
         val textRes = (res[0] as ResList<String>).flatten()
         val substatLabelsRes = (res[1] as ResList<String>).flatten()
         val substatValuesRes = (res[2] as ResList<String>).flatten()
 
-        var name = textRes[0].norm
-        while (relicNameToSet[name] == null) {
-            awaitTick()
-            name = ui.relicName.getText().text.norm
-        }
-        bldr.set = relicNameToSet[name]!!
-        bldr.slot = textRes[1]
+        bldr.set = res[4] as RelicSet
+        bldr.slot = res[5] as Slot
         val pttrn = "\\d+".toRegex()
-        bldr.level = pttrn.find(textRes[2])!!.value.toInt()
-        bldr.mainstat = textRes[3]
-        bldr.mainstatVal = textRes[4]
-        for (i in 0..lastSubstat)
-            bldr.msubstats[substatLabelsRes[i]] = substatValuesRes[i]
+        bldr.level = pttrn.find(textRes[0])!!.value.toInt()
+        bldr.mainstat = res[6] as Mainstat
+        bldr.mainstatVal = textRes[1]
+        for (i in 0..lastSubstat) {
+            var name = substatLabelsRes[i]
+            var substat = Substat.fromName(name)
+            while (substat == null) {
+                awaitTick()
+                name = ui.substatLabels[i].getText().text
+                substat = Substat.fromName(name)
+            }
+            substat = substat.copy(value = substatValuesRes[i])
+            bldr.msubstats.add(substat)
+        }
         return MyResult.Success(bldr.build())
     }
 }

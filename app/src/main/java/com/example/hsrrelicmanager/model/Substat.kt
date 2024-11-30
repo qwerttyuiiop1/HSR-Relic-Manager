@@ -8,8 +8,15 @@ import kotlinx.serialization.Serializable
 @Parcelize@Serializable
 data class Substat(
     val name: String,
-    val image: Int
-): Parcelable{}
+    val image: Int,
+    var value: String = "0"
+): Parcelable {
+    companion object {
+        fun fromName(name: String): Substat? {
+            return substatSets.find { it.name == name }
+        }
+    }
+}
 
 
 val substatSets = listOf(

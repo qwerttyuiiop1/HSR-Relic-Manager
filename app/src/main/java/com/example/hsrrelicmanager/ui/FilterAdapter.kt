@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
@@ -68,62 +67,32 @@ class FilterAdapter(
             showDialog(it.context, filterItem)
         }
     }
-
     private fun showDialog(context: Context, filter: Filter) {
-
-        if (filterBuilder.title == "Relic Set") {
-            val addSetDialog = AddSetDialog(items)
-            val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
-            fragmentManager?.let {
-                addSetDialog.show(it, "AddSetDialog")
+        val mgr = (context as? androidx.fragment.app.FragmentActivity)
+            ?.supportFragmentManager ?: return
+        when (filter) {
+            is Filter.SetFilter -> {
+                AddSetDialog(filter.copy(), callback).show(mgr, "AddSetDialog")
+            }
+            is Filter.SlotFilter -> {
+                AddSlotDialog(filter.copy(), callback).show(mgr, "AddSlotDialog")
+            }
+            is Filter.MainStatFilter -> {
+                AddMainstatDialog(filter.copy(), callback).show(mgr, "AddMainstatDialog")
+            }
+            is Filter.SubStatFilter -> {
+                AddSubstatDialog(filter.copy(), callback).show(mgr, "AddSubstatDialog")
+            }
+            is Filter.RarityFilter -> {
+                AddRarityDialog(filter.copy(), callback).show(mgr, "AddRarityDialog")
+            }
+            is Filter.LevelFilter -> {
+                AddLevelDialog(filter.copy(), callback).show(mgr, "AddLevelDialog")
+            }
+            is Filter.StatusFilter -> {
+                AddStatusDialog(filter.copy(), callback).show(mgr, "AddStatusDialog")
             }
         }
-        else if (filterBuilder.title == "Slot") {
-            val addSlotDialog = AddSlotDialog(items)
-            val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
-            fragmentManager?.let {
-                addSlotDialog.show(it, "AddSlotDialog")
-            }
-        }
-        else if (filterBuilder.title == "Mainstat") {
-            val addMainstatDialog = AddMainstatDialog(items)
-            val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
-            fragmentManager?.let {
-                addMainstatDialog.show(it, "AddMainstatDialog")
-            }
-        }
-        else if (filterBuilder.title == "Substat") {
-            val addSubstatDialog = AddSubstatDialog(items)
-            val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
-            fragmentManager?.let {
-                addSubstatDialog.show(it, "AddSubstatDialog")
-            }
-        }
-        else if (filterBuilder.title == "Rarity") {
-            val addRarityDialog = AddRarityDialog(items)
-            val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
-            fragmentManager?.let {
-                addRarityDialog.show(it, "AddRarityDialog")
-            }
-        }
-        else if (filterBuilder.title == "Level") {
-            val addLevelDialog = AddLevelDialog(items)
-            val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
-            fragmentManager?.let {
-                addLevelDialog.show(it, "AddLevelDialog")
-            }
-        }
-        else if (filterBuilder.title == "Status") {
-            val addStatusDialog = AddStatusDialog(items)
-            val fragmentManager = (context as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager
-            fragmentManager?.let {
-                addStatusDialog.show(it, "AddStatusDialog")
-            }
-        }
-        else {
-            Toast.makeText(context, "Not implemented yet", Toast.LENGTH_SHORT).show()
-        }
-
 
         val activity = context as MainActivity
         val bgView = activity.findViewById<View>(R.id.activity_main_layout)

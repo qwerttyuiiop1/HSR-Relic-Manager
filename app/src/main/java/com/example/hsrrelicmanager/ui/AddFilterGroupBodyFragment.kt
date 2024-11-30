@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.FragmentFilterGroupBodyBinding
-import com.example.hsrrelicmanager.model.FilterBuilder
 import com.example.hsrrelicmanager.model.Mainstat
 import com.example.hsrrelicmanager.model.Slot
 import com.example.hsrrelicmanager.model.Status

@@ -9,7 +9,13 @@ import kotlinx.serialization.Serializable
 data class Mainstat(
     val name: String,
     val image: Int
-): Parcelable{}
+): Parcelable{
+    companion object {
+        fun fromName(s: String): Mainstat? {
+            return mainstatSets.find { it.name == s }
+        }
+    }
+}
 
 val mainstatSets = listOf(
     Mainstat(

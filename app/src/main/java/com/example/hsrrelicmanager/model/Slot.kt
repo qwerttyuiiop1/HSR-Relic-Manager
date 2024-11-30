@@ -10,7 +10,13 @@ import kotlinx.serialization.Serializable
 data class Slot(
     val name: String,
     val image: Int
-): Parcelable{}
+): Parcelable{
+    companion object {
+        fun fromName(name: String): Slot? {
+            return slotSets.find { it.name == name }
+        }
+    }
+}
 
 val slotSets = listOf(
     Slot(

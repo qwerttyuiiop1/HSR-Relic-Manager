@@ -13,7 +13,7 @@ import kotlinx.parcelize.RawValue
 
 typealias FilterMap = MutableMap<Filter.Type, Filter>
 @Parcelize
-class ActionGroup(
+data class ActionGroup(
     var id: Long = -1,
     var filters: @RawValue FilterMap = mutableMapOf(),
     var position: Int = -1,

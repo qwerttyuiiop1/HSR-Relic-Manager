@@ -20,6 +20,11 @@ data class RelicSet (
         CAVERN_RELICS,
         PLANAR_ORNAMENTS,
     }
+    companion object {
+        fun fromTypeName(s: String): RelicSet? {
+            return relicNameToSet[s.norm]
+        }
+    }
 }
 
 val relicSets = listOf(

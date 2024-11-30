@@ -26,9 +26,8 @@ import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 import com.example.hsrrelicmanager.ui.CategorizedGroupAdapter.GroupViewHolder
 import com.example.hsrrelicmanager.ui.db.inventory.DBHelper
 import com.example.hsrrelicmanager.ui.db.inventory.DBManager
-import java.util.Collections
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import java.util.Collections
 
 
 class RuleBodyFragment : Fragment() {
@@ -72,7 +71,7 @@ class RuleBodyFragment : Fragment() {
                 groupData.add(
                     ActionGroup(
                         cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper.RulesTable._ID)),
-                        Json.decodeFromString<MutableMap<Filter.Type, Filter?>>(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_FILTERS))),
+                        Json.decodeFromString<MutableMap<Filter.Type, Filter>>(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_FILTERS))),
                         cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_POS)),
                         null,
                         mutableListOf(),
