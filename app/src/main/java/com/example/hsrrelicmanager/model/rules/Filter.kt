@@ -32,6 +32,7 @@ sealed class Filter {
     abstract val description: String
 
     abstract fun accepts(relic: Relic): Boolean
+    abstract fun cloneDeep(): Filter
 
     @Serializable
     @SerialName("SET")
@@ -46,6 +47,7 @@ sealed class Filter {
         override fun accepts(relic: Relic): Boolean {
             return sets.contains(relic.set)
         }
+        override fun cloneDeep() = SetFilter(sets.toMutableSet())
     }
 
     @Serializable
@@ -61,6 +63,7 @@ sealed class Filter {
         override fun accepts(relic: Relic): Boolean {
             return types.contains(relic.slot)
         }
+        override fun cloneDeep() = SlotFilter(types.toMutableSet())
     }
 
     @Serializable
@@ -76,6 +79,7 @@ sealed class Filter {
         override fun accepts(relic: Relic): Boolean {
             return stats.any { it == relic.mainstat }
         }
+        override fun cloneDeep() = MainStatFilter(stats.toMutableSet())
     }
 
     @Serializable
@@ -116,6 +120,7 @@ sealed class Filter {
 //                return true
             }
         }
+        override fun cloneDeep() = SubStatFilter(stats.toMutableMap(), minWeight)
     }
 
     @Serializable
@@ -131,6 +136,7 @@ sealed class Filter {
         override fun accepts(relic: Relic): Boolean {
             return rarities.contains(relic.rarity)
         }
+        override fun cloneDeep() = RarityFilter(rarities.toMutableSet())
     }
 
     @Serializable
@@ -156,6 +162,7 @@ sealed class Filter {
             return (atLeast == null || relic.level >= atLeast!!) &&
                     (atMost == null || relic.level <= atMost!!)
         }
+        override fun cloneDeep() = LevelFilter(atLeast, atMost)
     }
 
     @Serializable
@@ -171,5 +178,6 @@ sealed class Filter {
         override fun accepts(relic: Relic): Boolean {
             return statuses.any { relic.status.contains(it) }
         }
+        override fun cloneDeep() = StatusFilter(statuses.toMutableSet())
     }
 }

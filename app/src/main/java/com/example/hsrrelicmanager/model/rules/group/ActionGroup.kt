@@ -29,6 +29,14 @@ data class ActionGroup(
         groupList = other.groupList
         action = other.action
     }
+    fun cloneDeep(): ActionGroup {
+        val newGroup = ActionGroup()
+        newGroup.copyFrom(this)
+        newGroup.groupList = groupList.map { it.cloneDeep() }.toMutableList()
+        newGroup.filters = filters.mapValues { it.value.cloneDeep() }.toMutableMap()
+        return newGroup
+    }
+
 
     fun checkActionToPerform(relic: Relic): Action? {
         for (filter in filters.values) {
