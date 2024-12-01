@@ -9,6 +9,7 @@ import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.rules.action.Action
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 import com.example.hsrrelicmanager.ui.MainActivity
+import kotlin.reflect.KProperty
 
 interface GroupChangeListener {
     fun onAddFilter(filter: Filter)
@@ -20,10 +21,17 @@ interface GroupChangeListener {
 }
 
 class GroupChangeHandler(
-    val group: ActionGroup,
+    var group: ActionGroup,
     var onFilterChanged: ((Filter) -> Unit)? = null
 ): GroupChangeListener {
     lateinit var fragment: Fragment
+
+    operator fun getValue(thisRef: Any?, property: KProperty<*>): ActionGroup {
+        return group
+    }
+    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: ActionGroup) {
+        this.group = value
+    }
 
     override fun onAddFilter(filter: Filter) {
         var ret = false

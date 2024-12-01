@@ -37,7 +37,7 @@ sealed class Filter {
     @Serializable
     @SerialName("SET")
     data class SetFilter(
-        var sets: MutableSet<RelicSet> = mutableSetOf()
+        var sets: Set<RelicSet> = mutableSetOf()
     ): Filter() {
         override val filterType: Type = Type.SET
         override val name: String = "Relic Set"
@@ -53,7 +53,7 @@ sealed class Filter {
     @Serializable
     @SerialName("SLOT")
     data class SlotFilter(
-        var types: MutableSet<Slot> = mutableSetOf()
+        var types: Set<Slot> = mutableSetOf()
     ): Filter() {
         override val filterType: Type = Type.SLOT
         override val name: String = "Relic Type"
@@ -69,7 +69,7 @@ sealed class Filter {
     @Serializable
     @SerialName("MAINSTAT")
     data class MainStatFilter(
-        var stats: MutableSet<Mainstat> = mutableSetOf()
+        var stats: Set<Mainstat> = mutableSetOf()
     ): Filter() {
         override val filterType: Type = Type.MAIN_STAT
         override val name: String = "Main Stat"
@@ -85,7 +85,7 @@ sealed class Filter {
     @Serializable
     @SerialName("SUBSTAT")
     data class SubStatFilter(
-        var stats: MutableMap<Substat, Int> = mutableMapOf(),
+        var stats: Map<Substat, Int> = mutableMapOf(),
         var minWeight: Int = -1
     ): Filter() {
         override val filterType: Type = Type.SUB_STATS
@@ -126,7 +126,7 @@ sealed class Filter {
     @Serializable
     @SerialName("RARITY")
     data class RarityFilter(
-        var rarities: MutableSet<Int> = mutableSetOf()
+        var rarities: Set<Int> = mutableSetOf()
     ): Filter() {
         override val filterType: Type = Type.RARITY
         override val name: String = "Rarity"
@@ -168,7 +168,7 @@ sealed class Filter {
     @Serializable
     @SerialName("STATUS")
     data class StatusFilter(
-        var statuses: MutableSet<Relic.Status> = mutableSetOf()
+        var statuses: Set<Relic.Status> = mutableSetOf()
     ): Filter() {
         override val filterType: Type = Type.STATUS
         override val name: String = "Status"

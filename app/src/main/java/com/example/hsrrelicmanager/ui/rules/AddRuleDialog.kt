@@ -40,7 +40,6 @@ class AddRuleDialogFragment : DialogFragment() {
         val addActionGroupFragment: View = dialogView.findViewById(R.id.add_action_group)
         addActionGroupFragment.setOnClickListener {
             val addActionGroupHeaderFragment  = AddActionGroupHeaderFragment()
-            TODO()
             val addActionGroupBodyFragment = AddActionGroupBodyFragment(ActionGroup())
 
             (requireActivity() as MainActivity).loadFragment(addActionGroupHeaderFragment, addActionGroupBodyFragment)

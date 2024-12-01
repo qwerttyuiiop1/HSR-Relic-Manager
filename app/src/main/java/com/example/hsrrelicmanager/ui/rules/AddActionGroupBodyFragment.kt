@@ -24,8 +24,7 @@ class AddActionGroupBodyFragment(
         actionItems[0] = action
         adapterAction.notifyDataSetChanged()
     }
-    private val group: ActionGroup
-        get() = _groupChangeHandler.group
+    private val group by _groupChangeHandler
     init {
         _groupChangeHandler.fragment = this
         _groupChangeHandler.onFilterChanged = {

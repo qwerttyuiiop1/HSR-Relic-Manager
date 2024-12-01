@@ -28,8 +28,7 @@ import java.util.Collections
 import kotlin.properties.Delegates
 
 class AddFilterGroupBodyFragment(
-    group: ActionGroup = ActionGroup(),
-    private val _groupChangeHandler: GroupChangeHandler = GroupChangeHandler(group)
+    private val _groupChangeHandler: GroupChangeHandler = GroupChangeHandler(ActionGroup())
 ) : Fragment(), GroupChangeListener by _groupChangeHandler {
     init {
         _groupChangeHandler.fragment = this
@@ -42,7 +41,7 @@ class AddFilterGroupBodyFragment(
         actionItems[0] = action
         adapterAction.notifyDataSetChanged()
     }
-    private val group get() = _groupChangeHandler.group
+    private val group by _groupChangeHandler
     private lateinit var dbManager: DBManager
 
     private var thisId by Delegates.notNull<Long>()
