@@ -47,8 +47,10 @@ class GroupAdapter(val groupData: MutableList<ActionGroup>, private val ruleBody
             itemView.rootView.setOnClickListener { v: View? ->
                 ruleBodyFragment.parentFragmentManager
                     .beginTransaction()
-                    .replace(R.id.header_fragment_container, AddFilterGroupHeaderFragment())
-                    .replace(R.id.body_fragment_container, AddFilterGroupBodyFragment())
+                    .replace(R.id.header_fragment_container, GroupHeaderFragment())
+                    .replace(R.id.body_fragment_container, GroupBodyFragment(
+                        ruleBodyFragment as GroupChangeListener,
+                    ))
                     .addToBackStack(null)
                     .commit()
             }

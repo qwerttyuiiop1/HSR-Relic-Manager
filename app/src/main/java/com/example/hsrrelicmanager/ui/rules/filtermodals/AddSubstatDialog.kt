@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.ui.rules
+package com.example.hsrrelicmanager.ui.rules.filtermodals
 
 import android.content.DialogInterface
 import android.graphics.RenderEffect
@@ -21,6 +21,7 @@ import com.example.hsrrelicmanager.model.Substat
 import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.substatSets
 import com.example.hsrrelicmanager.ui.MainActivity
+import com.example.hsrrelicmanager.ui.rules.GroupChangeListener
 
 class SubstatboxAdapter(
     val sets: List<Substat>,
@@ -172,7 +173,7 @@ class AddSubstatDialog(
 
             confirmActionGroupDialogButton.setOnClickListener {
                 val items = Filter.SubStatFilter(adapter.selectedSubstats, if (isExact) -1 else level)
-                callback.onAddFilter(items)
+                callback.onUpdateFilter(items)
                 dismiss()
             }
 

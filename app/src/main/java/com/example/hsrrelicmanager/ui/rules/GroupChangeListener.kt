@@ -12,7 +12,7 @@ import com.example.hsrrelicmanager.ui.MainActivity
 import kotlin.reflect.KProperty
 
 interface GroupChangeListener {
-    fun onAddFilter(filter: Filter)
+    fun onUpdateFilter(filter: Filter)
     fun onCancel()
     fun onChildChange(i: Int, group: ActionGroup)
     fun onChildDelete(i: Int, group: ActionGroup)
@@ -22,7 +22,6 @@ interface GroupChangeListener {
 
 class GroupChangeHandler(
     var group: ActionGroup,
-    var onFilterChanged: ((Filter) -> Unit)? = null
 ): GroupChangeListener {
     lateinit var fragment: Fragment
 
@@ -33,7 +32,7 @@ class GroupChangeHandler(
         this.group = value
     }
 
-    override fun onAddFilter(filter: Filter) {
+    override fun onUpdateFilter(filter: Filter) {
         var ret = false
         when (filter) {
             is Filter.SetFilter -> {
@@ -77,7 +76,6 @@ class GroupChangeHandler(
             is Filter.LevelFilter -> {
             }
         }
-        this.onFilterChanged?.invoke(filter)
         if (ret) return
         group.filters[filter.filterType] = filter
     }
@@ -98,14 +96,20 @@ class GroupChangeHandler(
     }
 
     override fun onChildChange(i: Int, group: ActionGroup) {
-        TODO("Not yet implemented")
+        this.group.groupList[i] = group
+        for (i in this.group.groupList.indices) {
+            this.group.groupList[i].position = i
+        }
     }
 
     override fun onChildDelete(i: Int, group: ActionGroup) {
-        TODO("Not yet implemented")
+        this.group.groupList.removeAt(i)
+        for (i in this.group.groupList.indices) {
+            this.group.groupList[i].position = i
+        }
     }
 
     override fun onChildCreate(group: ActionGroup) {
-        TODO("Not yet implemented")
+        this.group.groupList.add(group)
     }
 }

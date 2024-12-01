@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.ui.rules
+package com.example.hsrrelicmanager.ui.rules.filtermodals
 
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -12,6 +12,7 @@ import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.DialogLevelFilterBinding
 import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.ui.MainActivity
+import com.example.hsrrelicmanager.ui.rules.GroupChangeListener
 
 class AddLevelDialog(
     private val items: Filter.LevelFilter,
@@ -106,7 +107,7 @@ class AddLevelDialog(
                 val least = if (isAtLeast) atLeast else null
                 val most = if (!isAtLeast) atMost else null
                 val items = Filter.LevelFilter(least, most)
-                callback.onAddFilter(items)
+                callback.onUpdateFilter(items)
                 dismiss()
             }
         }

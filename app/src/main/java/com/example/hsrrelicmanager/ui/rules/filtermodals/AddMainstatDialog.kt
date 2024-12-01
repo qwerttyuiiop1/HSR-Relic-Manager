@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.ui.rules
+package com.example.hsrrelicmanager.ui.rules.filtermodals
 
 import android.content.DialogInterface
 import android.graphics.RenderEffect
@@ -15,61 +15,48 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.databinding.DialogSetFilterBinding
-import com.example.hsrrelicmanager.databinding.ItemRelicSetRowBinding
-import com.example.hsrrelicmanager.model.relics.RelicSet
-import com.example.hsrrelicmanager.model.relics.relicSets
+import com.example.hsrrelicmanager.databinding.DialogMainstatFilterBinding
+import com.example.hsrrelicmanager.databinding.ItemMainstatRowBinding
+import com.example.hsrrelicmanager.model.Mainstat
+import com.example.hsrrelicmanager.model.mainstatSets
 import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.ui.MainActivity
+import com.example.hsrrelicmanager.ui.rules.GroupChangeListener
 
-class RelicCheckboxAdapter(
-    val sets: List<RelicSet>,
-    selectedSets: List<RelicSet>,
-) : RecyclerView.Adapter<RelicCheckboxAdapter.ViewHolder>() {
-    val selectedSets = selectedSets.toMutableList()
-    inner class ViewHolder(val binding: ItemRelicSetRowBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(set: RelicSet) {
+class MainstatboxAdapter(
+    val sets: List<Mainstat>,
+    selectedMainstats: List<Mainstat>,
+): RecyclerView.Adapter<MainstatboxAdapter.ViewHolder>() {
+    val selectedMainstats = selectedMainstats.toMutableList()
+    inner class ViewHolder(val binding: ItemMainstatRowBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(set: Mainstat) {
             binding.apply {
-                checkbox.setOnCheckedChangeListener { _, isChecked ->
+
+                icon.setImageResource(set.image)
+
+                checkbox.setOnCheckedChangeListener{_, isChecked ->
                     if (isChecked) {
-                        if (!selectedSets.contains(set)) {
-                            selectedSets.add(set)
+                        if (!selectedMainstats.contains(set)){
+                            selectedMainstats.add(set)
                             sortSelectedSets()
                         }
                     } else {
-                        selectedSets.remove(set)
+                        selectedMainstats.remove(set)
                     }
                 }
+
                 container.setOnClickListener {
                     checkbox.isChecked = !checkbox.isChecked
                 }
-                checkbox.isChecked = selectedSets.contains(set)
+                checkbox.isChecked = selectedMainstats.contains(set)
 
-                icon.setImageResource(set.icon)
                 name.text = set.name
-                description.text = set.description
-
-                description.visibility = View.GONE
-                btnMinimize.visibility = View.GONE
-                btnMaximize.visibility = View.VISIBLE
-
-                btnMaximize.setOnClickListener {
-                    description.visibility = View.VISIBLE
-                    btnMinimize.visibility = View.VISIBLE
-                    btnMaximize.visibility = View.GONE
-                }
-                btnMinimize.setOnClickListener {
-                    description.visibility = View.GONE
-                    btnMinimize.visibility = View.GONE
-                    btnMaximize.visibility = View.VISIBLE
-                }
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemRelicSetRowBinding.inflate(
+        val binding = ItemMainstatRowBinding.inflate(
             LayoutInflater.from(parent.context)
         )
         return ViewHolder(binding)
@@ -78,7 +65,7 @@ class RelicCheckboxAdapter(
     override fun getItemCount() = sets.size
 
     private fun sortSelectedSets() {
-        selectedSets.sortWith(compareBy { sets.indexOf(it) })
+        selectedMainstats.sortWith(compareBy { sets.indexOf(it) })
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -86,13 +73,13 @@ class RelicCheckboxAdapter(
     }
 }
 
-class AddSetDialog(
-    private val items: Filter.SetFilter,
-    private val callback: GroupChangeListener
-) : DialogFragment() {
+class AddMainstatDialog(
+    private val items: Filter.MainStatFilter,
+    private val callback: GroupChangeListener,
+): DialogFragment() {
 
-    val binding: DialogSetFilterBinding by lazy {
-        DialogSetFilterBinding.inflate(
+    val binding: DialogMainstatFilterBinding by lazy {
+        DialogMainstatFilterBinding.inflate(
             layoutInflater, null, false
         )
     }
@@ -104,10 +91,13 @@ class AddSetDialog(
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        val relicSetList = items.sets.toMutableList()
+        val selectedMainstats = items.stats.toMutableList()
+//        var index = items.indexOfFirst { it.title == "Mainstat" }
+//        val selectedMainstats = if (index != -1) items[index].Mainstat else mutableListOf<Mainstat>()
+//        val selectedMainstatsCopy = selectedMainstats.toMutableList()
 
         binding.apply {
-            val adapter = RelicCheckboxAdapter(relicSets, relicSetList)
+            val adapter = MainstatboxAdapter(mainstatSets, selectedMainstats)
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -117,19 +107,19 @@ class AddSetDialog(
             )
             btnDeselectAll.text = content
             btnDeselectAll.setOnClickListener {
-                adapter.selectedSets.clear()
+                adapter.selectedMainstats.clear()
                 adapter.notifyDataSetChanged()
             }
 
             cancelActionGroupDialogButton.setOnClickListener {
-                adapter.selectedSets.clear()
+                adapter.selectedMainstats.clear()
                 callback.onCancel()
                 dismiss()
             }
 
             confirmActionGroupDialogButton.setOnClickListener {
-                val items = Filter.SetFilter(adapter.selectedSets.toMutableSet())
-                callback.onAddFilter(items)
+                val items = Filter.MainStatFilter(adapter.selectedMainstats.toMutableSet())
+                callback.onUpdateFilter(items)
                 dismiss()
             }
 

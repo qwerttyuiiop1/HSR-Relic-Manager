@@ -23,8 +23,8 @@ import com.example.hsrrelicmanager.task.HSRAutoClickService
 import com.example.hsrrelicmanager.ui.db.DBManager
 import com.example.hsrrelicmanager.ui.inventory.InventoryBodyFragment
 import com.example.hsrrelicmanager.ui.inventory.InventoryHeaderFragment
-import com.example.hsrrelicmanager.ui.rules.RuleBodyFragment
-import com.example.hsrrelicmanager.ui.rules.RuleHeaderFragment
+import com.example.hsrrelicmanager.ui.rules.main.RuleBodyFragment
+import com.example.hsrrelicmanager.ui.rules.main.RuleHeaderFragment
 
 open class MainActivity : AppCompatActivity() {
 

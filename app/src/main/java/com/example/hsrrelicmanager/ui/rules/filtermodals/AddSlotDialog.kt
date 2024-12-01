@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.ui.rules
+package com.example.hsrrelicmanager.ui.rules.filtermodals
 
 import android.content.DialogInterface
 import android.graphics.RenderEffect
@@ -21,6 +21,7 @@ import com.example.hsrrelicmanager.model.Slot
 import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.slotSets
 import com.example.hsrrelicmanager.ui.MainActivity
+import com.example.hsrrelicmanager.ui.rules.GroupChangeListener
 
 class SlotboxAdapter(
     val sets: List<Slot>,
@@ -115,7 +116,7 @@ class AddSlotDialog(
 
             confirmActionGroupDialogButton.setOnClickListener {
                 val items = Filter.SlotFilter(adapter.selectedSlots.toMutableSet())
-                callback.onAddFilter(items)
+                callback.onUpdateFilter(items)
                 dismiss()
             }
 

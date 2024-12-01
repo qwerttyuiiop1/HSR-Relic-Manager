@@ -14,25 +14,29 @@ import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.GroupCardDescriptionBinding
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 
-class DeleteRuleDialogFragment : DialogFragment() {
+class DeleteRuleDialogFragment(
+    val index: Int,
+    val group: ActionGroup,
+    val callback: GroupChangeListener
+) : DialogFragment() {
 
-    var index: Int = -1
-    lateinit var group: ActionGroup
+//    var index: Int = -1
+//    lateinit var group: ActionGroup
 
-    companion object {
-        private const val ARG_INDEX = "index"
-        private const val ARG_DATA = "data"
-
-        fun newInstance(index: Int, data: ActionGroup): DeleteRuleDialogFragment {
-            val fragment = DeleteRuleDialogFragment()
-            val args = Bundle().apply {
-                putInt(ARG_INDEX, index)
-                putParcelable(ARG_DATA, data)
-            }
-            fragment.arguments = args
-            return fragment
-        }
-    }
+//    companion object {
+//        private const val ARG_INDEX = "index"
+//        private const val ARG_DATA = "data"
+//
+//        fun newInstance(index: Int, data: ActionGroup): DeleteRuleDialogFragment {
+//            val fragment = DeleteRuleDialogFragment()
+//            val args = Bundle().apply {
+//                putInt(ARG_INDEX, index)
+//                putParcelable(ARG_DATA, data)
+//            }
+//            fragment.arguments = args
+//            return fragment
+//        }
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,8 +49,8 @@ class DeleteRuleDialogFragment : DialogFragment() {
         val builder = androidx.appcompat.app.AlertDialog.Builder(requireActivity())
         val dialogView = requireActivity().layoutInflater.inflate(R.layout.dialog_delete_rule, null)
 
-        index = arguments?.getInt(ARG_INDEX)!!
-        group = arguments?.getParcelable<ActionGroup>(ARG_DATA)!!
+//        index = arguments?.getInt(ARG_INDEX)!!
+//        group = arguments?.getParcelable<ActionGroup>(ARG_DATA)!!
 
         builder.setView(dialogView)
 
@@ -87,22 +91,14 @@ class DeleteRuleDialogFragment : DialogFragment() {
         // Cancel button
         val cancelButton: FrameLayout = dialogView.findViewById(R.id.cancel_delete_rule_dialog_button)
         cancelButton.setOnClickListener {
-            val resultBundle = Bundle().apply {
-                putInt("index", index ?: -1)
-                putString("action", "cancel")
-            }
-            parentFragmentManager.setFragmentResult("delete_rule_request", resultBundle)
+            callback.onChildChange(index, group)
             dismiss()
         }
 
         // Confirm button
         val confirmButton: FrameLayout = dialogView.findViewById(R.id.confirm_delete_rule_dialog_button)
         confirmButton.setOnClickListener {
-            val resultBundle = Bundle().apply {
-                putInt("index", index ?: -1)
-                putString("action", "confirm")
-            }
-            parentFragmentManager.setFragmentResult("delete_rule_request", resultBundle)
+            callback.onChildDelete(index, group)
             dismiss()
         }
 

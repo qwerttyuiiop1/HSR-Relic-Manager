@@ -34,16 +34,15 @@
 
         <activity
             android:name=".ui.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".ui.rules.RuleHeaderFragment"/>
-        <activity android:name=".ui.inventory.InventoryBodyFragment"/>
 
         <service
             android:name=".task.HSRAutoClickService"

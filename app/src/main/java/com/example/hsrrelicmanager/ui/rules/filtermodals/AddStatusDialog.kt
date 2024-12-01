@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.ui.rules
+package com.example.hsrrelicmanager.ui.rules.filtermodals
 
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -9,17 +9,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.databinding.DialogRarityFilterBinding
+import com.example.hsrrelicmanager.databinding.DialogStatusFilterBinding
+import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.ui.MainActivity
+import com.example.hsrrelicmanager.ui.rules.GroupChangeListener
 
-class AddRarityDialog(
-    private val items: Filter.RarityFilter,
+class AddStatusDialog(
+    private val items: Filter.StatusFilter,
     private val callback: GroupChangeListener
 ): DialogFragment() {
 
-    val binding: DialogRarityFilterBinding by lazy {
-        DialogRarityFilterBinding.inflate(
+    val binding: DialogStatusFilterBinding by lazy {
+        DialogStatusFilterBinding.inflate(
             layoutInflater, null, false
         )
     }
@@ -31,16 +33,14 @@ class AddRarityDialog(
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        val rarity = items.rarities.toMutableSet()
-        val checks = arrayOf(
-            binding.check1,
-            binding.check2,
-            binding.check3,
-            binding.check4,
-            binding.check5
-        )
-        for (i in 0..4) {
-            checks[i].isChecked = i + 1 in rarity
+        if (Relic.Status.LOCK in items.statuses) {
+            binding.check1.isChecked = true
+        }
+        if (Relic.Status.TRASH in items.statuses) {
+            binding.check2.isChecked = true
+        }
+        if (Relic.Status.DEFAULT in items.statuses) {
+            binding.check3.isChecked = true
         }
 
         binding.apply {
@@ -53,27 +53,27 @@ class AddRarityDialog(
             container3.setOnClickListener {
                 check3.isChecked = !check3.isChecked
             }
-            container4.setOnClickListener {
-                check4.isChecked = !check4.isChecked
-            }
-            container5.setOnClickListener {
-                check5.isChecked = !check5.isChecked
-            }
+
             cancelActionGroupDialogButton.setOnClickListener{
                 callback.onCancel()
                 dismiss()
             }
             confirmActionGroupDialogButton.setOnClickListener{
-                val rarities = mutableSetOf<Int>()
-                for (i in 0..4) {
-                    if (checks[i].isChecked)
-                        rarities.add(i + 1)
+                val statuses = mutableSetOf<Relic.Status>()
+                if (check1.isChecked) {
+                    statuses.add(Relic.Status.LOCK)
                 }
-                val items = Filter.RarityFilter(rarities)
-                callback.onAddFilter(items)
+                if (check2.isChecked) {
+                    statuses.add(Relic.Status.TRASH)
+                }
+                if (check3.isChecked) {
+                    statuses.add(Relic.Status.DEFAULT)
+                }
+                callback.onUpdateFilter(Filter.StatusFilter(statuses))
                 dismiss()
             }
         }
+
         val activity = context as MainActivity
         val bgView = activity.findViewById<View>(R.id.activity_main_layout)
         bgView.setRenderEffect(

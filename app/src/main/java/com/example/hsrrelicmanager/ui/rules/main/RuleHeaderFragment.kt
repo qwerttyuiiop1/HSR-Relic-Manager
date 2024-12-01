@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.ui.rules
+package com.example.hsrrelicmanager.ui.rules.main
 
 import android.os.Build
 import android.os.Bundle
@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.ui.MainActivity
 import com.example.hsrrelicmanager.ui.blur
+import com.example.hsrrelicmanager.ui.rules.GroupBodyFragment
+import com.example.hsrrelicmanager.ui.rules.GroupHeaderFragment
 
 class RuleHeaderFragment : Fragment() {
     private lateinit var rulesSpinner: Spinner
@@ -37,8 +39,8 @@ class RuleHeaderFragment : Fragment() {
 //            showAddRuleDialog()
 
             parentFragmentManager.beginTransaction()
-                .replace(R.id.header_fragment_container, AddFilterGroupHeaderFragment())
-                .replace(R.id.body_fragment_container, AddFilterGroupBodyFragment())
+                .replace(R.id.header_fragment_container, GroupHeaderFragment())
+                .replace(R.id.body_fragment_container, GroupBodyFragment())
                 .addToBackStack(null)
                 .commit()
         }
@@ -68,11 +70,5 @@ class RuleHeaderFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.S)
     private fun blurBackground() {
         requireActivity().findViewById<View>(R.id.activity_main_layout).blur()
-    }
-
-
-    private fun showAddRuleDialog() {
-        val dialog = AddRuleDialogFragment()
-        dialog.show(parentFragmentManager, "AddRuleDialog")
     }
 }
