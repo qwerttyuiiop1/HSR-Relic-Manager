@@ -10,14 +10,22 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.FragmentActionGroupBodyBinding
+import com.example.hsrrelicmanager.model.rules.action.Action
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 import com.example.hsrrelicmanager.model.rules.group.FilterMap
 import com.example.hsrrelicmanager.ui.MainActivity
 
 class AddActionGroupBodyFragment(
-    private val group: ActionGroup,
+    group: ActionGroup,
     private val _groupChangeHandler: GroupChangeHandler = GroupChangeHandler(group)
 ): Fragment(), GroupChangeListener by _groupChangeHandler {
+    override fun onUpdateAction(action: Action?) {
+        _groupChangeHandler.onUpdateAction(action)
+        actionItems[0] = action
+        adapterAction.notifyDataSetChanged()
+    }
+    private val group: ActionGroup
+        get() = _groupChangeHandler.group
     init {
         _groupChangeHandler.fragment = this
         _groupChangeHandler.onFilterChanged = {
@@ -31,17 +39,8 @@ class AddActionGroupBodyFragment(
     val filters: FilterMap = mutableMapOf()
     private lateinit var adapterFilter: FilterAdapter
 
-    private val actionItems = mutableListOf("")
+    private val actionItems = mutableListOf< Action?>(null)
     private lateinit var adapterAction: ActionItemAdapter
-
-    private var RelicTracker = 0
-    private var SlotTracker = 0
-    private var MainstatTracker = 0
-    private var SubstatTracker = 0
-    private var RarityTracker = 0
-    private var LevelTracker = 0
-    private var StatusTracker = 0
-    private var index = -1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,7 +50,7 @@ class AddActionGroupBodyFragment(
 
         binding.apply {
             // Initialize Action Adapter
-            adapterAction = ActionItemAdapter(actionItems)
+            adapterAction = ActionItemAdapter(actionItems, this@AddActionGroupBodyFragment)
             recyclerViewActionGroup.layoutManager = LinearLayoutManager(context)
             recyclerViewActionGroup.adapter = adapterAction
 

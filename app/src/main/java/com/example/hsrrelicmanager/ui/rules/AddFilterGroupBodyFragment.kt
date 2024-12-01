@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.FragmentFilterGroupBodyBinding
+import com.example.hsrrelicmanager.model.rules.action.Action
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 import com.example.hsrrelicmanager.ui.MainActivity
 import com.example.hsrrelicmanager.ui.blur
@@ -27,7 +28,7 @@ import java.util.Collections
 import kotlin.properties.Delegates
 
 class AddFilterGroupBodyFragment(
-    private val group: ActionGroup = ActionGroup(),
+    group: ActionGroup = ActionGroup(),
     private val _groupChangeHandler: GroupChangeHandler = GroupChangeHandler(group)
 ) : Fragment(), GroupChangeListener by _groupChangeHandler {
     init {
@@ -36,6 +37,12 @@ class AddFilterGroupBodyFragment(
             adapterFilter.notifyDataSetChanged()
         }
     }
+    override fun onUpdateAction(action: Action?) {
+        _groupChangeHandler.onUpdateAction(action)
+        actionItems[0] = action
+        adapterAction.notifyDataSetChanged()
+    }
+    private val group get() = _groupChangeHandler.group
     private lateinit var dbManager: DBManager
 
     private var thisId by Delegates.notNull<Long>()
@@ -43,21 +50,13 @@ class AddFilterGroupBodyFragment(
     private var _binding: FragmentFilterGroupBodyBinding? = null
     private val binding get() = _binding!!
 
-//    private var RelicTracker = 0
-//    private var SlotTracker = 0
-//    private var MainstatTracker = 0
-//    private var SubstatTracker = 0
-//    private var RarityTracker = 0
-//    private var LevelTracker = 0
-//    private var StatusTracker = 0
-//    private var index = -1
-
     // Filters
 //    private val filterBuilders: MutableList<FilterBuilder> = mutableListOf()
     private lateinit var adapterFilter: FilterAdapter
 
     // Default Action
 //    private val actionItem = mutableListOf("")
+    private val actionItems = mutableListOf< Action?>(null)
     private lateinit var adapterAction: ActionItemAdapter
 
     // Groups
@@ -101,11 +100,8 @@ class AddFilterGroupBodyFragment(
             recyclerViewFilterGroup.adapter = adapterFilter
 
             // Initialize Default Action Adapter
-            val action = mutableListOf("")
-            if (group.action != null) {
-                action[0] = group.action!!.name
-            }
-            adapterAction = ActionItemAdapter(action)
+            actionItems[0] = group.action
+            adapterAction = ActionItemAdapter(actionItems, this@AddFilterGroupBodyFragment)
             recyclerViewActionItem.layoutManager = LinearLayoutManager(context)
             recyclerViewActionItem.adapter = adapterAction
 

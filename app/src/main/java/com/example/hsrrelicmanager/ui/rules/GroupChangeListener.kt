@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.model.rules.Filter
+import com.example.hsrrelicmanager.model.rules.action.Action
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 import com.example.hsrrelicmanager.ui.MainActivity
 
@@ -15,6 +16,7 @@ interface GroupChangeListener {
     fun onChildChange(i: Int, group: ActionGroup)
     fun onChildDelete(i: Int, group: ActionGroup)
     fun onChildCreate(group: ActionGroup)
+    fun onUpdateAction(action: Action?)
 }
 
 class GroupChangeHandler(
@@ -81,6 +83,10 @@ class GroupChangeHandler(
         bgView.setRenderEffect(
             RenderEffect.createBlurEffect(20f, 20f, Shader.TileMode.CLAMP)
         )
+    }
+
+    override fun onUpdateAction(action: Action?) {
+        group.action = action
     }
 
     override fun onChildChange(i: Int, group: ActionGroup) {

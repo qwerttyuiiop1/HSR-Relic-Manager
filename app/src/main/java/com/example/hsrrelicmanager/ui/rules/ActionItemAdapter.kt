@@ -13,45 +13,56 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
+import com.example.hsrrelicmanager.model.relics.Relic
+import com.example.hsrrelicmanager.model.rules.action.Action
+import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
+import com.example.hsrrelicmanager.model.rules.action.StatusAction
 import com.example.hsrrelicmanager.ui.MainActivity
 
 // TODO: update String to Action
-class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.Adapter<ActionItemAdapter.ActionViewHolder>() {
-
-    private var selectedOption: String = ""
-    private var levelNumber: Int = 3
-
+class ActionItemAdapter(
+    private val items: MutableList<Action?>,
+    private val callback: GroupChangeListener
+) : RecyclerView.Adapter<ActionItemAdapter.ActionViewHolder>() {
+    var _levelNumber = 3
     class ActionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val choiceText: TextView = itemView.findViewById(R.id.action_choice_text)
         val actionImage: ImageView = itemView.findViewById(R.id.action_image)
         val levelTitle: TextView = itemView.findViewById(R.id.level_title)
         val levelNumberText: TextView = itemView.findViewById(R.id.level_number_item)
+        var action: Action? = null
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActionViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_action, parent, false)
+        val holder = ActionViewHolder(view)
+        holder.choiceText.text = "+ Default"
         return ActionViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ActionViewHolder, position: Int) {
-        val choice = items[0]
-
-        holder.choiceText.text = if (choice.isEmpty()) "+ Default" else choice
-        holder.actionImage.setImageResource(getImageResource(choice))
-
-        // Show or hide level information based on choice
-        if (choice == "Enhance") {
-            holder.levelTitle.visibility = View.VISIBLE
-            holder.levelNumberText.visibility = View.VISIBLE
-            holder.levelNumberText.text = levelNumber.toString()
-        } else {
-            holder.levelTitle.visibility = View.GONE
-            holder.levelNumberText.visibility = View.GONE
+        val choice = items[position]
+        holder.action = choice
+        holder.choiceText.setOnClickListener {
+            showDialog(it.context, holder)
         }
 
-        holder.choiceText.setOnClickListener {
-            selectedOption = choice
-            showDialog(it.context, holder)
+        if (choice == null) {
+            holder.choiceText.text = "+ Default"
+            holder.levelTitle.visibility = View.GONE
+            holder.levelNumberText.visibility = View.GONE
+            return
+        }
+        holder.choiceText.text = choice.name
+        holder.actionImage.setImageResource(choice.image)
+        when (choice) {
+            is EnhanceAction -> {
+                holder.levelNumberText.text = choice.targetLevel.toString()
+            }
+            else -> {
+                holder.levelTitle.visibility = View.GONE
+                holder.levelNumberText.visibility = View.GONE
+            }
         }
     }
 
@@ -72,38 +83,46 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
         val levelNumberTextView = dialogView.findViewById<TextView>(R.id.level_number)
         updateLevelNumberDisplay(levelNumberTextView)
 
-        when (selectedOption) {
-            "Enhance" -> updateRadioButtonState(dialogView, R.id.radio_button_enhance)
-            "Lock" -> updateRadioButtonState(dialogView, R.id.radio_button_lock)
-            "Reset" -> updateRadioButtonState(dialogView, R.id.radio_button_reset)
-//            "Filter Group" -> updateRadioButtonState(dialogView, R.id.radio_button_filter)
-            "Trash" -> updateRadioButtonState(dialogView, R.id.radio_button_trash)
+        val action = holder.action
+        when (action) {
+            null -> {}
+            is EnhanceAction -> {
+                updateRadioButtonState(dialogView, R.id.radio_button_enhance)
+            }
+            is StatusAction -> {
+                when (action.targetStatus) {
+                    Relic.Status.LOCK -> updateRadioButtonState(dialogView, R.id.radio_button_lock)
+                    Relic.Status.TRASH -> updateRadioButtonState(dialogView, R.id.radio_button_trash)
+                    Relic.Status.DEFAULT -> updateRadioButtonState(dialogView, R.id.radio_button_reset)
+                    else -> throw IllegalArgumentException("Invalid status")
+                }
+            }
         }
 
         // Set up radio button click listeners
         dialogView.findViewById<View>(R.id.enhance_action_group).setOnClickListener {
             updateRadioButtonState(dialogView, R.id.radio_button_enhance)
-            selectedOption = "Enhance"
+            holder.action = EnhanceAction(_levelNumber)
         }
         dialogView.findViewById<View>(R.id.radio_button_enhance).setOnClickListener {
             updateRadioButtonState(dialogView, R.id.radio_button_enhance)
-            selectedOption = "Enhance"
+            holder.action = EnhanceAction(_levelNumber)
         }
         dialogView.findViewById<View>(R.id.lock_action_group).setOnClickListener {
             updateRadioButtonState(dialogView, R.id.radio_button_lock)
-            selectedOption = "Lock"
+            holder.action = StatusAction(Relic.Status.LOCK)
         }
         dialogView.findViewById<View>(R.id.radio_button_lock).setOnClickListener {
             updateRadioButtonState(dialogView, R.id.radio_button_lock)
-            selectedOption = "Lock"
+            holder.action = StatusAction(Relic.Status.LOCK)
         }
         dialogView.findViewById<View>(R.id.reset_action_group).setOnClickListener {
             updateRadioButtonState(dialogView, R.id.radio_button_reset)
-            selectedOption = "Reset"
+            holder.action = StatusAction(Relic.Status.DEFAULT)
         }
         dialogView.findViewById<View>(R.id.radio_button_reset).setOnClickListener {
             updateRadioButtonState(dialogView, R.id.radio_button_reset)
-            selectedOption = "Reset"
+            holder.action = StatusAction(Relic.Status.DEFAULT)
         }
 //        dialogView.findViewById<View>(R.id.filter_action_group).setOnClickListener {
 //            updateRadioButtonState(dialogView, R.id.radio_button_filter)
@@ -115,27 +134,29 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
 //        }
         dialogView.findViewById<View>(R.id.trash_action_group).setOnClickListener {
             updateRadioButtonState(dialogView, R.id.radio_button_trash)
-            selectedOption = "Trash"
+            holder.action = StatusAction(Relic.Status.TRASH)
         }
         dialogView.findViewById<View>(R.id.radio_button_trash).setOnClickListener {
             updateRadioButtonState(dialogView, R.id.radio_button_trash)
-            selectedOption = "Trash"
+            holder.action = StatusAction(Relic.Status.TRASH)
         }
 
         // Update level number
         dialogView.findViewById<ImageView>(R.id.ic_add_level).setOnClickListener {
-            if (levelNumber < 15) {
-                levelNumber += 3
+            if (_levelNumber < 15) {
+                _levelNumber += 3
                 updateLevelNumberDisplay(levelNumberTextView)
-                holder.levelNumberText.text = levelNumber.toString()
+                holder.levelNumberText.text = _levelNumber.toString()
+                holder.action = EnhanceAction(_levelNumber)
             }
         }
 
         dialogView.findViewById<ImageView>(R.id.ic_subtract_level).setOnClickListener {
-            if (levelNumber > 3) {
-                levelNumber -= 3
+            if (_levelNumber > 3) {
+                _levelNumber -= 3
                 updateLevelNumberDisplay(levelNumberTextView)
-                holder.levelNumberText.text = levelNumber.toString()
+                holder.levelNumberText.text = _levelNumber.toString()
+                holder.action = EnhanceAction(_levelNumber)
             }
         }
 
@@ -150,9 +171,9 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
 
         val confirmButton = dialogView.findViewById<View>(R.id.confirm_action_group_dialog_button)
         confirmButton.setOnClickListener {
-            items[0] = selectedOption
             notifyItemChanged(holder.adapterPosition)
-
+            val action = holder.action!!
+            callback.onUpdateAction(action)
             dialog.dismiss()
         }
 
@@ -164,18 +185,7 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
     }
 
     private fun updateLevelNumberDisplay(levelTextView: TextView) {
-        levelTextView.text = levelNumber.toString()
-    }
-
-    private fun getImageResource(option: String): Int {
-        return when (option) {
-            "Enhance" -> R.drawable.enhance
-            "Lock" -> R.drawable.lock
-            "Reset" -> R.drawable.reset
-//            "Filter Group" -> R.drawable.filter_group
-            "Trash" -> R.drawable.trash
-            else -> R.drawable.transparent
-        }
+        levelTextView.text = _levelNumber.toString()
     }
 
     private fun updateRadioButtonState(dialogView: View, radioButtonId: Int) {
@@ -202,6 +212,6 @@ class ActionItemAdapter(private val items: MutableList<String>) : RecyclerView.A
     }
 
     fun getLevelNumber(): Int {
-        return levelNumber
+        return _levelNumber
     }
 }

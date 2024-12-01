@@ -22,9 +22,32 @@ data class Relic (
     val status: List<Status>,
     val prev: Relic? = null
 ): Parcelable {
-    enum class Status {
-        LOCK, TRASH, DEFAULT, // mutually exclusive
-        UPGRADE, EQUIPPED, // can be combined with others
+    /**
+     * tus("Enhance", R.drawable.enhance),
+     *     Status("Lock", R.drawable.lock),
+     *     Status("Reset", R.drawable.reset),
+     *     Status("Trash", R.drawable.trash),
+     * //    Status("Filter Group", R.drawable.filter_group)
+     */
+    enum class Status(
+        val str: String,
+        val image: Int
+    ) {
+        LOCK(
+            "Lock", R.drawable.lock
+        ),
+        TRASH(
+            "Trash", R.drawable.trash
+        ),
+        DEFAULT(
+            "Reset", R.drawable.reset
+        ), // mutually exclusive
+        UPGRADE(
+            "Enhance", R.drawable.enhance
+        ),
+        EQUIPPED(
+            "Equip", R.drawable.ic_relic_equipped
+        )
     }
 
     val rarityResource: Int

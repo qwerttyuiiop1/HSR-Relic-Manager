@@ -5,4 +5,5 @@ import com.example.hsrrelicmanager.model.relics.Relic
 sealed class Action {
     abstract val name: String
     abstract fun apply(relic: Relic?): Relic?
+    abstract val image: Int
 }

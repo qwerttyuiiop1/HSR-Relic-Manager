@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.model.Mainstat
 import com.example.hsrrelicmanager.model.Slot
-import com.example.hsrrelicmanager.model.Status
 import com.example.hsrrelicmanager.model.Substat
+import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicSet
 import com.example.hsrrelicmanager.model.rules.Filter
 
@@ -88,7 +88,7 @@ class SubFilterAdapter(
                 holder.filterImage.visibility = View.GONE
             }
             is Filter.StatusFilter -> {
-                val status = data[position] as Status
+                val status = data[position] as Relic.Status
                 holder.filterText.text = status.name
                 holder.filterImage.setImageResource(status.image)
             }
