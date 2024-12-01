@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.ui
+package com.example.hsrrelicmanager.ui.rules
 
 import android.graphics.Canvas
 import android.graphics.Color
@@ -20,7 +20,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.FragmentFilterGroupBodyBinding
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
-import com.example.hsrrelicmanager.ui.db.inventory.DBManager
+import com.example.hsrrelicmanager.ui.MainActivity
+import com.example.hsrrelicmanager.ui.blur
+import com.example.hsrrelicmanager.ui.db.DBManager
 import java.util.Collections
 import kotlin.properties.Delegates
 

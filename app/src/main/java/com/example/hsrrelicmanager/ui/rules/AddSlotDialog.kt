@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.ui
+package com.example.hsrrelicmanager.ui.rules
 
 import android.content.DialogInterface
 import android.graphics.RenderEffect
@@ -15,37 +15,38 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.databinding.DialogMainstatFilterBinding
-import com.example.hsrrelicmanager.databinding.ItemMainstatRowBinding
-import com.example.hsrrelicmanager.model.Mainstat
-import com.example.hsrrelicmanager.model.mainstatSets
+import com.example.hsrrelicmanager.databinding.DialogSlotFilterBinding
+import com.example.hsrrelicmanager.databinding.ItemSlotRowBinding
+import com.example.hsrrelicmanager.model.Slot
 import com.example.hsrrelicmanager.model.rules.Filter
+import com.example.hsrrelicmanager.model.slotSets
+import com.example.hsrrelicmanager.ui.MainActivity
 
-class MainstatboxAdapter(
-    val sets: List<Mainstat>,
-    val selectedMainstats: MutableList<Mainstat>,
-): RecyclerView.Adapter<MainstatboxAdapter.ViewHolder>() {
-    inner class ViewHolder(val binding: ItemMainstatRowBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(set: Mainstat) {
+class SlotboxAdapter(
+    val sets: List<Slot>,
+    val selectedSlots: MutableList<Slot>,
+): RecyclerView.Adapter<SlotboxAdapter.ViewHolder>() {
+    inner class ViewHolder(val binding: ItemSlotRowBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(set: Slot) {
             binding.apply {
 
                 icon.setImageResource(set.image)
 
                 checkbox.setOnCheckedChangeListener{_, isChecked ->
                     if (isChecked) {
-                        if (!selectedMainstats.contains(set)){
-                            selectedMainstats.add(set)
+                        if (!selectedSlots.contains(set)){
+                            selectedSlots.add(set)
                             sortSelectedSets()
                         }
                     } else {
-                        selectedMainstats.remove(set)
+                        selectedSlots.remove(set)
                     }
                 }
 
                 container.setOnClickListener {
                     checkbox.isChecked = !checkbox.isChecked
                 }
-                checkbox.isChecked = selectedMainstats.contains(set)
+                checkbox.isChecked = selectedSlots.contains(set)
 
                 name.text = set.name
             }
@@ -53,7 +54,7 @@ class MainstatboxAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemMainstatRowBinding.inflate(
+        val binding = ItemSlotRowBinding.inflate(
             LayoutInflater.from(parent.context)
         )
         return ViewHolder(binding)
@@ -62,7 +63,7 @@ class MainstatboxAdapter(
     override fun getItemCount() = sets.size
 
     private fun sortSelectedSets() {
-        selectedMainstats.sortWith(compareBy { sets.indexOf(it) })
+        selectedSlots.sortWith(compareBy { sets.indexOf(it) })
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -70,13 +71,13 @@ class MainstatboxAdapter(
     }
 }
 
-class AddMainstatDialog(
-    private val items: Filter.MainStatFilter,
+class AddSlotDialog(
+    private val items: Filter.SlotFilter,
     private val callback: GroupChangeListener,
 ): DialogFragment() {
 
-    val binding: DialogMainstatFilterBinding by lazy {
-        DialogMainstatFilterBinding.inflate(
+    val binding: DialogSlotFilterBinding by lazy {
+        DialogSlotFilterBinding.inflate(
             layoutInflater, null, false
         )
     }
@@ -88,13 +89,10 @@ class AddMainstatDialog(
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        val selectedMainstats = items.stats.toMutableList()
-//        var index = items.indexOfFirst { it.title == "Mainstat" }
-//        val selectedMainstats = if (index != -1) items[index].Mainstat else mutableListOf<Mainstat>()
-//        val selectedMainstatsCopy = selectedMainstats.toMutableList()
+        val selectedSlots = items.types.toMutableList()
 
         binding.apply {
-            val adapter = MainstatboxAdapter(mainstatSets, selectedMainstats)
+            val adapter = SlotboxAdapter(slotSets, selectedSlots)
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -104,18 +102,18 @@ class AddMainstatDialog(
             )
             btnDeselectAll.text = content
             btnDeselectAll.setOnClickListener {
-                adapter.selectedMainstats.clear()
+                adapter.selectedSlots.clear()
                 adapter.notifyDataSetChanged()
             }
 
             cancelActionGroupDialogButton.setOnClickListener {
-                adapter.selectedMainstats.clear()
+                adapter.selectedSlots.clear()
                 callback.onCancel()
                 dismiss()
             }
 
             confirmActionGroupDialogButton.setOnClickListener {
-                val items = Filter.MainStatFilter(adapter.selectedMainstats.toMutableSet())
+                val items = Filter.SlotFilter(adapter.selectedSlots.toMutableSet())
                 callback.onAddFilter(items)
                 dismiss()
             }

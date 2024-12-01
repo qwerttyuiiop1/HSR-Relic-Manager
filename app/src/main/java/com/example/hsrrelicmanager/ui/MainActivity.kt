@@ -20,7 +20,11 @@ import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
 import com.example.hsrrelicmanager.model.rules.action.StatusAction
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 import com.example.hsrrelicmanager.task.HSRAutoClickService
-import com.example.hsrrelicmanager.ui.db.inventory.DBManager
+import com.example.hsrrelicmanager.ui.db.DBManager
+import com.example.hsrrelicmanager.ui.inventory.InventoryBodyFragment
+import com.example.hsrrelicmanager.ui.inventory.InventoryHeaderFragment
+import com.example.hsrrelicmanager.ui.rules.RuleBodyFragment
+import com.example.hsrrelicmanager.ui.rules.RuleHeaderFragment
 
 open class MainActivity : AppCompatActivity() {
 

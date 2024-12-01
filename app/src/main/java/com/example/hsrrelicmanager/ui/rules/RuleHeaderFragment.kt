@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.ui
+package com.example.hsrrelicmanager.ui.rules
 
 import android.os.Build
 import android.os.Bundle
@@ -11,6 +11,8 @@ import android.widget.Spinner
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.hsrrelicmanager.R
+import com.example.hsrrelicmanager.ui.MainActivity
+import com.example.hsrrelicmanager.ui.blur
 
 class RuleHeaderFragment : Fragment() {
     private lateinit var rulesSpinner: Spinner

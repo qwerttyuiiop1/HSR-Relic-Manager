@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.ui
+package com.example.hsrrelicmanager.ui.rules
 
 import android.graphics.RenderEffect
 import android.graphics.Shader
@@ -12,6 +12,7 @@ import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.FragmentActionGroupBodyBinding
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 import com.example.hsrrelicmanager.model.rules.group.FilterMap
+import com.example.hsrrelicmanager.ui.MainActivity
 
 class AddActionGroupBodyFragment(
     private val group: ActionGroup,

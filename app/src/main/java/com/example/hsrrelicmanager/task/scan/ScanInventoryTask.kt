@@ -7,7 +7,7 @@ import com.example.hsrrelicmanager.core.exe.MyResult
 import com.example.hsrrelicmanager.core.exe.ResetRunner
 import com.example.hsrrelicmanager.core.exe.TaskInstance
 import com.example.hsrrelicmanager.core.exe.default
-import com.example.hsrrelicmanager.ui.db.inventory.DBManager
+import com.example.hsrrelicmanager.ui.db.DBManager
 import java.util.regex.Pattern
 
 class ScanInventoryTask: ResetRunner() {

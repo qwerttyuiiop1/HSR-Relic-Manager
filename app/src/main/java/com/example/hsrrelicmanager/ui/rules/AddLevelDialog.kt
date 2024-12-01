@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.ui
+package com.example.hsrrelicmanager.ui.rules
 
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -11,6 +11,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.DialogLevelFilterBinding
 import com.example.hsrrelicmanager.model.rules.Filter
+import com.example.hsrrelicmanager.ui.MainActivity
 
 class AddLevelDialog(
     private val items: Filter.LevelFilter,

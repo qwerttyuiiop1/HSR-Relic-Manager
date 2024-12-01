@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.ui
+package com.example.hsrrelicmanager.ui.rules
 
 import android.content.DialogInterface
 import android.graphics.RenderEffect
@@ -12,6 +12,7 @@ import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.DialogSelectFilterBinding
 import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.rules.group.FilterMap
+import com.example.hsrrelicmanager.ui.MainActivity
 
 class AddFilterDialog(
     private val items: FilterMap,

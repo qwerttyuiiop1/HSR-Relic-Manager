@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.ui
+package com.example.hsrrelicmanager.ui.rules
 
 import android.content.DialogInterface
 import android.graphics.RenderEffect
@@ -20,6 +20,7 @@ import com.example.hsrrelicmanager.databinding.ItemSubstatRowBinding
 import com.example.hsrrelicmanager.model.Substat
 import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.substatSets
+import com.example.hsrrelicmanager.ui.MainActivity
 
 class SubstatboxAdapter(
     val sets: List<Substat>,

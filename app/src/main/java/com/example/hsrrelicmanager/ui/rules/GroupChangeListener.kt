@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.ui
+package com.example.hsrrelicmanager.ui.rules
 
 import android.graphics.RenderEffect
 import android.graphics.Shader
@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
+import com.example.hsrrelicmanager.ui.MainActivity
 
 interface GroupChangeListener {
     fun onAddFilter(filter: Filter)

@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.ui
+package com.example.hsrrelicmanager.ui.rules
 
 import android.content.DialogInterface
 import android.graphics.RenderEffect
@@ -15,45 +15,60 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.databinding.DialogSlotFilterBinding
-import com.example.hsrrelicmanager.databinding.ItemSlotRowBinding
-import com.example.hsrrelicmanager.model.Slot
+import com.example.hsrrelicmanager.databinding.DialogSetFilterBinding
+import com.example.hsrrelicmanager.databinding.ItemRelicSetRowBinding
+import com.example.hsrrelicmanager.model.relics.RelicSet
+import com.example.hsrrelicmanager.model.relics.relicSets
 import com.example.hsrrelicmanager.model.rules.Filter
-import com.example.hsrrelicmanager.model.slotSets
+import com.example.hsrrelicmanager.ui.MainActivity
 
-class SlotboxAdapter(
-    val sets: List<Slot>,
-    val selectedSlots: MutableList<Slot>,
-): RecyclerView.Adapter<SlotboxAdapter.ViewHolder>() {
-    inner class ViewHolder(val binding: ItemSlotRowBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(set: Slot) {
+class RelicCheckboxAdapter(
+    val sets: List<RelicSet>,
+    val selectedSets: MutableList<RelicSet>,
+) : RecyclerView.Adapter<RelicCheckboxAdapter.ViewHolder>() {
+    inner class ViewHolder(val binding: ItemRelicSetRowBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(set: RelicSet) {
             binding.apply {
-
-                icon.setImageResource(set.image)
-
-                checkbox.setOnCheckedChangeListener{_, isChecked ->
+                checkbox.setOnCheckedChangeListener { _, isChecked ->
                     if (isChecked) {
-                        if (!selectedSlots.contains(set)){
-                            selectedSlots.add(set)
+                        if (!selectedSets.contains(set)) {
+                            selectedSets.add(set)
                             sortSelectedSets()
                         }
                     } else {
-                        selectedSlots.remove(set)
+                        selectedSets.remove(set)
                     }
                 }
-
                 container.setOnClickListener {
                     checkbox.isChecked = !checkbox.isChecked
                 }
-                checkbox.isChecked = selectedSlots.contains(set)
+                checkbox.isChecked = selectedSets.contains(set)
 
+                icon.setImageResource(set.icon)
                 name.text = set.name
+                description.text = set.description
+
+                description.visibility = View.GONE
+                btnMinimize.visibility = View.GONE
+                btnMaximize.visibility = View.VISIBLE
+
+                btnMaximize.setOnClickListener {
+                    description.visibility = View.VISIBLE
+                    btnMinimize.visibility = View.VISIBLE
+                    btnMaximize.visibility = View.GONE
+                }
+                btnMinimize.setOnClickListener {
+                    description.visibility = View.GONE
+                    btnMinimize.visibility = View.GONE
+                    btnMaximize.visibility = View.VISIBLE
+                }
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemSlotRowBinding.inflate(
+        val binding = ItemRelicSetRowBinding.inflate(
             LayoutInflater.from(parent.context)
         )
         return ViewHolder(binding)
@@ -62,7 +77,7 @@ class SlotboxAdapter(
     override fun getItemCount() = sets.size
 
     private fun sortSelectedSets() {
-        selectedSlots.sortWith(compareBy { sets.indexOf(it) })
+        selectedSets.sortWith(compareBy { sets.indexOf(it) })
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -70,13 +85,13 @@ class SlotboxAdapter(
     }
 }
 
-class AddSlotDialog(
-    private val items: Filter.SlotFilter,
-    private val callback: GroupChangeListener,
-): DialogFragment() {
+class AddSetDialog(
+    private val items: Filter.SetFilter,
+    private val callback: GroupChangeListener
+) : DialogFragment() {
 
-    val binding: DialogSlotFilterBinding by lazy {
-        DialogSlotFilterBinding.inflate(
+    val binding: DialogSetFilterBinding by lazy {
+        DialogSetFilterBinding.inflate(
             layoutInflater, null, false
         )
     }
@@ -88,10 +103,10 @@ class AddSlotDialog(
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        val selectedSlots = items.types.toMutableList()
+        val relicSetList = items.sets.toMutableList()
 
         binding.apply {
-            val adapter = SlotboxAdapter(slotSets, selectedSlots)
+            val adapter = RelicCheckboxAdapter(relicSets, relicSetList)
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -101,18 +116,18 @@ class AddSlotDialog(
             )
             btnDeselectAll.text = content
             btnDeselectAll.setOnClickListener {
-                adapter.selectedSlots.clear()
+                adapter.selectedSets.clear()
                 adapter.notifyDataSetChanged()
             }
 
             cancelActionGroupDialogButton.setOnClickListener {
-                adapter.selectedSlots.clear()
+                adapter.selectedSets.clear()
                 callback.onCancel()
                 dismiss()
             }
 
             confirmActionGroupDialogButton.setOnClickListener {
-                val items = Filter.SlotFilter(adapter.selectedSlots.toMutableSet())
+                val items = Filter.SetFilter(adapter.selectedSets.toMutableSet())
                 callback.onAddFilter(items)
                 dismiss()
             }

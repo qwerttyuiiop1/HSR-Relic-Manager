@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.ui
+package com.example.hsrrelicmanager.ui.inventory
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,8 +12,9 @@ import com.example.hsrrelicmanager.model.Slot
 import com.example.hsrrelicmanager.model.Substat
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.relicSets
-import com.example.hsrrelicmanager.ui.db.inventory.DBHelper
-import com.example.hsrrelicmanager.ui.db.inventory.DBManager
+import com.example.hsrrelicmanager.ui.MainActivity
+import com.example.hsrrelicmanager.ui.db.DBHelper
+import com.example.hsrrelicmanager.ui.db.DBManager
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -117,7 +118,8 @@ class InventoryBodyFragment : Fragment() {
                 val relic_id = cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper._ID))
 
                 val statuses = mutableListOf<Relic.Status>()
-                statuses.add(Relic.Status.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_STATUS))))
+                statuses.add(Relic.Status.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(
+                    DBHelper.COLUMN_STATUS))))
 
                 if (cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_EQUIPPED)) == 1) {
                     statuses.add(Relic.Status.EQUIPPED)
@@ -126,11 +128,14 @@ class InventoryBodyFragment : Fragment() {
                 dbRelics.add(
                     Relic(
                         relic_id,
-                        dbManager.getRelicSetByName(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_SET))),
-                        Slot.fromName(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_SLOT)))!!,
+                        dbManager.getRelicSetByName(cursor.getString(cursor.getColumnIndexOrThrow(
+                            DBHelper.COLUMN_SET))),
+                        Slot.fromName(cursor.getString(cursor.getColumnIndexOrThrow(
+                            DBHelper.COLUMN_SLOT)))!!,
                         cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_RARITY)),
                         cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_LEVEL)),
-                        Mainstat.fromName(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_MAINSTAT)))!!,
+                        Mainstat.fromName(cursor.getString(cursor.getColumnIndexOrThrow(
+                            DBHelper.COLUMN_MAINSTAT)))!!,
                         cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_MAINSTAT_VAL)),
                         dbManager.fetchSubstatsForRelic(relic_id).map {
                             Substat.fromName(it.key)!!.copy(value = it.value)

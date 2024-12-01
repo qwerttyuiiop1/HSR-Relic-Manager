@@ -42,8 +42,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.RuleHeaderFragment"/>
-        <activity android:name=".ui.InventoryBodyFragment"/>
+        <activity android:name=".ui.rules.RuleHeaderFragment"/>
+        <activity android:name=".ui.inventory.InventoryBodyFragment"/>
 
         <service
             android:name=".task.HSRAutoClickService"

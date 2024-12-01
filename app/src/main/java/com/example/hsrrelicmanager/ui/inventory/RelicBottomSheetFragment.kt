@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.ui
+package com.example.hsrrelicmanager.ui.inventory
 
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -15,7 +15,8 @@ import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.RelicBottomSheetBinding
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicBuilder
-import com.example.hsrrelicmanager.ui.db.inventory.DBManager
+import com.example.hsrrelicmanager.ui.MainActivity
+import com.example.hsrrelicmanager.ui.db.DBManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class RelicBottomSheetFragment : BottomSheetDialogFragment() {

@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.ui
+package com.example.hsrrelicmanager.ui.inventory
 
 import android.os.Bundle
 import android.view.LayoutInflater

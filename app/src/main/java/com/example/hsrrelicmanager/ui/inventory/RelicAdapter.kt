@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.ui
+package com.example.hsrrelicmanager.ui.inventory
 
 import android.graphics.Color
 import android.text.SpannableString

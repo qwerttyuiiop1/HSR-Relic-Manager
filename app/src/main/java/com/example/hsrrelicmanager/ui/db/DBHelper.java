@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.ui.db.inventory;
+package com.example.hsrrelicmanager.ui.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

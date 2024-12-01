@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.ui
+package com.example.hsrrelicmanager.ui.rules
 
 import android.graphics.Canvas
 import android.graphics.Color
@@ -23,9 +23,11 @@ import com.example.hsrrelicmanager.model.rules.action.Action
 import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
 import com.example.hsrrelicmanager.model.rules.action.StatusAction
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
-import com.example.hsrrelicmanager.ui.CategorizedGroupAdapter.GroupViewHolder
-import com.example.hsrrelicmanager.ui.db.inventory.DBHelper
-import com.example.hsrrelicmanager.ui.db.inventory.DBManager
+import com.example.hsrrelicmanager.ui.MainActivity
+import com.example.hsrrelicmanager.ui.blur
+import com.example.hsrrelicmanager.ui.rules.CategorizedGroupAdapter.GroupViewHolder
+import com.example.hsrrelicmanager.ui.db.DBHelper
+import com.example.hsrrelicmanager.ui.db.DBManager
 import kotlinx.serialization.json.Json
 import java.util.Collections
 
@@ -71,7 +73,8 @@ class RuleBodyFragment : Fragment() {
                 groupData.add(
                     ActionGroup(
                         cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper.RulesTable._ID)),
-                        Json.decodeFromString<MutableMap<Filter.Type, Filter>>(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_FILTERS))),
+                        Json.decodeFromString<MutableMap<Filter.Type, Filter>>(cursor.getString(cursor.getColumnIndexOrThrow(
+                            DBHelper.RulesTable.COLUMN_FILTERS))),
                         cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_POS)),
                         null,
                         mutableListOf(),
