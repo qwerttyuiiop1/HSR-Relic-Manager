@@ -132,7 +132,7 @@ class RuleBodyFragment(
 
 
         parentFragmentManager.setFragmentResultListener("new_group", viewLifecycleOwner) { _, bundle ->
-            this.onChildCreate(bundle.getSerializable("group") as ActionGroup)
+            this.onChildCreate(bundle.getParcelable<ActionGroup>("group")!!)
         }
 
 
