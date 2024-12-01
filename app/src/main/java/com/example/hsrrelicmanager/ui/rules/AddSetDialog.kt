@@ -24,8 +24,9 @@ import com.example.hsrrelicmanager.ui.MainActivity
 
 class RelicCheckboxAdapter(
     val sets: List<RelicSet>,
-    val selectedSets: MutableList<RelicSet>,
+    selectedSets: List<RelicSet>,
 ) : RecyclerView.Adapter<RelicCheckboxAdapter.ViewHolder>() {
+    val selectedSets = selectedSets.toMutableList()
     inner class ViewHolder(val binding: ItemRelicSetRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(set: RelicSet) {

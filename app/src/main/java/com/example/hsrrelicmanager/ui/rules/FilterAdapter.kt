@@ -15,11 +15,11 @@ import com.example.hsrrelicmanager.model.rules.group.FilterMap
 import com.example.hsrrelicmanager.ui.MainActivity
 
 class FilterAdapter(
-    private val items: FilterMap,
+    items: FilterMap,
     private val _callback: GroupChangeListener
 ) : RecyclerView.Adapter<FilterAdapter.FilterViewHolder>(),
     GroupChangeListener by _callback {
-
+    val items = items.toMutableMap()
     var isEditMode = false
     override fun onCancel() {
         if (isEditMode) {

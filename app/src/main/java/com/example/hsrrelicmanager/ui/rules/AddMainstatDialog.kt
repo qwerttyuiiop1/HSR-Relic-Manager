@@ -24,8 +24,9 @@ import com.example.hsrrelicmanager.ui.MainActivity
 
 class MainstatboxAdapter(
     val sets: List<Mainstat>,
-    val selectedMainstats: MutableList<Mainstat>,
+    selectedMainstats: List<Mainstat>,
 ): RecyclerView.Adapter<MainstatboxAdapter.ViewHolder>() {
+    val selectedMainstats = selectedMainstats.toMutableList()
     inner class ViewHolder(val binding: ItemMainstatRowBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(set: Mainstat) {
             binding.apply {

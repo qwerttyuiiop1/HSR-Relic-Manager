@@ -25,7 +25,7 @@ class CategorizedGroupAdapter(val groupData: MutableList<ActionGroup>) :
         val filterGroups: MutableList<ListItem> = ArrayList()
 
         for (group in groupData) {
-            if (!group.groupList.isEmpty()) {
+            if (group.groupList.isNotEmpty()) {
                 filterGroups.add(GroupItem(group))
             } else if (group.action != null) {
                 val action = group.action

@@ -24,8 +24,9 @@ import com.example.hsrrelicmanager.ui.MainActivity
 
 class SubstatboxAdapter(
     val sets: List<Substat>,
-    val selectedSubstats: MutableMap<Substat, Int>
+    selectedSubstats: Map<Substat, Int>
 ): RecyclerView.Adapter<SubstatboxAdapter.ViewHolder>() {
+    val selectedSubstats = selectedSubstats.toMutableMap()
     val levels = sets.associateWith {
         if (it in selectedSubstats) selectedSubstats[it]!! else 1
     }.toMutableMap()

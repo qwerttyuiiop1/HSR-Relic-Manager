@@ -21,20 +21,11 @@ data class ActionGroup(
     var groupList: MutableList<ActionGroup> = mutableListOf(),
     var action: @RawValue Action? = null
 ) : Parcelable {
-    fun copyFrom(other: ActionGroup) {
-        id = other.id
-        filters = other.filters
-        position = other.position
-        parentGroup = other.parentGroup
-        groupList = other.groupList
-        action = other.action
-    }
     fun cloneDeep(): ActionGroup {
-        val newGroup = ActionGroup()
-        newGroup.copyFrom(this)
-        newGroup.groupList = groupList.map { it.cloneDeep() }.toMutableList()
-        newGroup.filters = filters.mapValues { it.value.cloneDeep() }.toMutableMap()
-        return newGroup
+        return this.copy(
+            groupList = groupList.map { it.cloneDeep() }.toMutableList(),
+            filters = filters.mapValues { it.value.cloneDeep() }.toMutableMap()
+        )
     }
 
 

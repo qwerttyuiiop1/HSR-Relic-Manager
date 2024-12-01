@@ -24,8 +24,9 @@ import com.example.hsrrelicmanager.ui.MainActivity
 
 class SlotboxAdapter(
     val sets: List<Slot>,
-    val selectedSlots: MutableList<Slot>,
+    selectedSlots: List<Slot>,
 ): RecyclerView.Adapter<SlotboxAdapter.ViewHolder>() {
+    val selectedSlots = selectedSlots.toMutableList()
     inner class ViewHolder(val binding: ItemSlotRowBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(set: Slot) {
             binding.apply {

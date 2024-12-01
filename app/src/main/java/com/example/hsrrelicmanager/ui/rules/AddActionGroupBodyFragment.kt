@@ -17,7 +17,7 @@ import com.example.hsrrelicmanager.ui.MainActivity
 
 class AddActionGroupBodyFragment(
     group: ActionGroup,
-    private val _groupChangeHandler: GroupChangeHandler = GroupChangeHandler(group)
+    private val _groupChangeHandler: GroupChangeHandler = GroupChangeHandler(group.cloneDeep())
 ): Fragment(), GroupChangeListener by _groupChangeHandler {
     override fun onUpdateAction(action: Action?) {
         _groupChangeHandler.onUpdateAction(action)

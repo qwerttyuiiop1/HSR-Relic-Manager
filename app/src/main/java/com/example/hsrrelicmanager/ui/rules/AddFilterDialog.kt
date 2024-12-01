@@ -15,10 +15,10 @@ import com.example.hsrrelicmanager.model.rules.group.FilterMap
 import com.example.hsrrelicmanager.ui.MainActivity
 
 class AddFilterDialog(
-    private val items: FilterMap,
+    items: FilterMap,
     private val listener: GroupChangeListener
 ): DialogFragment() {
-
+    private val items = items.toMutableMap()
     val binding: DialogSelectFilterBinding by lazy {
         DialogSelectFilterBinding.inflate(
             layoutInflater, null, false
