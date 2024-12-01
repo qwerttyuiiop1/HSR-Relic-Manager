@@ -42,6 +42,7 @@ class GroupAdapter(val groupData: MutableList<ActionGroup>, private val ruleBody
         val ivTrash: ImageView = itemView.findViewById(R.id.trash_icon)
         private val root: View? = null
         private var pos = 0
+        lateinit var group: ActionGroup
 
         init {
             itemView.rootView.setOnClickListener { v: View? ->
@@ -50,6 +51,7 @@ class GroupAdapter(val groupData: MutableList<ActionGroup>, private val ruleBody
                     .replace(R.id.header_fragment_container, GroupHeaderFragment())
                     .replace(R.id.body_fragment_container, GroupBodyFragment(
                         ruleBodyFragment as GroupChangeListener,
+                        GroupChangeHandler(group)
                     ))
                     .addToBackStack(null)
                     .commit()
@@ -57,6 +59,7 @@ class GroupAdapter(val groupData: MutableList<ActionGroup>, private val ruleBody
         }
 
         fun bind(group: ActionGroup) {
+            this.group = group
             tvGroupName.text = group.getViewName()
             filterContainer.removeAllViews()
 

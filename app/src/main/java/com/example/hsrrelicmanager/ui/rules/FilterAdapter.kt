@@ -22,11 +22,10 @@ import com.example.hsrrelicmanager.ui.rules.filtermodals.AddStatusDialog
 import com.example.hsrrelicmanager.ui.rules.filtermodals.AddSubstatDialog
 
 class FilterAdapter(
-    items: FilterMap,
+    private val items: FilterMap,
     private val _callback: GroupChangeListener
 ) : RecyclerView.Adapter<FilterAdapter.FilterViewHolder>(),
     GroupChangeListener by _callback {
-    val items = items.toMutableMap()
     var isEditMode = false
     override fun onCancel() {
         if (isEditMode) {
