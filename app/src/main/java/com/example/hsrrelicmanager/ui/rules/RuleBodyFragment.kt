@@ -314,9 +314,9 @@ class CategorizedRuleBodyFragment : Fragment() {
             // Delete confirmed
             if (action == "confirm" && index >= 0) {
                 val itemIndex = index
-                val groupIndex = (categorizedGroupAdapter.items.get(itemIndex) as CategorizedGroupAdapter.GroupItem).group.position;
+                val groupIndex = (categorizedGroupAdapter.listItems.get(itemIndex) as CategorizedGroupAdapter.GroupItem).group.position;
 
-                categorizedGroupAdapter.items.removeAt(itemIndex)
+                categorizedGroupAdapter.listItems.removeAt(itemIndex)
                 categorizedGroupAdapter.groupData.removeAt(groupIndex)
 
                 for (i in groupIndex..<categorizedGroupAdapter.groupData.size) {
@@ -358,7 +358,7 @@ class CategorizedRuleBodyFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val itemIndex = viewHolder.adapterPosition
-                val groupIndex = (categorizedGroupAdapter.items.get(itemIndex) as CategorizedGroupAdapter.GroupItem).group.position
+                val groupIndex = (categorizedGroupAdapter.listItems.get(itemIndex) as CategorizedGroupAdapter.GroupItem).group.position
 
                 val group = categorizedGroupAdapter.groupData[groupIndex]
 
