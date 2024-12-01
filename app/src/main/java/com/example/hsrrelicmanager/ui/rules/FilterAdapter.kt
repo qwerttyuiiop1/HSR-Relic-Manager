@@ -16,8 +16,18 @@ import com.example.hsrrelicmanager.ui.MainActivity
 
 class FilterAdapter(
     private val items: FilterMap,
-    private val callback: GroupChangeListener
-) : RecyclerView.Adapter<FilterAdapter.FilterViewHolder>() {
+    private val _callback: GroupChangeListener
+) : RecyclerView.Adapter<FilterAdapter.FilterViewHolder>(),
+    GroupChangeListener by _callback {
+
+    var isEditMode = false
+    override fun onCancel() {
+        if (isEditMode) {
+            isEditMode = false
+        } else {
+            _callback.onCancel()
+        }
+    }
     private val types = Filter.Type.entries.toTypedArray()
 
     class FilterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -60,7 +70,10 @@ class FilterAdapter(
             }
         }
 
-        val subAdapter = SubFilterAdapter(filterItem)
+        val subAdapter = SubFilterAdapter(filterItem) {
+            isEditMode = true
+            showDialog(holder.entireView.context, filterItem)
+        }
         holder.recyclerView.layoutManager = LinearLayoutManager(holder.itemView.context)
         holder.recyclerView.adapter = subAdapter
 
@@ -73,25 +86,25 @@ class FilterAdapter(
             ?.supportFragmentManager ?: return
         when (filter) {
             is Filter.SetFilter -> {
-                AddSetDialog(filter.copy(), callback).show(mgr, "AddSetDialog")
+                AddSetDialog(filter.copy(), this).show(mgr, "AddSetDialog")
             }
             is Filter.SlotFilter -> {
-                AddSlotDialog(filter.copy(), callback).show(mgr, "AddSlotDialog")
+                AddSlotDialog(filter.copy(), this).show(mgr, "AddSlotDialog")
             }
             is Filter.MainStatFilter -> {
-                AddMainstatDialog(filter.copy(), callback).show(mgr, "AddMainstatDialog")
+                AddMainstatDialog(filter.copy(), this).show(mgr, "AddMainstatDialog")
             }
             is Filter.SubStatFilter -> {
-                AddSubstatDialog(filter.copy(), callback).show(mgr, "AddSubstatDialog")
+                AddSubstatDialog(filter.copy(), this).show(mgr, "AddSubstatDialog")
             }
             is Filter.RarityFilter -> {
-                AddRarityDialog(filter.copy(), callback).show(mgr, "AddRarityDialog")
+                AddRarityDialog(filter.copy(), this).show(mgr, "AddRarityDialog")
             }
             is Filter.LevelFilter -> {
-                AddLevelDialog(filter.copy(), callback).show(mgr, "AddLevelDialog")
+                AddLevelDialog(filter.copy(), this).show(mgr, "AddLevelDialog")
             }
             is Filter.StatusFilter -> {
-                AddStatusDialog(filter.copy(), callback).show(mgr, "AddStatusDialog")
+                AddStatusDialog(filter.copy(), this).show(mgr, "AddStatusDialog")
             }
         }
 

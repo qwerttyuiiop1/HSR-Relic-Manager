@@ -15,7 +15,10 @@ import com.example.hsrrelicmanager.model.Substat
 import com.example.hsrrelicmanager.model.relics.RelicSet
 import com.example.hsrrelicmanager.model.rules.Filter
 
-class SubFilterAdapter(private val items: Filter) : RecyclerView.Adapter<SubFilterAdapter.SubFilterViewHolder>() {
+class SubFilterAdapter(
+    private val items: Filter,
+    private val onClick: ((Int) -> Unit)? = null
+) : RecyclerView.Adapter<SubFilterAdapter.SubFilterViewHolder>() {
 
     var data: List<*> = onUpdateData()
 
@@ -89,6 +92,9 @@ class SubFilterAdapter(private val items: Filter) : RecyclerView.Adapter<SubFilt
                 holder.filterText.text = status.name
                 holder.filterImage.setImageResource(status.image)
             }
+        }
+        holder.itemView.setOnClickListener {
+            onClick?.invoke(position)
         }
     }
 
