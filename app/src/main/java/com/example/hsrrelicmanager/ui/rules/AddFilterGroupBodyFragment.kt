@@ -101,9 +101,9 @@ class AddFilterGroupBodyFragment(
             recyclerViewFilterGroup.adapter = adapterFilter
 
             // Initialize Default Action Adapter
-            val action = mutableListOf<String>()
+            val action = mutableListOf("")
             if (group.action != null) {
-                action.add(group.action!!.name)
+                action[0] = group.action!!.name
             }
             adapterAction = ActionItemAdapter(action)
             recyclerViewActionItem.layoutManager = LinearLayoutManager(context)
