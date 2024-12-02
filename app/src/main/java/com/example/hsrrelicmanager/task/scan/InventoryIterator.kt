@@ -7,16 +7,22 @@ import kotlinx.coroutines.delay
 import java.util.regex.Pattern
 
 class InventoryIterator(
-    val ui: ScanInventoryUIBinding,
-    val pred: () -> TaskInstance<*>
+    private val ui: ScanInventoryUIBinding,
+    private val pred: InventoryIterator.() -> TaskInstance<*>
 ) : Instance<String>() {
 
-    val pattern = Pattern.compile("\\d+")
-    suspend fun getNumRelics(): Int {
+    private val pattern = Pattern.compile("\\d+")
+    private suspend fun getNumRelics(): Int {
         val text = ui.numRelics.getText().text
         val matcher = pattern.matcher(text)
         if (!matcher.find()) return -1
         return matcher.group().toInt()
+    }
+    private var col = 0
+
+    suspend fun recalibrate() {
+        awaitTick()
+        join(ui.container.calibrate(col))
     }
 
     override suspend fun run(): MyResult<String> {
@@ -28,7 +34,6 @@ class InventoryIterator(
         if (numRelics == -1)
             return MyResult.Fail("Could not find number of relics")
         var i = 0
-        var col = 0
         val numCols = container.row.size
         while (i < numRelics) {
             val res = join(container.row[col].select())

@@ -46,21 +46,17 @@ class OrganizeInventoryTask: ResetRunner() {
                     delay(1000)
                 }
                 lockBtn.click()
-                delay(3000)
             } else if (action == "TRASH" && !isTrash) {
                 if (isLocked) {
                     lockBtn.click()
                     delay(1000)
                 }
                 trashBtn.click()
-                delay(3000)
             } else if (action == "DEFAULT") {
                 if (isLocked) {
                     lockBtn.click()
-                    delay(3000)
                 } else if (isTrash) {
                     trashBtn.click()
-                    delay(3000)
                 }
             }
             awaitTick()
@@ -109,8 +105,10 @@ class OrganizeInventoryTask: ResetRunner() {
                                     updateRelicInDb(relic_id)
                                 }
                             }
-                            dbManager.deleteStatus(relic_id, statuses.map { it.name })
+//                            dbManager.deleteStatus(manual_status.first)
                             manualStatuses.remove(manual_status.first)
+                            delay(3000)
+                            recalibrate()
                         }
                     } else {
                         val id = if (relic_ids.isNotEmpty()) relic_ids[0] else null
@@ -120,12 +118,12 @@ class OrganizeInventoryTask: ResetRunner() {
                             if (id != null) {
                                 updateRelicInDb(id)
                             } else {
-                                val relic = join(ScanInst(ui))
-                                dbManager.insertInventory(relic)
+                                dbManager.insertInventory(join(ScanInst(ui)))
                             }
+                            delay(3000)
+                            recalibrate()
                         }
                     }
-                    delay(3000)
                     awaitTick()
 
                     MyResult.Success("Organize Inventory")
