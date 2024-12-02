@@ -6,13 +6,16 @@ import android.database.Cursor
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
+import androidx.core.database.getLongOrNull
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicSet
 import com.example.hsrrelicmanager.model.relics.relicSets
 import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.rules.action.Action
 import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
+import com.example.hsrrelicmanager.model.rules.action.StatusAction
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
+import com.example.hsrrelicmanager.model.rules.group.FilterMap
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -35,7 +38,9 @@ class DBManager(private val context: Context) {
 
 
     /* RULES TABLE */
-
+    fun insertGroup(group: ActionGroup) {
+        insertGroup(group.filters, group.position, group.action, group.parentGroup?.id)
+    }
     fun insertGroup(
         filters: MutableMap<Filter.Type, Filter>,
         position: Int?,
@@ -88,6 +93,63 @@ class DBManager(private val context: Context) {
             DBHelper.RulesTable.COLUMN_POS
         )
         return cursor
+    }
+
+    fun listGroups(): MutableList<ActionGroup> {
+        val cursor = fetchGroups()
+        val groups = mutableMapOf<
+            Long,
+            Pair<Long?, ActionGroup>
+        >()
+        val rootViews = mutableListOf<ActionGroup>()
+
+        if (cursor.moveToFirst()) {
+            do {
+                var action: Action? = null
+                if (!cursor.isNull(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_ACTION))) {
+                    val actionDb =
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_ACTION))
+
+                    action = if (actionDb == "Enhance") {
+                        EnhanceAction(cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_LEVEL)))
+                    } else {
+                        StatusAction(Relic.Status.valueOf(actionDb.uppercase()))
+                    }
+                }
+                val id = cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper.RulesTable._ID))
+                val filters = Json.decodeFromString<FilterMap>(
+                    cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_FILTERS))
+                )
+                val pos = cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_POS))
+                val parentId = cursor.getLongOrNull(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_PARENT_ID))
+                val children = mutableListOf<ActionGroup>()
+
+                val grouo = ActionGroup(
+                    id,
+                    filters,
+                    pos,
+                    null,
+                    children,
+                    action,
+                )
+                groups[id] = Pair(parentId, grouo)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+
+        groups.forEach { (_, foo) ->
+            val (parentId, group) = foo
+            if (parentId == null) {
+                rootViews.add(group)
+            } else {
+                groups[parentId]?.second?.groupList?.add(group)
+            }
+        }
+
+        rootViews.sortBy {
+            it.position
+        }
+        return rootViews
     }
 
     fun updateGroup(group: ActionGroup): Int {

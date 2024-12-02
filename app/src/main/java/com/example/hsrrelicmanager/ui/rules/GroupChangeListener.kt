@@ -9,6 +9,7 @@ import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.rules.action.Action
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 import com.example.hsrrelicmanager.ui.MainActivity
+import com.example.hsrrelicmanager.ui.db.DBManager
 import kotlin.reflect.KProperty
 
 interface GroupChangeListener {
@@ -24,6 +25,10 @@ class GroupChangeHandler(
     var group: ActionGroup,
 ): GroupChangeListener {
     lateinit var fragment: Fragment
+    val dbManager: DBManager by lazy {
+        val activity = fragment.activity as MainActivity
+        activity.dbManager
+    }
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): ActionGroup {
         return group
@@ -111,5 +116,12 @@ class GroupChangeHandler(
 
     override fun onChildCreate(group: ActionGroup) {
         this.group.groupList.add(group)
+        for (i in this.group.groupList.indices) {
+            this.group.groupList[i].position = i
+        }
+        val mgr = this.dbManager
+        mgr.open()
+        mgr.insertGroup(group)
+        mgr.close()
     }
 }

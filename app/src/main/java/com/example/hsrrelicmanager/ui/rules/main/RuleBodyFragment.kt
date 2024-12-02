@@ -16,21 +16,13 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.model.relics.Relic
-import com.example.hsrrelicmanager.model.rules.Filter
-import com.example.hsrrelicmanager.model.rules.action.Action
-import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
-import com.example.hsrrelicmanager.model.rules.action.StatusAction
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 import com.example.hsrrelicmanager.ui.MainActivity
 import com.example.hsrrelicmanager.ui.blur
-import com.example.hsrrelicmanager.ui.db.DBHelper
-import com.example.hsrrelicmanager.ui.db.DBManager
 import com.example.hsrrelicmanager.ui.rules.DeleteRuleDialogFragment
 import com.example.hsrrelicmanager.ui.rules.GroupAdapter
 import com.example.hsrrelicmanager.ui.rules.GroupChangeHandler
 import com.example.hsrrelicmanager.ui.rules.GroupChangeListener
-import kotlinx.serialization.json.Json
 import java.util.Collections
 
 
@@ -42,9 +34,6 @@ class RuleBodyFragment(
     }
     override fun onChildCreate(group: ActionGroup) {
         _groupChangeHandler.onChildCreate(group)
-        for (index in 0..<groupAdapter.groupData.size) {
-            groupAdapter.groupData[index].position = index
-        }
         groupAdapter.notifyItemInserted(groupAdapter.groupData.size - 1)
     }
     override fun onChildChange(i: Int, group: ActionGroup) {
@@ -57,61 +46,29 @@ class RuleBodyFragment(
         groupAdapter.notifyItemRangeChanged(i, groupAdapter.groupData.size - i)
     }
 
-    private lateinit var dbManager: DBManager
     private lateinit var groupAdapter: GroupAdapter
+    private lateinit var groupData: MutableList<ActionGroup>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val mainActivity = requireActivity() as MainActivity
+        if (mainActivity.cachedGroupData != null) {
+            groupData = mainActivity.cachedGroupData!!
+        } else {
+            val dbManager = mainActivity.dbManager
+            dbManager.open()
+            groupData = dbManager.listGroups()
+            mainActivity.cachedGroupData = groupData
+            dbManager.close()
+        }
+        _groupChangeHandler.group.groupList = groupData
         return inflater.inflate(R.layout.rule_body_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Dummy group data
-        val groupData = (activity as MainActivity).groupData
-        _groupChangeHandler.group.groupList = groupData
-
-        dbManager = (requireContext() as MainActivity).dbManager
-        dbManager.open()
-
-        // Fetch
-        val cursor = dbManager.fetchGroups()
-        if (cursor.moveToFirst()) {
-            do {
-                // Action
-                var action: Action? = null
-                var actionDb: String
-
-                if (!cursor.isNull(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_ACTION))) {
-                    actionDb =
-                        cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_ACTION))
-
-                    action = if (actionDb == "Enhance") {
-                        EnhanceAction(cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_LEVEL)))
-                    } else {
-                        StatusAction(Relic.Status.valueOf(actionDb.uppercase()))
-                    }
-                }
-
-                groupData.add(
-                    ActionGroup(
-                        cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper.RulesTable._ID)),
-                        Json.decodeFromString<MutableMap<Filter.Type, Filter>>(cursor.getString(cursor.getColumnIndexOrThrow(
-                            DBHelper.RulesTable.COLUMN_FILTERS))),
-                        cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_POS)),
-                        null,
-                        mutableListOf(),
-                        action,
-                    )
-                )
-            } while (cursor.moveToNext())
-        }
-
-        cursor.close()
-        dbManager.close()
 
         groupAdapter = GroupAdapter(groupData, this)
 
@@ -129,8 +86,6 @@ class RuleBodyFragment(
             val index = bundle.getInt("index")
             this.onChildDelete(index, groupData[index])
         }
-
-
         parentFragmentManager.setFragmentResultListener("new_group", viewLifecycleOwner) { _, bundle ->
             this.onChildCreate(bundle.getParcelable<ActionGroup>("group")!!)
         }

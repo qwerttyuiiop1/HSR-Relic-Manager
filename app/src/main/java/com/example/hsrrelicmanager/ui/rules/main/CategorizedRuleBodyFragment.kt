@@ -246,8 +246,11 @@ class CategorizedRuleBodyFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val groupData = (activity as MainActivity).groupData
-        this._groupChangeHandler.group.groupList = groupData
+        val dbManager = (requireContext() as MainActivity).dbManager
+        dbManager.open()
+        val groupData = dbManager.listGroups()
+        _groupChangeHandler.group.groupList = groupData
+        dbManager.close()
         groupAdapter = CategorizedGroupAdapter(groupData)
         val categorizedGroupAdapter = groupAdapter
 

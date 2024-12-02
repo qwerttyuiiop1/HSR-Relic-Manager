@@ -1,5 +1,6 @@
 package com.example.hsrrelicmanager.ui.rules
 
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.RenderEffect
@@ -25,11 +26,11 @@ import com.example.hsrrelicmanager.ui.MainActivity
 import com.example.hsrrelicmanager.ui.blur
 import com.example.hsrrelicmanager.ui.db.DBManager
 import java.util.Collections
-import kotlin.properties.Delegates
 
 class GroupBodyFragment(
     private val _groupChangeHandler: GroupChangeHandler,
-    private val parentCallback: GroupChangeListener? = null
+    private val parentCallback: GroupChangeListener? = null,
+    private var shouldCreate: Boolean = false
 ) : Fragment(), GroupChangeListener by _groupChangeHandler {
     constructor(
         parent: ActionGroup?,
@@ -37,20 +38,9 @@ class GroupBodyFragment(
     ) : this(
         GroupChangeHandler(ActionGroup(parentGroup = parent)),
         parentCallback,
-    ) {
-        if (parentCallback == null) {
-            parentFragmentManager.setFragmentResult("new_group", Bundle().apply {
-                putParcelable("group", group)
-            })
-        } else {
-            parentCallback.onChildCreate(group)
-        }
-    }
-    constructor(): this(GroupChangeHandler(ActionGroup()), null) {
-        parentFragmentManager.setFragmentResult("new_group", Bundle().apply {
-            putParcelable("group", group)
-        })
-    }
+        true
+    )
+    constructor(): this(GroupChangeHandler(ActionGroup()), null, true)
     private val group by _groupChangeHandler
 
     init {
@@ -81,7 +71,6 @@ class GroupBodyFragment(
 
     private lateinit var dbManager: DBManager
 
-    private var thisId by Delegates.notNull<Long>()
     private lateinit var binding: FragmentFilterGroupBodyBinding
 
     private lateinit var adapterFilter: FilterAdapter
@@ -99,14 +88,6 @@ class GroupBodyFragment(
         binding = FragmentFilterGroupBodyBinding.inflate(inflater, container, false)
 
         binding.apply {
-//            creatingChild = false
-
-//            // Create the group
-//            dbManager.open()
-//            thisId = dbManager.insertGroup(mutableMapOf(), null, null, null)
-//            thisGroup = ActionGroup(thisId)
-//            dbManager.close()
-
             // Initialize Filter Adapter
             adapterFilter = FilterAdapter(group.filters, this@GroupBodyFragment)
             recyclerViewFilterGroup.layoutManager = LinearLayoutManager(context)
@@ -268,60 +249,18 @@ class GroupBodyFragment(
         return binding.root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-//        Log.d("AddGroupBodyFragment", "Being destroyed!")
-//        Log.d("AddGroupBodyFragment", "Filter Items:")
-//        Log.d("AddGroupBodyFragment", filterBuilders.joinToString("\n"))
-//        Log.d("AddGroupBodyFragment", "Filter Items in JSON:")
-//        Log.d("AddGroupBodyFragment", filterBuilders.joinToString {
-//            Json.encodeToString(it.buildFilter())
-//        })
-//        Log.d("AddGroupBodyFragment", "Action Item:")
-//        Log.d("AddGroupBodyFragment", actionItem.toString())
-//        Log.d("AddGroupBodyFragment", "Action Groups:")
-//        Log.d("AddGroupBodyFragment", actionGroups.joinToString("\n"))
-        //Log.d("AddGroupBodyFragment", "GroupData")
-        //Log.d("AddGroupBodyFragment", (requireActivity() as MainActivity).groupData.joinToString("\n"))
-
-
-//        // Filters
-//        val filterMap: MutableMap<Filter.Type, Filter?> = mutableMapOf()
-//        for (filterItem in filterBuilders) {
-//            val filter = filterItem.buildFilter()
-//            filter.filterType?.let { filterMap.put(it, filter) }
-//        }
-//
-//        // Group List
-//        var groupList: MutableList<ActionGroup> = mutableListOf()
-//        if (actionGroups.isNotEmpty()) {
-//            groupList = actionGroups
-//        }
-//
-//        // Default Action
-//        var action: Action? = null
-//        if (actionItem[0].isNotEmpty()) {
-//            action = when (actionItem[0]) {
-//                "Enhance" -> EnhanceAction(adapterAction.getLevelNumber())
-//                "Reset" -> StatusAction(Relic.Status.DEFAULT)
-//                else -> StatusAction(Relic.Status.valueOf(actionItem[0].uppercase()))
-//            }
-//        }
-//
-//        // Newly-Created Group
-//        if (group.filters.isNotEmpty() ||
-////            groupList.isNotEmpty() ||
-//            group.action != null) {
-
-//            dbManager.open()
-//            dbManager.updateGroup(group)
-//            dbManager.close()
-//        }
-//        else {
-//            dbManager.open()
-//            dbManager.deleteGroup(thisId)
-//            dbManager.close()
-//        }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (shouldCreate) {
+            shouldCreate = false
+            if (parentCallback == null) {
+                parentFragmentManager.setFragmentResult("new_group", Bundle().apply {
+                    putParcelable("group", group)
+                })
+            } else {
+                parentCallback.onChildCreate(group)
+            }
+        }
     }
 
     private fun blurBackground() {
