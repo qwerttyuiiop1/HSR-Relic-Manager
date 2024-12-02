@@ -116,7 +116,7 @@
                 android:id="@+id/recyclerViewFilterGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
+                android:nestedScrollingEnabled="true"
                 app:layout_constrainedHeight="true" />
 
             <!-- Divider Line -->
