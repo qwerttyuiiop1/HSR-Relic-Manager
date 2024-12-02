@@ -43,14 +43,14 @@ class OrganizeInventoryTask: ResetRunner() {
             if (action == "LOCK" && !isLocked) {
                 if (isTrash) {
                     trashBtn.click()
-                    delay(3000)
+                    delay(1000)
                 }
                 lockBtn.click()
                 delay(3000)
             } else if (action == "TRASH" && !isTrash) {
                 if (isLocked) {
                     lockBtn.click()
-                    delay(3000)
+                    delay(1000)
                 }
                 trashBtn.click()
                 delay(3000)
@@ -89,7 +89,9 @@ class OrganizeInventoryTask: ResetRunner() {
                     val relic = join(ScanInst(ui))
 
                     val relic_ids = dbManager.findRelicIds(relic)
-                    val manual_status = manualStatuses.firstOrNull { it.first.id in relic_ids }
+                    val manual_status = manualStatuses.keys.find { it.id in relic_ids }?.let {
+                        Pair(it, manualStatuses[it]!!)
+                    }
                     if (manual_status != null) {
                         val relic_id = manual_status.first.id
                         val statuses = manual_status.second
@@ -108,7 +110,7 @@ class OrganizeInventoryTask: ResetRunner() {
                                 }
                             }
                             dbManager.deleteStatus(relic_id, statuses.map { it.name })
-                            manualStatuses.removeIf { it.first.id == relic_id }
+                            manualStatuses.remove(manual_status.first)
                         }
                     } else {
                         val id = if (relic_ids.isNotEmpty()) relic_ids[0] else null

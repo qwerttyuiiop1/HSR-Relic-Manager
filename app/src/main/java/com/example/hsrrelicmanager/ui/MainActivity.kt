@@ -12,6 +12,8 @@ import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.core.AutoclickService
 import com.example.hsrrelicmanager.databinding.ActivityMainBinding
 import com.example.hsrrelicmanager.databinding.NavbarBinding
+import com.example.hsrrelicmanager.model.relics.Relic
+import com.example.hsrrelicmanager.model.rules.ActionGroup
 import com.example.hsrrelicmanager.task.HSRAutoClickService
 import com.example.hsrrelicmanager.ui.db.DBManager
 import com.example.hsrrelicmanager.ui.inventory.InventoryBodyFragment
@@ -26,23 +28,33 @@ open class MainActivity : AppCompatActivity() {
     protected lateinit var navbarBinding: NavbarBinding
     private var selectedFrame: View? = null
 
-    val cachedGroupData by lazy {
-        dbManager.open()
-        val groupData = dbManager.listGroups()
-        dbManager.close()
-        groupData
+    var _groupData: MutableList<ActionGroup>? = null
+    var _manualStatus: MutableMap<Relic, List<Relic.Status>>? = null
+    var _relics: MutableList<Relic>? = null
+
+    val cachedGroupData: MutableList<ActionGroup> get() {
+        if (_groupData == null) {
+            dbManager.open()
+            _groupData = dbManager.listGroups()
+            dbManager.close()
+        }
+        return _groupData!!
     }
-    val cachedManualStatus by lazy {
-        dbManager.open()
-        val manualStatus = dbManager.listManualStatuses()
-        dbManager.close()
-        manualStatus
+    val cachedManualStatus: MutableMap<Relic, List<Relic.Status>> get() {
+        if (_manualStatus == null) {
+            dbManager.open()
+            _manualStatus = dbManager.listManualStatuses()
+            dbManager.close()
+        }
+        return _manualStatus!!
     }
-    val cachedRelics by lazy {
-        dbManager.open()
-        val relics = dbManager.listRelics()
-        dbManager.close()
-        relics
+    val cachedRelics: MutableList<Relic> get() {
+        if (_relics == null) {
+            dbManager.open()
+            _relics = dbManager.listRelics()
+            dbManager.close()
+        }
+        return _relics!!
     }
     var dbManager = DBManager(this)
 
@@ -79,7 +91,9 @@ open class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        finish()
+        _relics = null
+        _groupData = null
+        _manualStatus = null
     }
 
     override fun onDestroy() {

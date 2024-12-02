@@ -1,6 +1,5 @@
 package com.example.hsrrelicmanager.ui.rules
 
-import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.RenderEffect
@@ -19,9 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.FragmentFilterGroupBodyBinding
+import com.example.hsrrelicmanager.model.rules.ActionGroup
 import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.rules.action.Action
-import com.example.hsrrelicmanager.model.rules.ActionGroup
 import com.example.hsrrelicmanager.ui.MainActivity
 import com.example.hsrrelicmanager.ui.blur
 import com.example.hsrrelicmanager.ui.db.DBManager
@@ -248,21 +247,22 @@ class GroupBodyFragment(
             }
         }
 
-        return binding.root
-    }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
         if (shouldCreate) {
             shouldCreate = false
             if (parentCallback == null) {
-                parentFragmentManager.setFragmentResult("new_group", Bundle().apply {
-                    putParcelable("group", group)
-                })
+                if (group.parentGroup != null) {
+                    throw IllegalStateException("non-root group must not have a parent callback")
+                }
+                onCreateRoot(group)
+                parentFragmentManager.setFragmentResult("child_created", Bundle())
             } else {
                 parentCallback.onChildCreate(group)
             }
         }
+
+
+        return binding.root
     }
 
     private fun blurBackground() {

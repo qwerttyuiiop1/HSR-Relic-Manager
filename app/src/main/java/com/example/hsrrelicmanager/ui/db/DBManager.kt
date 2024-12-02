@@ -41,8 +41,8 @@ class DBManager(private val context: Context) {
 
 
     /* RULES TABLE */
-    fun insertGroup(group: ActionGroup) {
-        insertGroup(group.filters, group.position, group.action, group.parentGroup?.id)
+    fun insertGroup(group: ActionGroup): Long {
+        return insertGroup(group.filters, group.position, group.action, group.parentGroup?.id)
     }
     fun insertGroup(
         filters: MutableMap<Filter.Type, Filter>,
@@ -118,7 +118,7 @@ class DBManager(private val context: Context) {
                     action = if (actionDb == "Enhance") {
                         EnhanceAction(cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_LEVEL)))
                     } else {
-                        StatusAction(Relic.Status.valueOf(actionDb.uppercase()))
+                        StatusAction(Relic.Status.valueOf(actionDb))
                     }
                 }
                 val id = cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper.RulesTable._ID))
@@ -171,19 +171,19 @@ class DBManager(private val context: Context) {
             } else {
                 putNull(DBHelper.RulesTable.COLUMN_PARENT_ID)
             }
+            val action = group.action
 
-            if (group.action == null) {
+            if (action == null) {
                 putNull(DBHelper.RulesTable.COLUMN_ACTION)
                 putNull(DBHelper.RulesTable.COLUMN_LEVEL)
-            } else if (group.action is EnhanceAction) {
+            } else if (action is EnhanceAction) {
                 put(DBHelper.RulesTable.COLUMN_ACTION, "Enhance")
-                put(DBHelper.RulesTable.COLUMN_LEVEL, (group.action as EnhanceAction).targetLevel)
-            } else {
-                put(DBHelper.RulesTable.COLUMN_ACTION, group.action!!.name)
+                put(DBHelper.RulesTable.COLUMN_LEVEL, action.targetLevel)
+            } else if (action is StatusAction){
+                put(DBHelper.RulesTable.COLUMN_ACTION, action.targetStatus.name)
                 putNull(DBHelper.RulesTable.COLUMN_LEVEL)
             }
         }
-        Log.d("TEST", "UPDATED")
 
         return database.update(
             DBHelper.RulesTable.TABLE_NAME,
@@ -571,7 +571,7 @@ class DBManager(private val context: Context) {
         return statuses
     }
 
-    fun listManualStatuses(): MutableList<Pair<Relic, List<Relic.Status>>> {
+    fun listManualStatuses(): MutableMap<Relic, List<Relic.Status>> {
         val allManualStatus = mutableListOf<Pair<Long, Relic.Status>>()
         val cursor = database.query(
             DBHelper.TABLE_MANUAL_STATUS,
@@ -594,9 +594,9 @@ class DBManager(private val context: Context) {
         val relicIds = allManualStatus.map { it.first }.distinct()
         val relics = listRelics().filter { relicIds.contains(it.id) }
 
-        return relics.map { relic ->
-            Pair(relic, allManualStatus.filter { it.first == relic.id }.map { it.second })
-        }.toMutableList()
+        return relics.map { r ->
+            r to allManualStatus.filter { it.first == r.id }.map { it.second }
+        }.toMap().toMutableMap()
     }
 
     fun deleteStatus(relic: Relic) {

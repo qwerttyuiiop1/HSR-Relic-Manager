@@ -220,11 +220,6 @@ class RelicBottomSheetFragment(
         dbManager.open()
         dbManager.setManualStatus(relic)
         dbManager.close()
-        val manualStatusIdx = mainActivity.cachedManualStatus.indexOfFirst { it.first.id == relic.id }
-        if (manualStatusIdx != -1) {
-            mainActivity.cachedManualStatus[manualStatusIdx] = Pair(relic, relic.status)
-        } else {
-            mainActivity.cachedManualStatus.add(Pair(relic, relic.status))
-        }
+        mainActivity.cachedManualStatus[relic] = relic.status
     }
 }

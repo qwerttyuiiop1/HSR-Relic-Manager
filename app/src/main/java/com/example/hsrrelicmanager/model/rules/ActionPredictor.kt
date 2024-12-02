@@ -7,10 +7,10 @@ import com.example.hsrrelicmanager.model.rules.action.StatusAction
 
 class ActionPredictor(
     val actionGroups: List<ActionGroup>,
-    val manualActions: List<Pair<Relic, List<Relic.Status>>>
+    val manualActions: Map<Relic, List<Relic.Status>>
 ) {
     fun predict(relic: Relic): List<Action>? {
-        val manualAction = manualActions.find { it.first == relic }?.second
+        val manualAction = manualActions[relic]
         if (manualAction != null) {
             return manualAction.map {
                 if (it == Relic.Status.UPGRADE) {

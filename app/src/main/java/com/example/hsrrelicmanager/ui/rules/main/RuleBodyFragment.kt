@@ -70,8 +70,6 @@ class RuleBodyFragment(
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = groupAdapter
 
-        var swipedItemIndex: Int = -1
-
         // Listens for action from delete dialog
         // TODO: refactor to use listener
         parentFragmentManager.setFragmentResultListener("delete_rule_request", viewLifecycleOwner) { _, bundle ->
@@ -80,6 +78,9 @@ class RuleBodyFragment(
         }
         parentFragmentManager.setFragmentResultListener("new_group", viewLifecycleOwner) { _, bundle ->
             this.onChildCreate(bundle.getParcelable<ActionGroup>("group")!!)
+        }
+        parentFragmentManager.setFragmentResultListener("childCreated", viewLifecycleOwner) { _, bundle ->
+            groupAdapter.notifyDataSetChanged()
         }
 
 

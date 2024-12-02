@@ -20,6 +20,8 @@ interface GroupChangeListener {
     fun onChildDelete(i: Int, group: ActionGroup)
     fun onChildCreate(group: ActionGroup)
     fun onUpdateAction(action: Action?)
+
+    fun onCreateRoot(group: ActionGroup)
 }
 
 class GroupChangeHandler(
@@ -131,11 +133,24 @@ class GroupChangeHandler(
         this.group.groupList.add(group)
         val mgr = this.dbManager
         mgr.open()
-        mgr.insertGroup(group)
+        val id = mgr.insertGroup(group)
+        group.id = id
         for (i in this.group.groupList.indices) {
             this.group.groupList[i].position = i
             mgr.updateGroup(this.group.groupList[i])
         }
+        mgr.close()
+    }
+
+    override fun onCreateRoot(group: ActionGroup) {
+        this.group = group
+        val mgr = this.dbManager
+        val activity = fragment.activity as MainActivity
+        group.position = activity.cachedGroupData.size
+        activity.cachedGroupData.add(group)
+        mgr.open()
+        val id = mgr.insertGroup(group)
+        group.id = id
         mgr.close()
     }
 }
