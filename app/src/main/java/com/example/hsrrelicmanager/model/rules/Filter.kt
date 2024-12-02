@@ -58,7 +58,7 @@ sealed class Filter {
         override val filterType: Type = Type.SLOT
         override val name: String = "Relic Type"
         override val description
-            get() = types.joinToString(", ")
+            get() = types.map{it.name}.joinToString(", ")
 
         override fun accepts(relic: Relic): Boolean {
             return types.contains(relic.slot)
@@ -74,7 +74,7 @@ sealed class Filter {
         override val filterType: Type = Type.MAIN_STAT
         override val name: String = "Main Stat"
         override val description: String
-            get() = stats.joinToString(", ")
+            get() = stats.map{it.name}.joinToString(", ")
 
         override fun accepts(relic: Relic): Boolean {
             return stats.any { it == relic.mainstat }
@@ -91,7 +91,7 @@ sealed class Filter {
         override val filterType: Type = Type.SUB_STATS
         override val name: String = "Sub Stats"
         override val description: String
-            get() = stats.keys.joinToString(", ")
+            get() = stats.keys.map{it.name}.joinToString(", ")
 
         override fun accepts(relic: Relic): Boolean {
             //return stats.any { relic.substats.containsKey(it) }
