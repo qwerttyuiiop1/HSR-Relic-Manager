@@ -160,8 +160,8 @@ class ScanInventoryUIBinding private constructor(
     val container = RelicContainer(binding.gridLayout)
 
     val relicName = UIBldr(binding.lblRelicName, ctx, scale = 1.0f).textArea
-    val relicType = UIBldr(binding.lblType, ctx).textArea
-    val relicLevel = UIBldr(binding.lblLevel, ctx).textArea
+    val relicType = UIBldr(binding.lblType, ctx, scale = 1f).textArea
+    val relicLevel = UIBldr(binding.lblLevel, ctx, scale = 1f).textArea
     inner class RelicRarity(
         v: View
     ): UIElement by UIBldr(v, ctx).element {
@@ -204,8 +204,8 @@ class ScanInventoryUIBinding private constructor(
     val relicLock = SelectableIcon(binding.icLock)
     val relicTrash = SelectableIcon(binding.icTrash)
 
-    val mainStat = UIBldr(binding.lblMainStat, ctx).textArea
-    val mainStatValue = UIBldr(binding.lblMainStatValue, ctx).textArea
+    val mainStat = UIBldr(binding.lblMainStat, ctx, scale = 1f).textArea
+    val mainStatValue = UIBldr(binding.lblMainStatValue, ctx, scale = 1f).textArea
 
     inner class SubstatIcon(
         val icon: UIElement
@@ -236,22 +236,22 @@ class ScanInventoryUIBinding private constructor(
         SubstatIcon(binding.icSubStat4),
     )
     val substatLabels = listOf(
-        UIBldr(binding.lblSubStat1, ctx).textArea,
-        UIBldr(binding.lblSubStat2, ctx).textArea,
-        UIBldr(binding.lblSubStat3, ctx).textArea,
-        UIBldr(binding.lblSubStat4, ctx).textArea,
+        UIBldr(binding.lblSubStat1, ctx, scale = 1f).textArea,
+        UIBldr(binding.lblSubStat2, ctx, scale = 1f).textArea,
+        UIBldr(binding.lblSubStat3, ctx, scale = 1f).textArea,
+        UIBldr(binding.lblSubStat4, ctx, scale = 1f).textArea,
     )
 
     val substatValues = listOf(
-        UIBldr(binding.lblSubStat1Value, ctx).textArea,
-        UIBldr(binding.lblSubStat2Value, ctx).textArea,
-        UIBldr(binding.lblSubStat3Value, ctx).textArea,
-        UIBldr(binding.lblSubStat4Value, ctx).textArea,
+        UIBldr(binding.lblSubStat1Value, ctx, scale = 1f).textArea,
+        UIBldr(binding.lblSubStat2Value, ctx, scale = 1f).textArea,
+        UIBldr(binding.lblSubStat3Value, ctx, scale = 1f).textArea,
+        UIBldr(binding.lblSubStat4Value, ctx, scale = 1f).textArea,
     )
 
-    val numRelics = UIBldr(binding.numRelics, ctx).textArea
+    val numRelics = UIBldr(binding.numRelics, ctx, scale = 1f).textArea
 
-    val relicEquipped = UIBldr(binding.lblRelicEquipped, ctx).textArea
+    val relicEquipped = UIBldr(binding.lblRelicEquipped, ctx, scale = 1f).textArea
 
     val exitBtn = UIBldr(binding.btnExit, ctx).button
     val enhanceBtn = UIBldr(binding.btnEnhance, ctx).textButton

@@ -21,7 +21,7 @@ class ScanInst(
     @Suppress("UNCHECKED_CAST")
     override suspend fun run(): MyResult<Relic> {
         awaitTick()
-        val bldr = RelicBuilder(/*isPrev=true*/)
+        val bldr = RelicBuilder()
         val textFields = listOf(
             ui.relicLevel,
             ui.mainStatValue,

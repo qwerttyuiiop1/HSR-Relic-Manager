@@ -85,10 +85,8 @@ class RelicBuilder(
     var mainstatVal: String = "",
     var msubstats: MutableSet<Substat> = mutableSetOf(),
     var mstatus: MutableList<Relic.Status> = mutableListOf(),
-//    prev: RelicBuilder? = null,
-//    val isPrev: Boolean = false,
 ) {
-    constructor(r: Relic, /*isPrev: Boolean = false*/): this(
+    constructor(r: Relic): this(
         r.id,
         r.set,
         r.slot,
@@ -98,15 +96,8 @@ class RelicBuilder(
         r.mainstatVal,
         r.substats.toMutableSet(),
         r.status.toMutableList(),
-//        if (isPrev) {
-//            null
-//        } else {
-//            if (r.prev == null) RelicBuilder(r, true)
-//            else RelicBuilder(r.prev, true)
-//        },
-//        isPrev
     )
-    constructor(r: RelicBuilder, /*isPrev: Boolean*/): this(
+    constructor(r: RelicBuilder): this(
         r.id,
         r.set,
         r.slot,
@@ -115,27 +106,8 @@ class RelicBuilder(
         r.mainstat,
         r.mainstatVal,
         r.msubstats.toMutableSet(),
-        r.mstatus.toMutableList(),
-//        if (isPrev) {
-//            null
-//        } else {
-//            if (r._prev == null) RelicBuilder(r, true)
-//            else RelicBuilder(r._prev!!, true)
-//        },
-//        isPrev,
+        r.mstatus.toMutableList()
     )
-
-//    private var _prev = prev
-//    init {
-//        if (isPrev && prev != null)
-//            throw IllegalAccessException("Cannot set prev on prev")
-//    }
-//    var prev: RelicBuilder
-//        get() = _prev!!
-//        set(value) {
-//            if (isPrev) throw IllegalAccessException("Cannot set prev on prev")
-//            _prev = value
-//        }
 
     var substats: Set<Substat>
         get() = msubstats
@@ -149,7 +121,6 @@ class RelicBuilder(
         }
 
     fun build(): Relic {
-//        val prev = if (isPrev) null else this.prev.build()
-        return Relic(id, set, slot!!, rarity, level, mainstat!!, mainstatVal, msubstats, mstatus, /*prev*/)
+        return Relic(id, set, slot!!, rarity, level, mainstat!!, mainstatVal, msubstats, mstatus)
     }
 }

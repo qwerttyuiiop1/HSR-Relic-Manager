@@ -205,15 +205,14 @@
                 android:background="@drawable/border_red"/>
             <TextView
                 android:id="@+id/lbl_main_stat"
-                android:layout_width="270px"
+                android:layout_width="0px"
+                android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:background="@drawable/border_red"/>
             <TextView
                 android:id="@+id/lbl_main_stat_value"
-                android:layout_width="0px"
-                android:layout_weight="1"
+                android:layout_width="125px"
                 android:layout_height="match_parent"
-                android:layout_marginStart="50px"
                 android:background="@drawable/border_red"/>
         </LinearLayout>
         <LinearLayout
@@ -225,15 +224,14 @@
                 android:background="@drawable/border_red"/>
             <TextView
                 android:id="@+id/lbl_sub_stat1"
-                android:layout_width="270px"
+                android:layout_width="0px"
+                android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:background="@drawable/border_red"/>
             <TextView
                 android:id="@+id/lbl_sub_stat1_value"
-                android:layout_width="0px"
-                android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:layout_marginStart="50px"
+                android:layout_width="125px"
                 android:background="@drawable/border_red"/>
         </LinearLayout>
         <LinearLayout
@@ -245,15 +243,14 @@
                 android:background="@drawable/border_red"/>
             <TextView
                 android:id="@+id/lbl_sub_stat2"
-                android:layout_width="270px"
+                android:layout_width="0px"
+                android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:background="@drawable/border_red"/>
             <TextView
                 android:id="@+id/lbl_sub_stat2_value"
-                android:layout_width="0px"
-                android:layout_weight="1"
+                android:layout_width="125px"
                 android:layout_height="match_parent"
-                android:layout_marginStart="50px"
                 android:background="@drawable/border_red"/>
         </LinearLayout>
         <LinearLayout
@@ -265,15 +262,14 @@
                 android:background="@drawable/border_red"/>
             <TextView
                 android:id="@+id/lbl_sub_stat3"
-                android:layout_width="270px"
+                android:layout_width="0px"
+                android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:background="@drawable/border_red"/>
             <TextView
                 android:id="@+id/lbl_sub_stat3_value"
-                android:layout_width="0px"
-                android:layout_weight="1"
+                android:layout_width="125px"
                 android:layout_height="match_parent"
-                android:layout_marginStart="50px"
                 android:background="@drawable/border_red"/>
         </LinearLayout>
         <LinearLayout
@@ -285,14 +281,13 @@
                 android:background="@drawable/border_red"/>
             <TextView
                 android:id="@+id/lbl_sub_stat4"
-                android:layout_width="270px"
+                android:layout_width="0px"
+                android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:background="@drawable/border_red"/>
             <TextView
                 android:id="@+id/lbl_sub_stat4_value"
-                android:layout_width="0px"
-                android:layout_marginStart="50px"
-                android:layout_weight="1"
+                android:layout_width="125px"
                 android:layout_height="match_parent"
                 android:background="@drawable/border_red"/>
         </LinearLayout>
