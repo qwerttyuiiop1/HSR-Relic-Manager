@@ -79,9 +79,15 @@ open class AppController (
     }
 
     open fun handleTask(task: String) {
-        taskHandler.performTask(task)
+        if (task == Task.CLOSE.name)
+            svc.handleAction(AutoclickService.ACTION_CLOSE)
+        else
+            taskHandler.performTask(task)
     }
     fun handleTask(task: Task) {
-        taskHandler.performTask(task)
+        if (task == Task.CLOSE)
+            svc.handleAction(AutoclickService.ACTION_CLOSE)
+        else
+            taskHandler.performTask(task)
     }
 }
