@@ -28,9 +28,31 @@ import java.util.Collections
 import kotlin.properties.Delegates
 
 class GroupBodyFragment(
-    private val callback: GroupChangeListener? = null,
-    private val _groupChangeHandler: GroupChangeHandler = GroupChangeHandler(ActionGroup())
+    private val _groupChangeHandler: GroupChangeHandler,
+    private val parentCallback: GroupChangeListener? = null
 ) : Fragment(), GroupChangeListener by _groupChangeHandler {
+    constructor(
+        parent: ActionGroup?,
+        parentCallback: GroupChangeListener? = null
+    ) : this(
+        GroupChangeHandler(ActionGroup(parentGroup = parent)),
+        parentCallback,
+    ) {
+        if (parentCallback == null) {
+            parentFragmentManager.setFragmentResult("new_group", Bundle().apply {
+                putParcelable("group", group)
+            })
+        } else {
+            parentCallback.onChildCreate(group)
+        }
+    }
+    constructor(): this(GroupChangeHandler(ActionGroup()), null) {
+        parentFragmentManager.setFragmentResult("new_group", Bundle().apply {
+            putParcelable("group", group)
+        })
+    }
+    private val group by _groupChangeHandler
+
     init {
         _groupChangeHandler.fragment = this
     }
@@ -57,7 +79,6 @@ class GroupBodyFragment(
         adapterGroup.notifyItemRangeChanged(i, adapterGroup.groupData.size - i)
     }
 
-    private val group by _groupChangeHandler
     private lateinit var dbManager: DBManager
 
     private var thisId by Delegates.notNull<Long>()
@@ -237,7 +258,7 @@ class GroupBodyFragment(
                         R.anim.fade_in_delayed,
                         R.anim.slide_out)
                     .replace(R.id.body_fragment_container, GroupBodyFragment(
-                        this@GroupBodyFragment
+                        group
                     ))
                     .addToBackStack(null)
                     .commit()
@@ -288,27 +309,19 @@ class GroupBodyFragment(
 //        }
 //
 //        // Newly-Created Group
-        if (group.filters.isNotEmpty() ||
-//            groupList.isNotEmpty() ||
-            group.action != null) {
+//        if (group.filters.isNotEmpty() ||
+////            groupList.isNotEmpty() ||
+//            group.action != null) {
 
 //            dbManager.open()
 //            dbManager.updateGroup(group)
 //            dbManager.close()
-
-            if (callback == null) {
-                parentFragmentManager.setFragmentResult("new_group", Bundle().apply {
-                    putParcelable("group", group)
-                })
-            } else {
-                callback.onChildCreate(group)
-            }
-        }
-        else {
+//        }
+//        else {
 //            dbManager.open()
 //            dbManager.deleteGroup(thisId)
 //            dbManager.close()
-        }
+//        }
     }
 
     private fun blurBackground() {

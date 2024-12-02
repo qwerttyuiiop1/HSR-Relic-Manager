@@ -40,7 +40,6 @@ class GroupAdapter(val groupData: MutableList<ActionGroup>, private val ruleBody
         private val filterContainer: ViewGroup = itemView.findViewById(R.id.filter_container)
         internal val card: LinearLayout = itemView.findViewById(R.id.group_card)
         val ivTrash: ImageView = itemView.findViewById(R.id.trash_icon)
-        private val root: View? = null
         private var pos = 0
         lateinit var group: ActionGroup
 
@@ -50,8 +49,8 @@ class GroupAdapter(val groupData: MutableList<ActionGroup>, private val ruleBody
                     .beginTransaction()
                     .replace(R.id.header_fragment_container, GroupHeaderFragment())
                     .replace(R.id.body_fragment_container, GroupBodyFragment(
-                        ruleBodyFragment as GroupChangeListener,
-                        GroupChangeHandler(group)
+                        GroupChangeHandler(group),
+                        ruleBodyFragment as GroupChangeListener
                     ))
                     .addToBackStack(null)
                     .commit()
@@ -68,16 +67,14 @@ class GroupAdapter(val groupData: MutableList<ActionGroup>, private val ruleBody
 
             // check class of group is filter / action group
             for (filter in group.filters.values) {
-                if (filter != null) {
-                    val binding = GroupCardDescriptionBinding.inflate(
-                        LayoutInflater.from(filterContainer.context),
-                        filterContainer,
-                        false
-                    )
-                    binding.rowName.text = filter.name + ':'
-                    binding.rowValue.text = filter.description
-                    filterContainer.addView(binding.root)
-                }
+                val binding = GroupCardDescriptionBinding.inflate(
+                    LayoutInflater.from(filterContainer.context),
+                    filterContainer,
+                    false
+                )
+                binding.rowName.text = filter.name + ':'
+                binding.rowValue.text = filter.description
+                filterContainer.addView(binding.root)
             }
         }
 

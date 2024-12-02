@@ -79,8 +79,8 @@ class RuleBodyFragment(
 
         // Fetch
         val cursor = dbManager.fetchGroups()
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
+        if (cursor.moveToFirst()) {
+            do {
                 // Action
                 var action: Action? = null
                 var actionDb: String
@@ -107,7 +107,7 @@ class RuleBodyFragment(
                         action,
                     )
                 )
-            }
+            } while (cursor.moveToNext())
         }
 
         cursor.close()
