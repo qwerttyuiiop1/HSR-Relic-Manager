@@ -94,6 +94,7 @@ open class MainActivity : AppCompatActivity() {
             val i = Intent(this, HSRAutoClickService::class.java)
             i.setAction(AutoclickService.ACTION_INIT)
             startService(i)
+            finish()
         }
 
         navbarBinding.inventoryButtonFrame.setOnClickListener {

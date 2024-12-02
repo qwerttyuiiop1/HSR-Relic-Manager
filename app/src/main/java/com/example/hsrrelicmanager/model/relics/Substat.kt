@@ -53,7 +53,7 @@ val substatSets = listOf(
         R.drawable.stat_critdmg
     ),
     Substat(
-        "Effect HIT Rate",
+        "Effect Hit Rate",
         R.drawable.stat_effecthit
     ),
     Substat(

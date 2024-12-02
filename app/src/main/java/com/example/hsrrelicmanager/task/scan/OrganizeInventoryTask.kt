@@ -41,9 +41,17 @@ class OrganizeInventoryTask: ResetRunner() {
             val isTrash = trashBtn.isSelected()
 
             if (action == "LOCK" && !isLocked) {
+                if (isTrash) {
+                    trashBtn.click()
+                    delay(3000)
+                }
                 lockBtn.click()
                 delay(1000)
             } else if (action == "TRASH" && !isTrash) {
+                if (isLocked) {
+                    lockBtn.click()
+                    delay(3000)
+                }
                 trashBtn.click()
                 delay(1000)
             } else if (action == "DEFAULT") {
@@ -73,7 +81,8 @@ class OrganizeInventoryTask: ResetRunner() {
                         return (action as StatusAction).targetStatus.name
                     }
                     suspend fun updateRelicInDb(id: Long) {
-
+                        val relic = join(ScanInst(ui))
+                        dbManager.updateInventory(relic.copy(id = id))
                     }
                     awaitTick()
 

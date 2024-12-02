@@ -9,11 +9,11 @@ import com.example.hsrrelicmanager.core.exe.flatten
 import com.example.hsrrelicmanager.core.exe.instant
 import com.example.hsrrelicmanager.core.exe.multi
 import com.example.hsrrelicmanager.model.relics.Mainstat
-import com.example.hsrrelicmanager.model.relics.Slot
-import com.example.hsrrelicmanager.model.relics.Substat
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicBuilder
 import com.example.hsrrelicmanager.model.relics.RelicSet
+import com.example.hsrrelicmanager.model.relics.Slot
+import com.example.hsrrelicmanager.model.relics.Substat
 
 class ScanInst(
     val ui: ScanInventoryUIBinding
@@ -79,7 +79,10 @@ class ScanInst(
             var mainstat: Mainstat?
             do {
                 awaitTick()
-                mainstat = Mainstat.fromName(ui.mainStat.getText().text)
+                var text = ui.mainStat.getText().text
+                if (text == "DEF")
+                    text = "DEF%"
+                mainstat = Mainstat.fromName(text)
             } while (mainstat == null)
             MyResult.Success(mainstat)
         }
@@ -102,12 +105,19 @@ class ScanInst(
         bldr.level = pttrn.find(textRes[0])!!.value.toInt()
         bldr.mainstat = res[6] as Mainstat
         bldr.mainstatVal = textRes[1]
+        if (bldr.mainstat!!.name in listOf("HP", "ATK") && bldr.mainstatVal.contains("%"))
+            bldr.mainstat = Mainstat.fromName(bldr.mainstat!!.name + "%")
         for (i in 0..lastSubstat) {
             var name = substatLabelsRes[i]
+            val value = substatValuesRes[i]
+            if (name in listOf("HP", "ATK", "DEF") && value.contains("%"))
+                name += "%"
             var substat = Substat.fromName(name)
             while (substat == null) {
                 awaitTick()
                 name = ui.substatLabels[i].getText().text
+                if (name in listOf("HP", "ATK", "DEF") && value.contains("%"))
+                    name += "%"
                 substat = Substat.fromName(name)
             }
             substat = substat.copy(value = substatValuesRes[i])

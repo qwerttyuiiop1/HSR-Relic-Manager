@@ -51,7 +51,7 @@ val mainstatSets = listOf(
         R.drawable.stat_outgoing_healing
     ),
     Mainstat(
-        "Effect HIT Rate",
+        "Effect Hit Rate",
         R.drawable.stat_effecthit
     ),
     Mainstat(
