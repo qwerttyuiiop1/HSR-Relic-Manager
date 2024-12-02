@@ -150,7 +150,7 @@ class RelicBottomSheetFragment(
                 )
                 updateStatusIcons(relic, binding)
                 onUpdate(relic)
-                updateManualStatusInDB(relic)
+                updateManualStatus(relic)
             }
 
             btnRelicUpgrade.setOnClickListener {
@@ -170,7 +170,7 @@ class RelicBottomSheetFragment(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-//        binding = RelicBottomSheetBinding.inflate(inflater, container, false)
+        binding = RelicBottomSheetBinding.inflate(inflater, container, false)
 //        var relic = arguments?.getParcelable<Relic>("relic")!!
         updateView(binding, relic)
         return binding.root
@@ -214,10 +214,17 @@ class RelicBottomSheetFragment(
         }
     }
 
-    private fun updateManualStatusInDB(relic: Relic) {
-        val dbManager = (requireContext() as MainActivity).dbManager
+    private fun updateManualStatus(relic: Relic) {
+        val mainActivity = requireContext() as MainActivity
+        val dbManager = mainActivity.dbManager
         dbManager.open()
         dbManager.setManualStatus(relic)
         dbManager.close()
+        val manualStatusIdx = mainActivity.cachedManualStatus.indexOfFirst { it.first.id == relic.id }
+        if (manualStatusIdx != -1) {
+            mainActivity.cachedManualStatus[manualStatusIdx] = Pair(relic, relic.status)
+        } else {
+            mainActivity.cachedManualStatus.add(Pair(relic, relic.status))
+        }
     }
 }
