@@ -12,7 +12,7 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.GroupCardDescriptionBinding
-import com.example.hsrrelicmanager.model.rules.group.ActionGroup
+import com.example.hsrrelicmanager.model.rules.ActionGroup
 import com.example.hsrrelicmanager.ui.rules.GroupChangeListener
 
 class DeleteRuleDialogFragment(

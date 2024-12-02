@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.rules.action.Action
-import com.example.hsrrelicmanager.model.rules.group.ActionGroup
+import com.example.hsrrelicmanager.model.rules.ActionGroup
 import com.example.hsrrelicmanager.ui.MainActivity
 import com.example.hsrrelicmanager.ui.db.DBManager
 import com.example.hsrrelicmanager.ui.rules.modals.AddFilterDialog

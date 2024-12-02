@@ -19,7 +19,7 @@ import com.example.hsrrelicmanager.databinding.GroupCardDescriptionBinding
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
 import com.example.hsrrelicmanager.model.rules.action.StatusAction
-import com.example.hsrrelicmanager.model.rules.group.ActionGroup
+import com.example.hsrrelicmanager.model.rules.ActionGroup
 import com.example.hsrrelicmanager.ui.MainActivity
 import com.example.hsrrelicmanager.ui.blur
 import com.example.hsrrelicmanager.ui.rules.modals.DeleteRuleDialogFragment

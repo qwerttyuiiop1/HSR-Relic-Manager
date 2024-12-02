@@ -16,13 +16,13 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.model.rules.group.ActionGroup
+import com.example.hsrrelicmanager.model.rules.ActionGroup
 import com.example.hsrrelicmanager.ui.MainActivity
 import com.example.hsrrelicmanager.ui.blur
-import com.example.hsrrelicmanager.ui.rules.modals.DeleteRuleDialogFragment
 import com.example.hsrrelicmanager.ui.rules.GroupAdapter
 import com.example.hsrrelicmanager.ui.rules.GroupChangeHandler
 import com.example.hsrrelicmanager.ui.rules.GroupChangeListener
+import com.example.hsrrelicmanager.ui.rules.modals.DeleteRuleDialogFragment
 import java.util.Collections
 
 
@@ -54,15 +54,7 @@ class RuleBodyFragment(
         savedInstanceState: Bundle?
     ): View? {
         val mainActivity = requireActivity() as MainActivity
-        if (mainActivity.cachedGroupData != null) {
-            groupData = mainActivity.cachedGroupData!!
-        } else {
-            val dbManager = mainActivity.dbManager
-            dbManager.open()
-            groupData = dbManager.listGroups()
-            mainActivity.cachedGroupData = groupData
-            dbManager.close()
-        }
+        groupData = mainActivity.cachedGroupData
         _groupChangeHandler.group.groupList = groupData
         return inflater.inflate(R.layout.rule_body_fragment, container, false)
     }

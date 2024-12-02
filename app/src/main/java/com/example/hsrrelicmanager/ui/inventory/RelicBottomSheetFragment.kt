@@ -10,24 +10,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Toast
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.RelicBottomSheetBinding
 import com.example.hsrrelicmanager.model.relics.Relic
-import com.example.hsrrelicmanager.model.relics.RelicBuilder
+import com.example.hsrrelicmanager.model.rules.ActionPredictor
+import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
+import com.example.hsrrelicmanager.model.rules.action.StatusAction
 import com.example.hsrrelicmanager.ui.MainActivity
-import com.example.hsrrelicmanager.ui.db.DBManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class RelicBottomSheetFragment : BottomSheetDialogFragment() {
-    companion object {
-        operator fun invoke(r: Relic) =
-            RelicBottomSheetFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable("relic", r)
-                }
-            }
-    }
+class RelicBottomSheetFragment(
+    private val relic: Relic,
+    private val predictor: ActionPredictor,
+    private val onUpdate: (Relic) -> Unit
+) : BottomSheetDialogFragment() {
+//    companion object {
+//        operator fun invoke(r: Relic) =
+//            RelicBottomSheetFragment().apply {
+//                arguments = Bundle().apply {
+//                    putParcelable("relic", r)
+//                }
+//            }
+//    }
 
     private fun updateView(binding: RelicBottomSheetBinding, r: Relic) {
         var relic = r
@@ -40,45 +44,43 @@ class RelicBottomSheetFragment : BottomSheetDialogFragment() {
             imgRelicMainStat.setImageResource(relic.mainstatResource)
 
             imgRelic.setImageResource(relic.set.icon)
-            var isMaxed = false;
             var levelText = ""
             val goldSpan = ForegroundColorSpan(Color.parseColor("#FFC65C"))
 
-            if (relic.level == ((relic.level/3 + 1)*3).coerceAtMost(relic.rarity * 3)) {
-                isMaxed = true;
+            val action = predictor.predict(relic)
+            levelText = "+${relic.level}"
+            val spanString = SpannableString(levelText)
+            if (relic.level == relic.rarity * 3) {
+                spanString.setSpan(goldSpan, 0, levelText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
+            lblRelicLevel.text = spanString
 
-            // Level upgrading
-            if (relic.prev != null && relic.level != relic.prev!!.level) {
-                levelText = "+${relic.prev!!.level}  >  +${relic.level}"
-                val spanString = SpannableString(levelText)
+            val newStatus = relic.status.toMutableSet()
+            action?.forEach {
+                if (it is EnhanceAction) {
+                    var targetLevel = it.targetLevel
+                    if (targetLevel <= 0) {
+                        targetLevel = (relic.level / 3 + 1) * 3
+                        targetLevel = targetLevel.coerceAtMost(relic.rarity * 3)
+                        newStatus.add(Relic.Status.UPGRADE)
+                    }
 
-                if (isMaxed) {
-                    spanString.setSpan(goldSpan, 7, levelText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    levelText = "+${relic.level}  >  +${targetLevel}"
+                    val spanString = SpannableString(levelText)
+
+                    if (it.targetLevel == relic.rarity * 3) {
+                        spanString.setSpan(goldSpan, 7, levelText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    }
+                    lblRelicLevel.text = spanString
+
+                } else if (it is StatusAction) {
+                    val exclusiveStatus = listOf(Relic.Status.LOCK, Relic.Status.TRASH, Relic.Status.DEFAULT)
+                    if (it.targetStatus in exclusiveStatus)
+                        newStatus.removeAll(exclusiveStatus)
+                    newStatus.add(it.targetStatus)
                 }
-                lblRelicLevel.text = spanString
-
-                // Level unchanged
-            } else {
-                levelText = "+${relic.level}"
-                val spanString = SpannableString(levelText)
-
-                if (isMaxed) {
-                    spanString.setSpan(goldSpan, 0, levelText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                }
-                lblRelicLevel.text = spanString
             }
-
-            // Sync relic level from DB
-            if (relic.status.contains(Relic.Status.UPGRADE)) {
-                levelText = "+${relic.prev!!.level}  >  +${((relic.level/3 + 1)*3).coerceAtMost(relic.rarity * 3)}"
-                val spanString = SpannableString(levelText)
-
-                if (((relic.level/3 + 1)*3).coerceAtMost(relic.rarity * 3) == relic.rarity * 3) {
-                    spanString.setSpan(goldSpan, 7, levelText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                }
-                lblRelicLevel.text = spanString
-            }
+            relic = relic.copy(status = newStatus.toList())
 
             imgRelic.setBackgroundResource(relic.rarityResource)
 
@@ -131,45 +133,24 @@ class RelicBottomSheetFragment : BottomSheetDialogFragment() {
             updateStatusIcons(relic, binding)
 
             val toggleStatus = { old: Relic.Status ->
-                relic = RelicBuilder(relic).apply {
-                    mstatus = mstatus.toMutableList().apply {
-                        if (old in mstatus) {
+                relic = relic.copy(
+                    status = relic.status.toMutableList().apply {
+                        if (old in this) {
                             remove(old)
-                            if (old == Relic.Status.UPGRADE) {
-                                level = prev.level
-                            }
                             if (Relic.Status.LOCK !in this && Relic.Status.TRASH !in this) {
                                 add(Relic.Status.DEFAULT)
                             }
                         } else {
+                            val exclusiveStatus = listOf(Relic.Status.LOCK, Relic.Status.TRASH, Relic.Status.DEFAULT)
+                            if (old in exclusiveStatus)
+                                removeAll(exclusiveStatus)
                             add(old)
-                            if (old == Relic.Status.LOCK) {
-                                remove(Relic.Status.TRASH)
-                                remove(Relic.Status.DEFAULT)
-                            } else if (old == Relic.Status.TRASH) {
-                                remove(Relic.Status.LOCK)
-                                remove(Relic.Status.DEFAULT)
-                            } else if (old == Relic.Status.DEFAULT) {
-                                remove(Relic.Status.LOCK)
-                                remove(Relic.Status.TRASH)
-                            } else if (old == Relic.Status.UPGRADE) {
-                                val lprev = level
-                                level = ((lprev/3 + 1)*3).coerceAtMost(relic.rarity * 3)
-                                if (lprev == level) {
-                                    remove(Relic.Status.UPGRADE)
-                                    Toast.makeText(requireContext(), "Item already at max level.", Toast.LENGTH_SHORT).show()
-                                } else {
-                                    prev.level = lprev
-                                }
-                            }
                         }
                     }
-                }.build()
+                )
                 updateStatusIcons(relic, binding)
-                requireActivity().supportFragmentManager.setFragmentResult("relic", Bundle().apply {
-                    putParcelable("relic", relic)
-                    updateView(binding, relic)
-                })
+                onUpdate(relic)
+                updateManualStatusInDB(relic)
             }
 
             btnRelicUpgrade.setOnClickListener {
@@ -181,8 +162,6 @@ class RelicBottomSheetFragment : BottomSheetDialogFragment() {
             btnRelicTrash.setOnClickListener {
                 toggleStatus(Relic.Status.TRASH)
             }
-
-            updateStatusInDB(relic)
         }
     }
 
@@ -191,8 +170,8 @@ class RelicBottomSheetFragment : BottomSheetDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = RelicBottomSheetBinding.inflate(inflater, container, false)
-        var relic = arguments?.getParcelable<Relic>("relic")!!
+//        binding = RelicBottomSheetBinding.inflate(inflater, container, false)
+//        var relic = arguments?.getParcelable<Relic>("relic")!!
         updateView(binding, relic)
         return binding.root
     }
@@ -224,6 +203,7 @@ class RelicBottomSheetFragment : BottomSheetDialogFragment() {
         dialog?.apply {
             window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
             setOnShowListener {
+                @Suppress("UNRESOLVED_REFERENCE")
                 val bottomSheet = findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
                 bottomSheet?.setBackgroundResource(android.R.color.transparent)
 //                val blurRadius = 30f
@@ -234,16 +214,10 @@ class RelicBottomSheetFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun updateStatusInDB(relic: Relic) {
-        lateinit var dbManager: DBManager
-
-        dbManager = (requireContext() as MainActivity).dbManager
+    private fun updateManualStatusInDB(relic: Relic) {
+        val dbManager = (requireContext() as MainActivity).dbManager
         dbManager.open()
-
-        val add = relic.status - dbManager.fetchStatusForRelic(relic.id)
-        val delete = dbManager.fetchStatusForRelic(relic.id) - relic.status
-
-        dbManager.insertStatus(relic.id, add.map { it.name })
-        dbManager.deleteStatus(relic.id, delete.map { it.name })
+        dbManager.setManualStatus(relic)
+        dbManager.close()
     }
 }

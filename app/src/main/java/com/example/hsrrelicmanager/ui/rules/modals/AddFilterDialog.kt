@@ -11,7 +11,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.DialogSelectFilterBinding
 import com.example.hsrrelicmanager.model.rules.Filter
-import com.example.hsrrelicmanager.model.rules.group.FilterMap
+import com.example.hsrrelicmanager.model.rules.FilterMap
 import com.example.hsrrelicmanager.ui.MainActivity
 import com.example.hsrrelicmanager.ui.rules.GroupChangeListener
 

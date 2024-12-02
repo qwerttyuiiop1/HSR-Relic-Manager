@@ -8,12 +8,10 @@ import com.example.hsrrelicmanager.core.exe.ResetRunner
 import com.example.hsrrelicmanager.core.exe.TaskInstance
 import com.example.hsrrelicmanager.core.exe.default
 import com.example.hsrrelicmanager.model.relics.Relic
-import com.example.hsrrelicmanager.model.relics.RelicBuilder
-import com.example.hsrrelicmanager.model.rules.Filter
+import com.example.hsrrelicmanager.model.rules.ActionPredictor
 import com.example.hsrrelicmanager.model.rules.action.Action
 import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
 import com.example.hsrrelicmanager.model.rules.action.StatusAction
-import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 import com.example.hsrrelicmanager.ui.db.DBManager
 import kotlinx.coroutines.delay
 
@@ -62,74 +60,37 @@ class OrganizeInventoryTask: ResetRunner() {
         override suspend fun run(): MyResult<String> {
             awaitTick()
             val dbManager = DBManager(uiCtx.ctx).open()
+            val rules = dbManager.listGroups()
+            val manualStatuses = dbManager.listManualStatuses()
+            val predictor = ActionPredictor(rules, manualStatuses)
+
             join(InventoryIterator(ui) {
                 TaskInstance.default {
                     fun toActionString(action: Action): String {
                         if (action is EnhanceAction) {
                             return "ENHANCE-" + action.targetLevel.toString()
                         }
-
-                        // action is StatusAction
                         return (action as StatusAction).targetStatus.name
                     }
-                    fun applyToRelic(action: Action, bldr: RelicBuilder) {
-                        if (action is EnhanceAction) {
-                            bldr.level = action.targetLevel
-                        } else {
-                            val newStatus = mutableListOf<Relic.Status>()
+                    suspend fun updateRelicInDb(id: Long) {
 
-                            if (Relic.Status.EQUIPPED in bldr.status) {
-                                newStatus.add(Relic.Status.EQUIPPED)
-                            }
-                            newStatus.add((action as StatusAction).targetStatus)
-
-                            bldr.status = newStatus
-                        }
                     }
                     awaitTick()
 
                     val relic = join(ScanInst(ui))
-                    val new_relic_builder = RelicBuilder(relic, true)
-                    val dbManager = DBManager(uiCtx.ctx).open()
 
                     // 1. APPLY ALL RULES 1 BY 1
                     // TODO: FETCH ALL GROUPS AND ITERATE
                     // val cursor = dbManager.fetchGroups()
                     // cursor.close()
 
-                    // HARDCODED ACTION GROUP FOR TESTING
-                    val rules = mutableListOf(
-                        ActionGroup(
-                            -1,
-                            mutableMapOf(
-                                Filter.Type.RARITY to Filter.RarityFilter(mutableSetOf(2, 3, 4))
-                            ),
-                            0,
-                            null,
-                            mutableListOf(),
-                            StatusAction(Relic.Status.TRASH)
-                        )
-                    )
-
-                    for (rule in rules) {
-                        var action = rule.checkActionToPerform(relic)
-
-                        if (action != null) {
-                            if (action is EnhanceAction) {
-                                action = EnhanceAction(action.targetLevel.coerceAtMost(relic.rarity * 3))
-                            }
-
-                            performAction(toActionString(action))
-                            applyToRelic(action, new_relic_builder)
-                        }
-                    }
-
                     // 2. Find relic id to check if manual statuses need to be applied
                     // If there are, apply them
-                    val relic_id = dbManager.findRelicId(relic)
-                    if (relic_id != -1L) {
-                        val statuses = dbManager.fetchStatusForRelic(relic_id)
-
+                    val relic_ids = dbManager.findRelicIds(relic)
+                    val manual_status = manualStatuses.firstOrNull { it.first.id in relic_ids }
+                    if (manual_status != null) {
+                        val relic_id = manual_status.first.id
+                        val statuses = manual_status.second
                         if (statuses.isNotEmpty()) {
                             for (status in statuses) {
                                 val targetLevel: Int = ((relic.level / 3 + 1) * 3).coerceAtMost(relic.rarity * 3)
@@ -141,23 +102,24 @@ class OrganizeInventoryTask: ResetRunner() {
 
                                 if (action != null) {
                                     performAction(toActionString(action))
-                                    applyToRelic(action, new_relic_builder)
+                                    updateRelicInDb(relic_id)
                                 }
                             }
-
                             dbManager.deleteStatus(relic_id, statuses.map { it.name })
+                            manualStatuses.removeIf { it.first.id == relic_id }
+                        }
+                    } else {
+                        val id = if (relic_ids.isNotEmpty()) relic_ids[0] else null
+                        val action = predictor.predict(rules, relic)
+                        if (action != null) {
+                            performAction(toActionString(action))
+                            if (id != null) {
+                                updateRelicInDb(id)
+                            } else {
+                                dbManager.insertInventory(relic)
+                            }
                         }
                     }
-
-                    // TODO: if upgraded, read new substats and update new_relic_builder
-
-                    // 3. If new relic already exists, update; otherwise, insert
-                    if (relic_id != -1L) {
-                        dbManager.updateInventory(new_relic_builder.build())
-                    } else {
-                        dbManager.insertInventory(new_relic_builder.build())
-                    }
-
                     delay(3000)
                     awaitTick()
 

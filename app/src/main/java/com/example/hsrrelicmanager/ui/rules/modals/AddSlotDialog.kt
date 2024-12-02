@@ -17,9 +17,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.DialogSlotFilterBinding
 import com.example.hsrrelicmanager.databinding.ItemSlotRowBinding
-import com.example.hsrrelicmanager.model.Slot
+import com.example.hsrrelicmanager.model.relics.Slot
 import com.example.hsrrelicmanager.model.rules.Filter
-import com.example.hsrrelicmanager.model.slotSets
+import com.example.hsrrelicmanager.model.relics.slotSets
 import com.example.hsrrelicmanager.ui.MainActivity
 import com.example.hsrrelicmanager.ui.rules.GroupChangeListener
 

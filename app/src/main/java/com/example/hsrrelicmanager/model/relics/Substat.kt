@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.model
+package com.example.hsrrelicmanager.model.relics
 
 import android.os.Parcelable
 import com.example.hsrrelicmanager.R

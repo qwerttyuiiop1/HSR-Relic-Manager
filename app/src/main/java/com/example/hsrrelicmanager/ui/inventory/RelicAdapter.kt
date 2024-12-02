@@ -12,9 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.InventoryRelicItemBinding
 import com.example.hsrrelicmanager.model.relics.Relic
+import com.example.hsrrelicmanager.model.rules.ActionPredictor
+import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
+import com.example.hsrrelicmanager.model.rules.action.StatusAction
 
 class RelicAdapter(
     private val relicData: MutableList<Relic>,
+    private val predictor: ActionPredictor,
     private val inventoryBodyFragment: InventoryBodyFragment,
     private var selectedPos: Int = RecyclerView.NO_POSITION
 ) :
@@ -34,54 +38,43 @@ class RelicAdapter(
     }
 
     inner class ViewHolder(val binding: InventoryRelicItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(relic: Relic, position: Int) {
+        fun bind(_relic: Relic, position: Int) {
             binding.apply {
+                var relic = _relic
                 lblRelicName.text = relic.set.name
                 lblRelicMainStatType.text = relic.mainstat.name
                 lblRelicMainStatValue.text = relic.mainstatVal
                 imgRelicMainStat.setImageResource(relic.mainstatResource)
-
                 imgRelic.setImageResource(relic.set.icon)
-
-                var isMaxed = false;
                 var levelText = ""
                 val goldSpan = ForegroundColorSpan(Color.parseColor("#FFC65C"))
-
-                if (relic.level == ((relic.level/3 + 1)*3).coerceAtMost(relic.rarity * 3)) {
-                    isMaxed = true;
+                levelText = "+${relic.level}"
+                val spanString = SpannableString(levelText)
+                if (relic.level == relic.rarity * 3) {
+                    spanString.setSpan(goldSpan, 0, levelText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 }
+                lblRelicLevel.text = spanString
 
-                // Level upgrading
-                if (relic.prev != null && relic.level != relic.prev!!.level) {
-                    levelText = "+${relic.prev!!.level}  >  +${relic.level}"
-                    val spanString = SpannableString(levelText)
 
-                    if (isMaxed) {
-                        spanString.setSpan(goldSpan, 7, levelText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+                val action = predictor.predict(relic)
+                val newStatus = relic.status.toMutableSet()
+                action?.forEach {
+                    if (it is EnhanceAction) {
+                        levelText = "+${relic.level}  >  +${it.targetLevel}"
+                        val spanString = SpannableString(levelText)
+                        if (it.targetLevel == relic.rarity * 3) {
+                            spanString.setSpan(goldSpan, 7, levelText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                        }
+                        lblRelicLevel.text = spanString
+                    } else if (it is StatusAction) {
+                        val exclusiveStatus = listOf(Relic.Status.LOCK, Relic.Status.TRASH, Relic.Status.DEFAULT)
+                        if (it.targetStatus in exclusiveStatus)
+                            newStatus.removeAll(exclusiveStatus)
+                        newStatus.add(it.targetStatus)
                     }
-                    lblRelicLevel.text = spanString
-
-                // Level unchanged
-                } else {
-                    levelText = "+${relic.level}"
-                    val spanString = SpannableString(levelText)
-
-                    if (isMaxed) {
-                        spanString.setSpan(goldSpan, 0, levelText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                    }
-                    lblRelicLevel.text = spanString
                 }
-
-                // Sync relic level from DB
-                if (relic.status.contains(Relic.Status.UPGRADE)) {
-                    levelText = "+${relic.prev!!.level}  >  +${((relic.level/3 + 1)*3).coerceAtMost(relic.rarity * 3)}"
-                    val spanString = SpannableString(levelText)
-
-                    if (((relic.level/3 + 1)*3).coerceAtMost(relic.rarity * 3) == relic.rarity * 3) {
-                        spanString.setSpan(goldSpan, 7, levelText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                    }
-                    lblRelicLevel.text = spanString
-                }
+                relic = relic.copy(status = newStatus.toList())
 
                 imgRelic.setBackgroundResource(relic.rarityResource)
 
@@ -175,13 +168,11 @@ class RelicAdapter(
 
                 notifyItemChanged(selectedPos)
 
-                val relicBottomSheetFragment = RelicBottomSheetFragment(relic)
-                relicBottomSheetFragment.show(inventoryBodyFragment.childFragmentManager, relicBottomSheetFragment.tag)
-                inventoryBodyFragment.requireActivity().supportFragmentManager.setFragmentResultListener("relic", inventoryBodyFragment.viewLifecycleOwner) { _, bundle ->
-                    val r = bundle.getParcelable<Relic>("relic")!!
-                    relicData[position] = r
+                val relicBottomSheetFragment = RelicBottomSheetFragment(_relic, predictor, onUpdate = {
+                    relicData[position] = it
                     notifyItemChanged(position)
-                }
+                })
+                relicBottomSheetFragment.show(inventoryBodyFragment.childFragmentManager, relicBottomSheetFragment.tag)
             }
         }
     }

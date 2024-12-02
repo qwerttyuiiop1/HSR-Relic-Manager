@@ -7,15 +7,18 @@ import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import androidx.core.database.getLongOrNull
+import com.example.hsrrelicmanager.model.relics.Mainstat
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicSet
+import com.example.hsrrelicmanager.model.relics.Slot
+import com.example.hsrrelicmanager.model.relics.Substat
 import com.example.hsrrelicmanager.model.relics.relicSets
+import com.example.hsrrelicmanager.model.rules.ActionGroup
 import com.example.hsrrelicmanager.model.rules.Filter
+import com.example.hsrrelicmanager.model.rules.FilterMap
 import com.example.hsrrelicmanager.model.rules.action.Action
 import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
 import com.example.hsrrelicmanager.model.rules.action.StatusAction
-import com.example.hsrrelicmanager.model.rules.group.ActionGroup
-import com.example.hsrrelicmanager.model.rules.group.FilterMap
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -202,7 +205,6 @@ class DBManager(private val context: Context) {
 
 
     /* INVENTORY TABLE */
-
     fun insertRelic(
         relicSet: String,
         slot: String,
@@ -250,6 +252,73 @@ class DBManager(private val context: Context) {
         )
         return cursor
     }
+    fun listRelics(): MutableList<Relic> {
+        val cursor = fetchRelic()
+        val relics = mutableListOf<Relic>()
+
+        if (cursor.moveToFirst()) {
+            do {
+                val relic = extractRelic(cursor)
+                relics.add(relic)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+
+        return relics
+    }
+
+    private fun extractRelic(cursor: Cursor): Relic {
+        val relic_id = cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper._ID))
+
+        val statuses = mutableListOf<Relic.Status>()
+        statuses.add(
+            Relic.Status.valueOf(
+                cursor.getString(
+                    cursor.getColumnIndexOrThrow(
+                        DBHelper.COLUMN_STATUS
+                    )
+                )
+            )
+        )
+
+        if (cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_EQUIPPED)) == 1) {
+            statuses.add(Relic.Status.EQUIPPED)
+        }
+
+
+        val relic = Relic(
+            relic_id,
+            getRelicSetByName(
+                cursor.getString(
+                    cursor.getColumnIndexOrThrow(
+                        DBHelper.COLUMN_SET
+                    )
+                )
+            ),
+            Slot.fromName(
+                cursor.getString(
+                    cursor.getColumnIndexOrThrow(
+                        DBHelper.COLUMN_SLOT
+                    )
+                )
+            )!!,
+            cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_RARITY)),
+            cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_LEVEL)),
+            Mainstat.fromName(
+                cursor.getString(
+                    cursor.getColumnIndexOrThrow(
+                        DBHelper.COLUMN_MAINSTAT
+                    )
+                )
+            )!!,
+            cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_MAINSTAT_VAL)),
+            fetchSubstatsForRelic(relic_id).map {
+                Substat.fromName(it.key)!!.copy(value = it.value)
+            }.toSet(),
+            statuses,
+        )
+        return relic
+    }
 
     fun updateRelic(
         id: Long,
@@ -288,7 +357,7 @@ class DBManager(private val context: Context) {
         )
     }
 
-    fun findRelicId(relic: Relic): Long {
+    fun findRelicIds(relic: Relic): List<Long> {
         lateinit var statusString: String
 
         if (Relic.Status.TRASH in relic.status) {
@@ -301,7 +370,7 @@ class DBManager(private val context: Context) {
             throw IllegalStateException("Relic $relic does not have valid status ${relic.status}")
         }
 
-        return findRelicId(
+        return findRelicIds(
             relic.set.name,
             relic.slot.name,
             relic.rarity,
@@ -316,7 +385,7 @@ class DBManager(private val context: Context) {
         )
     }
 
-    fun findRelicId(
+    fun findRelicIds(
         relicSet: String,
         slot: String,
         rarity: Int,
@@ -326,7 +395,7 @@ class DBManager(private val context: Context) {
         status: String,
         equipped: Boolean,
         substats: Map<String, String>
-    ): Long {
+    ): List<Long> {
         val whereClause =
             "${DBHelper.COLUMN_SET} = ? AND " +
             "${DBHelper.COLUMN_SLOT} = ? AND " +
@@ -364,24 +433,22 @@ class DBManager(private val context: Context) {
         )
 
         var relic_id = -1L
+        val ids = mutableListOf<Long>()
 
-        while (cursor.moveToNext()) {
-            relic_id = cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper._ID))
-            if (fetchSubstatsForRelic(relic_id).equals(substats)) {
-                break
-            }
-            relic_id = -1L
-        }
-
-        if (relic_id == -1L) {
-            Log.d("DBManager", "Cursor is empty!")
+        if (cursor.moveToFirst()) {
+            do {
+                relic_id = cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper._ID))
+                if (fetchSubstatsForRelic(relic_id).equals(substats)) {
+                    ids.add(relic_id)
+                }
+            } while (cursor.moveToNext())
         }
 
         //val relic_id = if (cursor.moveToNext()) cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper._ID)) else -1
 
         cursor.close()
 
-        return relic_id
+        return ids
     }
 
     fun getRelicSetByName(relicSet: String): RelicSet {
@@ -465,6 +532,10 @@ class DBManager(private val context: Context) {
 
     /* MANUAL STATUS TABLE */
 
+    fun setManualStatus(relic: Relic) {
+        deleteStatus(relic)
+        insertStatus(relic.id, relic.status.map{it.name})
+    }
     fun insertStatus(relicId: Long, statuses: List<String>) {
         statuses.forEach {
             val values = ContentValues().apply {
@@ -500,6 +571,41 @@ class DBManager(private val context: Context) {
         return statuses
     }
 
+    fun listManualStatuses(): MutableList<Pair<Relic, List<Relic.Status>>> {
+        val allManualStatus = mutableListOf<Pair<Long, Relic.Status>>()
+        val cursor = database.query(
+            DBHelper.TABLE_MANUAL_STATUS,
+            arrayOf(DBHelper.COLUMN_RELIC_ID, DBHelper.COLUMN_NEW_STATUS),
+            null,
+            null,
+            null,
+            null,
+            null
+        )
+        if (cursor.moveToFirst()) {
+            do {
+                val relicId = cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_RELIC_ID))
+                val status = Relic.Status.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_NEW_STATUS)))
+                allManualStatus.add(Pair(relicId, status))
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+
+        val relicIds = allManualStatus.map { it.first }.distinct()
+        val relics = listRelics().filter { relicIds.contains(it.id) }
+
+        return relics.map { relic ->
+            Pair(relic, allManualStatus.filter { it.first == relic.id }.map { it.second })
+        }.toMutableList()
+    }
+
+    fun deleteStatus(relic: Relic) {
+        database.delete(
+            DBHelper.TABLE_MANUAL_STATUS,
+            "${DBHelper.COLUMN_RELIC_ID} = ?",
+            arrayOf(relic.id.toString())
+        )
+    }
     fun deleteStatus(relicId: Long, statuses: List<String>) {
         statuses.forEach {
             database.delete(

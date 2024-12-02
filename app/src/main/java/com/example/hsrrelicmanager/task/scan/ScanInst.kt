@@ -8,9 +8,9 @@ import com.example.hsrrelicmanager.core.exe.default
 import com.example.hsrrelicmanager.core.exe.flatten
 import com.example.hsrrelicmanager.core.exe.instant
 import com.example.hsrrelicmanager.core.exe.multi
-import com.example.hsrrelicmanager.model.Mainstat
-import com.example.hsrrelicmanager.model.Slot
-import com.example.hsrrelicmanager.model.Substat
+import com.example.hsrrelicmanager.model.relics.Mainstat
+import com.example.hsrrelicmanager.model.relics.Slot
+import com.example.hsrrelicmanager.model.relics.Substat
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicBuilder
 import com.example.hsrrelicmanager.model.relics.RelicSet
@@ -21,7 +21,7 @@ class ScanInst(
     @Suppress("UNCHECKED_CAST")
     override suspend fun run(): MyResult<Relic> {
         awaitTick()
-        val bldr = RelicBuilder(isPrev=true)
+        val bldr = RelicBuilder(/*isPrev=true*/)
         val textFields = listOf(
             ui.relicLevel,
             ui.mainStatValue,

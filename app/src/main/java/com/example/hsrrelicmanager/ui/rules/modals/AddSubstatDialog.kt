@@ -17,9 +17,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.DialogSubstatFilterBinding
 import com.example.hsrrelicmanager.databinding.ItemSubstatRowBinding
-import com.example.hsrrelicmanager.model.Substat
+import com.example.hsrrelicmanager.model.relics.Substat
 import com.example.hsrrelicmanager.model.rules.Filter
-import com.example.hsrrelicmanager.model.substatSets
+import com.example.hsrrelicmanager.model.relics.substatSets
 import com.example.hsrrelicmanager.ui.MainActivity
 import com.example.hsrrelicmanager.ui.rules.GroupChangeListener
 

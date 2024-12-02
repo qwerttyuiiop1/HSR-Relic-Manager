@@ -1,10 +1,10 @@
 package com.example.hsrrelicmanager.model.rules
 
-import com.example.hsrrelicmanager.model.Mainstat
-import com.example.hsrrelicmanager.model.Slot
-import com.example.hsrrelicmanager.model.Substat
+import com.example.hsrrelicmanager.model.relics.Mainstat
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicSet
+import com.example.hsrrelicmanager.model.relics.Slot
+import com.example.hsrrelicmanager.model.relics.Substat
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

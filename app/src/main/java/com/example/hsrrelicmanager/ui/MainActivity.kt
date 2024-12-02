@@ -12,7 +12,6 @@ import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.core.AutoclickService
 import com.example.hsrrelicmanager.databinding.ActivityMainBinding
 import com.example.hsrrelicmanager.databinding.NavbarBinding
-import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 import com.example.hsrrelicmanager.task.HSRAutoClickService
 import com.example.hsrrelicmanager.ui.db.DBManager
 import com.example.hsrrelicmanager.ui.inventory.InventoryBodyFragment
@@ -27,7 +26,24 @@ open class MainActivity : AppCompatActivity() {
     protected lateinit var navbarBinding: NavbarBinding
     private var selectedFrame: View? = null
 
-    var cachedGroupData: MutableList<ActionGroup>? = null
+    val cachedGroupData by lazy {
+        dbManager.open()
+        val groupData = dbManager.listGroups()
+        dbManager.close()
+        groupData
+    }
+    val cachedManualStatus by lazy {
+        dbManager.open()
+        val manualStatus = dbManager.listManualStatuses()
+        dbManager.close()
+        manualStatus
+    }
+    val cachedRelics by lazy {
+        dbManager.open()
+        val relics = dbManager.listRelics()
+        dbManager.close()
+        relics
+    }
     var dbManager = DBManager(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {

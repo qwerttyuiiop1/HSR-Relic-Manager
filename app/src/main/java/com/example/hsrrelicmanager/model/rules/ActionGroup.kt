@@ -1,10 +1,8 @@
-package com.example.hsrrelicmanager.model.rules.group
+package com.example.hsrrelicmanager.model.rules
 
 import android.os.Parcelable
-import android.util.Log
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.model.relics.Relic
-import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.rules.action.Action
 import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
 import com.example.hsrrelicmanager.model.rules.action.StatusAction
@@ -26,25 +24,6 @@ data class ActionGroup(
             groupList = groupList.map { it.cloneDeep() }.toMutableList(),
             filters = filters.mapValues { it.value.cloneDeep() }.toMutableMap()
         )
-    }
-
-
-    fun checkActionToPerform(relic: Relic): Action? {
-        for (filter in filters.values) {
-            if (!filter.accepts(relic)) {
-                Log.d("ActionGroup", "Relic $relic not accepted by filter ${filter.description}")
-                return null
-            }
-        }
-
-        for (child in groupList) {
-            val childAction = child.checkActionToPerform(relic)
-            if (childAction != null) {
-                return childAction
-            }
-        }
-
-        return action
     }
 
     fun addGroup(child: ActionGroup) {

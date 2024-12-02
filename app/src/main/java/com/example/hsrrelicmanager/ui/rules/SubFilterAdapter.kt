@@ -8,9 +8,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hsrrelicmanager.R
-import com.example.hsrrelicmanager.model.Mainstat
-import com.example.hsrrelicmanager.model.Slot
-import com.example.hsrrelicmanager.model.Substat
+import com.example.hsrrelicmanager.model.relics.Mainstat
+import com.example.hsrrelicmanager.model.relics.Slot
+import com.example.hsrrelicmanager.model.relics.Substat
 import com.example.hsrrelicmanager.model.relics.Relic
 import com.example.hsrrelicmanager.model.relics.RelicSet
 import com.example.hsrrelicmanager.model.rules.Filter
