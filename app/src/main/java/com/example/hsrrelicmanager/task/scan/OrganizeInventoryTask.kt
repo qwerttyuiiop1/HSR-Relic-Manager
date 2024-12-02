@@ -99,12 +99,11 @@ class OrganizeInventoryTask: ResetRunner() {
                                     Relic.Status.EQUIPPED -> null
                                     else -> StatusAction(status)
                                 }
-
                                 if (action != null) {
                                     performAction(toActionString(action))
-                                    updateRelicInDb(relic_id)
                                 }
                             }
+                            updateRelicInDb(relic_id)
                             dbManager.deleteStatus(manual_status.first)
                             manualStatuses.remove(manual_status.first)
                             delay(3000)
