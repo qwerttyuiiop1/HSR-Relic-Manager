@@ -58,18 +58,17 @@ class SubstatboxAdapter(
 
                 addLevel.setOnClickListener {
                     levels[set] = levels[set]!! + 1
+                    levelNumber.text = levels[set].toString()
                     if (set in selectedSubstats) {
                         selectedSubstats[set] = levels[set]!!
                     }
                 }
 
-
-
                 container.setOnClickListener {
                     checkbox.isChecked = !checkbox.isChecked
                 }
                 checkbox.isChecked = selectedSubstats.contains(set)
-                levelNumber.text = sets[sets.indexOf(set)].toString()
+                levelNumber.text = levels[set].toString()
 
                 name.text = set.name
             }
