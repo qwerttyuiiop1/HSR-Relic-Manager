@@ -59,31 +59,31 @@ val mainstatSets = listOf(
         R.drawable.stat_speed
     ),
     Mainstat(
-        "Physical DMG",
+        "Physical DMG Boost",
         R.drawable.stat_phydmg
     ),
     Mainstat(
-        "Fire DMG",
+        "Fire DMG Boost",
         R.drawable.stat_firedmg
     ),
     Mainstat(
-        "Ice DMG",
+        "Ice DMG Boost",
         R.drawable.stat_icedmg
     ),
     Mainstat(
-        "Lightning DMG",
+        "Lightning DMG Boost",
         R.drawable.stat_lightningdmg
     ),
     Mainstat(
-        "Wind DMG",
+        "Wind DMG Boost",
         R.drawable.stat_winddmg
     ),
     Mainstat(
-        "Quantum DMG",
+        "Quantum DMG Boost",
         R.drawable.stat_quantumdmg
     ),
     Mainstat(
-        "Imaginary DMG",
+        "Imaginary DMG Boost",
         R.drawable.stat_imaginarydmg
     ),
     Mainstat(
