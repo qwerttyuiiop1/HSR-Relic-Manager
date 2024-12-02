@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.ui.rules.filtermodals
+package com.example.hsrrelicmanager.ui.rules.modals
 
 import android.content.DialogInterface
 import android.graphics.RenderEffect

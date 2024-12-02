@@ -1,4 +1,4 @@
-package com.example.hsrrelicmanager.ui.rules
+package com.example.hsrrelicmanager.ui.rules.modals
 
 import android.content.DialogInterface
 import android.graphics.Color
@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.GroupCardDescriptionBinding
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
+import com.example.hsrrelicmanager.ui.rules.GroupChangeListener
 
 class DeleteRuleDialogFragment(
     val index: Int,

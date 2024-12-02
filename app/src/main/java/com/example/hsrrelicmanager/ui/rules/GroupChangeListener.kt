@@ -10,6 +10,7 @@ import com.example.hsrrelicmanager.model.rules.action.Action
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 import com.example.hsrrelicmanager.ui.MainActivity
 import com.example.hsrrelicmanager.ui.db.DBManager
+import com.example.hsrrelicmanager.ui.rules.modals.AddFilterDialog
 import kotlin.reflect.KProperty
 
 interface GroupChangeListener {

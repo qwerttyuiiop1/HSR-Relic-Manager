@@ -13,13 +13,13 @@ import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.rules.group.FilterMap
 import com.example.hsrrelicmanager.ui.MainActivity
-import com.example.hsrrelicmanager.ui.rules.filtermodals.AddLevelDialog
-import com.example.hsrrelicmanager.ui.rules.filtermodals.AddMainstatDialog
-import com.example.hsrrelicmanager.ui.rules.filtermodals.AddRarityDialog
-import com.example.hsrrelicmanager.ui.rules.filtermodals.AddSetDialog
-import com.example.hsrrelicmanager.ui.rules.filtermodals.AddSlotDialog
-import com.example.hsrrelicmanager.ui.rules.filtermodals.AddStatusDialog
-import com.example.hsrrelicmanager.ui.rules.filtermodals.AddSubstatDialog
+import com.example.hsrrelicmanager.ui.rules.modals.AddLevelDialog
+import com.example.hsrrelicmanager.ui.rules.modals.AddMainstatDialog
+import com.example.hsrrelicmanager.ui.rules.modals.AddRarityDialog
+import com.example.hsrrelicmanager.ui.rules.modals.AddSetDialog
+import com.example.hsrrelicmanager.ui.rules.modals.AddSlotDialog
+import com.example.hsrrelicmanager.ui.rules.modals.AddStatusDialog
+import com.example.hsrrelicmanager.ui.rules.modals.AddSubstatDialog
 
 class FilterAdapter(
     private val items: FilterMap,

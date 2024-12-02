@@ -25,6 +25,8 @@ import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 import com.example.hsrrelicmanager.ui.MainActivity
 import com.example.hsrrelicmanager.ui.blur
 import com.example.hsrrelicmanager.ui.db.DBManager
+import com.example.hsrrelicmanager.ui.rules.modals.AddFilterDialog
+import com.example.hsrrelicmanager.ui.rules.modals.DeleteRuleDialogFragment
 import java.util.Collections
 
 class GroupBodyFragment(

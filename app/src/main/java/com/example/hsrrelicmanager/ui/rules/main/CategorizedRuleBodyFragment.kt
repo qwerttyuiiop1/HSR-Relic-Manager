@@ -22,7 +22,7 @@ import com.example.hsrrelicmanager.model.rules.action.StatusAction
 import com.example.hsrrelicmanager.model.rules.group.ActionGroup
 import com.example.hsrrelicmanager.ui.MainActivity
 import com.example.hsrrelicmanager.ui.blur
-import com.example.hsrrelicmanager.ui.rules.DeleteRuleDialogFragment
+import com.example.hsrrelicmanager.ui.rules.modals.DeleteRuleDialogFragment
 import com.example.hsrrelicmanager.ui.rules.GroupChangeHandler
 import com.example.hsrrelicmanager.ui.rules.GroupChangeListener
 
