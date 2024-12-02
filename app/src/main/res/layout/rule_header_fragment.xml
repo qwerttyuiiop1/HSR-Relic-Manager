@@ -23,6 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
+        android:visibility="invisible"
         android:id="@+id/rule_spinner_frame"
         android:layout_marginLeft="100dp"
         android:layout_marginTop="15dp"

@@ -159,7 +159,7 @@ class ScanInventoryUIBinding private constructor(
     }
     val container = RelicContainer(binding.gridLayout)
 
-    val relicName = UIBldr(binding.lblRelicName, ctx).textArea
+    val relicName = UIBldr(binding.lblRelicName, ctx, scale=1.0f).textArea
     val relicType = UIBldr(binding.lblType, ctx).textArea
     val relicLevel = UIBldr(binding.lblLevel, ctx).textArea
     inner class RelicRarity(
