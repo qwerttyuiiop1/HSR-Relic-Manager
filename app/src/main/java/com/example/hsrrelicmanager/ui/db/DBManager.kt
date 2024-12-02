@@ -606,15 +606,6 @@ class DBManager(private val context: Context) {
             arrayOf(relic.id.toString())
         )
     }
-    fun deleteStatus(relicId: Long, statuses: List<String>) {
-        statuses.forEach {
-            database.delete(
-                DBHelper.TABLE_MANUAL_STATUS,
-                "${DBHelper.COLUMN_RELIC_ID} = ? AND ${DBHelper.COLUMN_NEW_STATUS} = ?",
-                arrayOf(relicId.toString(), it)
-            )
-        }
-    }
 
 
 
@@ -648,13 +639,13 @@ class DBManager(private val context: Context) {
             substats
         )
 
-        val statuses = mutableListOf<String>()
-        statuses.add(status)
-
-        // Add equipped status
-        if (equipped) {
-            statuses.add("EQUIPPED")
-        }
+//        val statuses = mutableListOf<String>()
+//        statuses.add(status)
+//
+//        // Add equipped status
+//        if (equipped) {
+//            statuses.add("EQUIPPED")
+//        }
 
         // Insert statuses in DB
 //        insertStatus(
@@ -720,7 +711,7 @@ class DBManager(private val context: Context) {
             it.name to it.value
         }.toMap())
 
-        deleteStatus(relic.id, fetchStatusForRelic(relic.id).map{it.name})
-        insertStatus(relic.id, relic.status.map{it.name})
+//        deleteStatus(relic.id, fetchStatusForRelic(relic.id).map{it.name})
+//        insertStatus(relic.id, relic.status.map{it.name})
     }
 }

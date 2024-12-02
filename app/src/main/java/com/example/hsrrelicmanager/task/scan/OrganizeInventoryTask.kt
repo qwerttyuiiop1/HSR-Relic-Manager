@@ -105,7 +105,7 @@ class OrganizeInventoryTask: ResetRunner() {
                                     updateRelicInDb(relic_id)
                                 }
                             }
-//                            dbManager.deleteStatus(manual_status.first)
+                            dbManager.deleteStatus(manual_status.first)
                             manualStatuses.remove(manual_status.first)
                             delay(3000)
                             recalibrate()

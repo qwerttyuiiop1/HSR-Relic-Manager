@@ -48,7 +48,7 @@ open class MainActivity : AppCompatActivity() {
         }
         return _manualStatus!!
     }
-    val cachedRelics: MutableList<Relic> get() {
+    val cachedRelics: List<Relic> get() {
         if (_relics == null) {
             dbManager.open()
             _relics = dbManager.listRelics()
@@ -86,11 +86,10 @@ open class MainActivity : AppCompatActivity() {
 
         // TEMP ONLY! Refactor when database has been implemented
         dbManager.open()
-//        createDummyGroupData()
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
         _relics = null
         _groupData = null
         _manualStatus = null
@@ -163,62 +162,5 @@ open class MainActivity : AppCompatActivity() {
         navbarBinding.playButtonCircle.setColorFilter(Color.parseColor("#1C243B"))
         navbarBinding.inventoryButtonCircle.setColorFilter(Color.parseColor("#1C243B"))
     }
-
-    // Only while DB has not been implemented
-//    private fun createDummyGroupData() {
-//        for (i in 1..3) {
-//            val filterGroup =
-//                ActionGroup().apply {
-//                    addGroup(
-//                        ActionGroup().apply {
-//                            action = StatusAction(
-//                                if (i % 2 == 0) Relic.Status.LOCK
-//                                else Relic.Status.TRASH
-//                            )
-//                        }
-//                    )
-//                    filters[Filter.Type.RARITY] = Filter.RarityFilter(
-//                        mutableSetOf(1, 2, 4)
-//                    )
-//                }
-//            val lockActionGroup =
-//                ActionGroup().apply {
-//                    action = StatusAction(Relic.Status.LOCK)
-//                    filters[Filter.Type.RARITY] = Filter.RarityFilter(
-//                        mutableSetOf(5)
-//                    )
-//                }
-//            val trashActionGroup =
-//                ActionGroup().apply {
-//                    action = StatusAction(Relic.Status.TRASH)
-//                    filters[Filter.Type.SLOT] = Filter.SlotFilter(
-//                        mutableSetOf(Slot.fromName("Feet")!!)
-//                    )
-//                }
-//            val resetActionGroup =
-//                ActionGroup().apply {
-//                    action = StatusAction(Relic.Status.DEFAULT)
-//                    filters[Filter.Type.LEVEL] = Filter.LevelFilter(
-//                        atLeast = 10
-//                    )
-//                }
-//            val enhanceActionGroup =
-//                ActionGroup().apply {
-//                    action = EnhanceAction(15)
-//                    filters[Filter.Type.MAIN_STAT] = Filter.MainStatFilter(
-//                        mutableSetOf(mainstatSets[0])
-//                    )
-//                }
-//
-//            groupData.add(filterGroup)
-//            groupData.add(lockActionGroup)
-//            groupData.add(trashActionGroup)
-//            groupData.add(resetActionGroup)
-//            groupData.add(enhanceActionGroup)
-//        }
-//        for (i in 0..<groupData.size) {
-//            groupData.get(i).position = i
-//        }
-//    }
 }
 

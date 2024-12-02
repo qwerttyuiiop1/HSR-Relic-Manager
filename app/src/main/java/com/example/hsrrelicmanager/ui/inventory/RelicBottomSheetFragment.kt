@@ -22,7 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 class RelicBottomSheetFragment(
     private val relic: Relic,
     private val predictor: ActionPredictor,
-    private val onUpdate: (Relic) -> Unit
+    private val onUpdate: () -> Unit
 ) : BottomSheetDialogFragment() {
 //    companion object {
 //        operator fun invoke(r: Relic) =
@@ -149,8 +149,8 @@ class RelicBottomSheetFragment(
                     }
                 )
                 updateStatusIcons(relic, binding)
-                onUpdate(relic)
                 updateManualStatus(relic)
+                onUpdate()
             }
 
             btnRelicUpgrade.setOnClickListener {

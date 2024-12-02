@@ -17,7 +17,7 @@ import com.example.hsrrelicmanager.model.rules.action.EnhanceAction
 import com.example.hsrrelicmanager.model.rules.action.StatusAction
 
 class RelicAdapter(
-    private val relicData: MutableList<Relic>,
+    private val relicData: List<Relic>,
     private val predictor: ActionPredictor,
     private val inventoryBodyFragment: InventoryBodyFragment,
     private var selectedPos: Int = RecyclerView.NO_POSITION
@@ -176,7 +176,6 @@ class RelicAdapter(
                 notifyItemChanged(selectedPos)
 
                 val relicBottomSheetFragment = RelicBottomSheetFragment(_relic, predictor, onUpdate = {
-                    relicData[position] = it
                     notifyItemChanged(position)
                 })
                 relicBottomSheetFragment.show(inventoryBodyFragment.childFragmentManager, relicBottomSheetFragment.tag)
