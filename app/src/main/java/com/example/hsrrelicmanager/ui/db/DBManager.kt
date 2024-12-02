@@ -145,7 +145,11 @@ class DBManager(private val context: Context) {
                 groups[parentId]?.second?.groupList?.add(group)
             }
         }
-
+        groups.forEach { (_, foo) ->
+            foo.second.groupList.sortBy {
+                it.position
+            }
+        }
         rootViews.sortBy {
             it.position
         }
