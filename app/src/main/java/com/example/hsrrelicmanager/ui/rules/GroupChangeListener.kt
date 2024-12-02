@@ -5,9 +5,9 @@ import android.graphics.Shader
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.example.hsrrelicmanager.R
+import com.example.hsrrelicmanager.model.rules.ActionGroup
 import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.rules.action.Action
-import com.example.hsrrelicmanager.model.rules.ActionGroup
 import com.example.hsrrelicmanager.ui.MainActivity
 import com.example.hsrrelicmanager.ui.db.DBManager
 import com.example.hsrrelicmanager.ui.rules.modals.AddFilterDialog
@@ -109,17 +109,19 @@ class GroupChangeHandler(
 
     override fun onChildChange(i: Int, group: ActionGroup) {
         this.group.groupList[i] = group
+        group.position = i
+        dbManager.open()
+        dbManager.updateGroup(group)
+        dbManager.close()
     }
 
     override fun onChildDelete(i: Int, group: ActionGroup) {
         this.group.groupList.removeAt(i)
-        for (i in this.group.groupList.indices) {
-            this.group.groupList[i].position = i
-        }
         val mgr = this.dbManager
         mgr.open()
         mgr.deleteGroup(group.id)
         for (i in this.group.groupList.indices) {
+            this.group.groupList[i].position = i
             mgr.updateGroup(this.group.groupList[i])
         }
         mgr.close()
@@ -127,12 +129,13 @@ class GroupChangeHandler(
 
     override fun onChildCreate(group: ActionGroup) {
         this.group.groupList.add(group)
-        for (i in this.group.groupList.indices) {
-            this.group.groupList[i].position = i
-        }
         val mgr = this.dbManager
         mgr.open()
         mgr.insertGroup(group)
+        for (i in this.group.groupList.indices) {
+            this.group.groupList[i].position = i
+            mgr.updateGroup(this.group.groupList[i])
+        }
         mgr.close()
     }
 }

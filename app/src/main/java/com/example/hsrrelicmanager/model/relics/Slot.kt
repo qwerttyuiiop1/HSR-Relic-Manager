@@ -2,6 +2,7 @@ package com.example.hsrrelicmanager.model.relics
 
 import android.os.Parcelable
 import com.example.hsrrelicmanager.R
+import com.example.hsrrelicmanager.core.ext.norm
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
@@ -12,8 +13,9 @@ data class Slot(
     val image: Int
 ): Parcelable{
     companion object {
+        val slotMap = slotSets.associateBy { it.name.norm }
         fun fromName(name: String): Slot? {
-            return slotSets.find { it.name == name }
+            return slotMap[name.norm]
         }
     }
 }

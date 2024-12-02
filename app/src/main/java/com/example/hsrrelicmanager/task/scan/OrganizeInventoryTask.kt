@@ -46,21 +46,21 @@ class OrganizeInventoryTask: ResetRunner() {
                     delay(3000)
                 }
                 lockBtn.click()
-                delay(1000)
+                delay(3000)
             } else if (action == "TRASH" && !isTrash) {
                 if (isLocked) {
                     lockBtn.click()
                     delay(3000)
                 }
                 trashBtn.click()
-                delay(1000)
+                delay(3000)
             } else if (action == "DEFAULT") {
                 if (isLocked) {
                     lockBtn.click()
-                    delay(1000)
+                    delay(3000)
                 } else if (isTrash) {
                     trashBtn.click()
-                    delay(1000)
+                    delay(3000)
                 }
             }
             awaitTick()
@@ -88,13 +88,6 @@ class OrganizeInventoryTask: ResetRunner() {
 
                     val relic = join(ScanInst(ui))
 
-                    // 1. APPLY ALL RULES 1 BY 1
-                    // TODO: FETCH ALL GROUPS AND ITERATE
-                    // val cursor = dbManager.fetchGroups()
-                    // cursor.close()
-
-                    // 2. Find relic id to check if manual statuses need to be applied
-                    // If there are, apply them
                     val relic_ids = dbManager.findRelicIds(relic)
                     val manual_status = manualStatuses.firstOrNull { it.first.id in relic_ids }
                     if (manual_status != null) {
@@ -125,6 +118,7 @@ class OrganizeInventoryTask: ResetRunner() {
                             if (id != null) {
                                 updateRelicInDb(id)
                             } else {
+                                val relic = join(ScanInst(ui))
                                 dbManager.insertInventory(relic)
                             }
                         }

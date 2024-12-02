@@ -168,8 +168,7 @@ class ActionItemAdapter(
         val confirmButton = dialogView.findViewById<View>(R.id.confirm_action_group_dialog_button)
         confirmButton.setOnClickListener {
             notifyItemChanged(holder.adapterPosition)
-            val action = holder.action!!
-            callback.onUpdateAction(action)
+            callback.onUpdateAction(holder.action!!)
             dialog.dismiss()
         }
 

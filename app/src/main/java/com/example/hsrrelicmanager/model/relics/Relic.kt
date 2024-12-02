@@ -55,13 +55,6 @@ data class Relic (
             5 -> R.drawable.bg_5_star
             else -> throw IllegalArgumentException("Invalid rarity")
         }
-
-    val mainstatResource: Int
-        get() = substatResource(mainstat.name)
-
-    fun substatResource(s: String): Int {
-        return substatSets.find { it.name == s }?.image!!
-    }
     fun statusResource(s: Status): Int {
         return when (s) {
             Status.LOCK -> R.drawable.ic_lock

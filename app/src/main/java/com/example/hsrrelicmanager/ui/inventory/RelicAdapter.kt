@@ -44,7 +44,7 @@ class RelicAdapter(
                 lblRelicName.text = relic.set.name
                 lblRelicMainStatType.text = relic.mainstat.name
                 lblRelicMainStatValue.text = relic.mainstatVal
-                imgRelicMainStat.setImageResource(relic.mainstatResource)
+                imgRelicMainStat.setImageResource(relic.mainstat.image)
                 imgRelic.setImageResource(relic.set.icon)
                 var levelText = ""
                 val goldSpan = ForegroundColorSpan(Color.parseColor("#FFC65C"))
@@ -61,7 +61,14 @@ class RelicAdapter(
                 val newStatus = relic.status.toMutableSet()
                 action?.forEach {
                     if (it is EnhanceAction) {
-                        levelText = "+${relic.level}  >  +${it.targetLevel}"
+                        var targetLevel = it.targetLevel
+                        if (targetLevel <= 0) {
+                            targetLevel = (relic.level / 3 + 1) * 3
+                            targetLevel = targetLevel.coerceAtMost(relic.rarity * 3)
+                            newStatus.add(Relic.Status.UPGRADE)
+                        }
+
+                        levelText = "+${relic.level}  >  +${targetLevel}"
                         val spanString = SpannableString(levelText)
                         if (it.targetLevel == relic.rarity * 3) {
                             spanString.setSpan(goldSpan, 7, levelText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -113,7 +120,7 @@ class RelicAdapter(
                 val entries = relic.substats.toList()
                 for (i in entries.indices) {
                     val substat = entries.elementAt(i)
-                    icons[i].setImageResource(relic.substatResource(substat.name))
+                    icons[i].setImageResource(substat.image)
                     types[i].text = substat.name
                     values[i].text = substat.value
                 }

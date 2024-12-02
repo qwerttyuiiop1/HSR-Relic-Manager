@@ -92,7 +92,6 @@
                 android:fontFamily="@font/pf_din_text_pro_regular"
                 android:paddingTop="15dp"
                 android:paddingBottom="15dp"
-                android:layout_marginEnd="20dp"
                 android:text="Enhance"
                 android:textColor="#4A4A4A"
                 android:textSize="24sp" />

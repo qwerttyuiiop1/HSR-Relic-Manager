@@ -100,12 +100,6 @@ class RuleBodyFragment(
                 target: RecyclerView.ViewHolder
             ): Boolean {
                 Collections.swap(groupAdapter.groupData, viewHolder.adapterPosition, target.adapterPosition);
-
-//                Log.d(this::class.toString(), "From ${viewHolder.adapterPosition} to ${target.adapterPosition}")
-
-//                groupAdapter.groupData[viewHolder.adapterPosition].position = target.adapterPosition;
-//                groupAdapter.groupData[target.adapterPosition].position = viewHolder.adapterPosition;
-
                 val lo = minOf(viewHolder.adapterPosition, target.adapterPosition)
                 val hi = maxOf(viewHolder.adapterPosition, target.adapterPosition)
 
@@ -116,8 +110,6 @@ class RuleBodyFragment(
                 (viewHolder as GroupAdapter.ViewHolder).updatePosition(target.adapterPosition);
                 (target as GroupAdapter.ViewHolder).updatePosition(viewHolder.adapterPosition);
                 groupAdapter.notifyItemMoved(viewHolder.adapterPosition, target.adapterPosition);
-
-//                Log.d(this::class.toString(), groupData.joinToString(",\n"))
 
                 return true;
             }

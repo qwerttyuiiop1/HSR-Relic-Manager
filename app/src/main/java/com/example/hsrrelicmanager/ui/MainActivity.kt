@@ -77,6 +77,11 @@ open class MainActivity : AppCompatActivity() {
 //        createDummyGroupData()
     }
 
+    override fun onStop() {
+        super.onStop()
+        finish()
+    }
+
     override fun onDestroy() {
         dbManager.close()
         super.onDestroy()

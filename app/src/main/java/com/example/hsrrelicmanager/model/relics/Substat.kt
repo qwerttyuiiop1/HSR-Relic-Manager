@@ -2,6 +2,7 @@ package com.example.hsrrelicmanager.model.relics
 
 import android.os.Parcelable
 import com.example.hsrrelicmanager.R
+import com.example.hsrrelicmanager.core.ext.norm
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
@@ -12,8 +13,9 @@ data class Substat(
     var value: String = "0"
 ): Parcelable {
     companion object {
+        val substatMap = substatSets.associateBy { it.name.norm }
         fun fromName(name: String): Substat? {
-            return substatSets.find { it.name == name }
+            return substatMap[name.norm]
         }
     }
 }
@@ -69,3 +71,5 @@ val substatSets = listOf(
         R.drawable.stat_speed
     )
 )
+
+val substatMap = substatSets.associateBy { it.name.norm }

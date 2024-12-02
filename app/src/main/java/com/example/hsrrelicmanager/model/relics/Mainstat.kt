@@ -2,6 +2,7 @@ package com.example.hsrrelicmanager.model.relics
 
 import android.os.Parcelable
 import com.example.hsrrelicmanager.R
+import com.example.hsrrelicmanager.core.ext.norm
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
@@ -11,8 +12,9 @@ data class Mainstat(
     val image: Int
 ): Parcelable{
     companion object {
+        val mainstatMap = mainstatSets.associateBy { it.name.norm }
         fun fromName(s: String): Mainstat? {
-            return mainstatSets.find { it.name == s }
+            return mainstatMap[s.norm]
         }
     }
 }

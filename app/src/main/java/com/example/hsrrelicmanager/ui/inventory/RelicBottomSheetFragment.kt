@@ -41,7 +41,7 @@ class RelicBottomSheetFragment(
             lblRelicName.text = relic.set.name
             lblRelicMainStatType.text = relic.mainstat.name
             lblRelicMainStatValue.text = relic.mainstatVal
-            imgRelicMainStat.setImageResource(relic.mainstatResource)
+            imgRelicMainStat.setImageResource(relic.mainstat.image)
 
             imgRelic.setImageResource(relic.set.icon)
             var levelText = ""
@@ -119,7 +119,7 @@ class RelicBottomSheetFragment(
             val entries = relic.substats.toList()
             for (i in entries.indices) {
                 val substat = entries.elementAt(i)
-                icons[i].setImageResource(relic.substatResource(substat.name))
+                icons[i].setImageResource(substat.image)
                 types[i].text = substat.name
                 values[i].text = substat.value
             }

@@ -179,7 +179,7 @@ class DBManager(private val context: Context) {
                 put(DBHelper.RulesTable.COLUMN_ACTION, "Enhance")
                 put(DBHelper.RulesTable.COLUMN_LEVEL, (group.action as EnhanceAction).targetLevel)
             } else {
-                put(DBHelper.RulesTable.COLUMN_ACTION, group.action.toString())
+                put(DBHelper.RulesTable.COLUMN_ACTION, group.action!!.name)
                 putNull(DBHelper.RulesTable.COLUMN_LEVEL)
             }
         }
@@ -657,10 +657,10 @@ class DBManager(private val context: Context) {
         }
 
         // Insert statuses in DB
-        insertStatus(
-            relic_id,
-            statuses
-        )
+//        insertStatus(
+//            relic_id,
+//            statuses
+//        )
     }
 
     fun insertInventory(relic: Relic) {

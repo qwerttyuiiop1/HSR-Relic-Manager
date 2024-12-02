@@ -25,5 +25,6 @@ fun Text.toWords(): Set<String> {
 }
 
 val pttrnNonAlphabet = Regex("[^a-zA-Z]")
+val pttrnI = Regex("[l1]")
 val String.norm: String
-    get() = replace(pttrnNonAlphabet, "").lowercase()
+    get() = replace(pttrnI, "i").replace(pttrnNonAlphabet, "").lowercase()
