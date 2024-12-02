@@ -18,8 +18,8 @@ import com.example.hsrrelicmanager.R
 import com.example.hsrrelicmanager.databinding.DialogSubstatFilterBinding
 import com.example.hsrrelicmanager.databinding.ItemSubstatRowBinding
 import com.example.hsrrelicmanager.model.relics.Substat
-import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.model.relics.substatSets
+import com.example.hsrrelicmanager.model.rules.Filter
 import com.example.hsrrelicmanager.ui.MainActivity
 import com.example.hsrrelicmanager.ui.rules.GroupChangeListener
 
@@ -27,7 +27,7 @@ class SubstatboxAdapter(
     val sets: List<Substat>,
     selectedSubstats: Map<Substat, Int>
 ): RecyclerView.Adapter<SubstatboxAdapter.ViewHolder>() {
-    val selectedSubstats = selectedSubstats.toMutableMap()
+    val selectedSubstats = selectedSubstats.keys.toMutableSet()
     val levels = sets.associateWith {
         if (it in selectedSubstats) selectedSubstats[it]!! else 1
     }.toMutableMap()
@@ -39,7 +39,7 @@ class SubstatboxAdapter(
 
                 checkbox.setOnCheckedChangeListener{_, isChecked ->
                     if (isChecked) {
-                        selectedSubstats[set] = -1
+                        selectedSubstats.add(set)
                     } else {
                         selectedSubstats.remove(set)
                     }
@@ -50,18 +50,12 @@ class SubstatboxAdapter(
                     if (level > 1) {
                         levels[set] = level - 1
                         levelNumber.text = levels[set].toString()
-                        if (set in selectedSubstats) {
-                            selectedSubstats[set] = levels[set]!!
-                        }
                     }
                 }
 
                 addLevel.setOnClickListener {
                     levels[set] = levels[set]!! + 1
                     levelNumber.text = levels[set].toString()
-                    if (set in selectedSubstats) {
-                        selectedSubstats[set] = levels[set]!!
-                    }
                 }
 
                 container.setOnClickListener {
@@ -171,7 +165,10 @@ class AddSubstatDialog(
             }
 
             confirmActionGroupDialogButton.setOnClickListener {
-                val items = Filter.SubStatFilter(adapter.selectedSubstats, if (isExact) -1 else level)
+                val substats = adapter.selectedSubstats.map {
+                    it to adapter.levels[it]!!
+                }.toMap()
+                val items = Filter.SubStatFilter(substats, if (isExact) -1 else level)
                 callback.onUpdateFilter(items)
                 dismiss()
             }
