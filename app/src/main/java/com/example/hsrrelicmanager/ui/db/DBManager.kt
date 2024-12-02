@@ -63,9 +63,11 @@ class DBManager(private val context: Context) {
             } else if (action is EnhanceAction) {
                 put(DBHelper.RulesTable.COLUMN_ACTION, "Enhance")
                 put(DBHelper.RulesTable.COLUMN_LEVEL, action.targetLevel)
-            } else {
-                put(DBHelper.RulesTable.COLUMN_ACTION, action.toString())
+            } else if (action is StatusAction) {
+                put(DBHelper.RulesTable.COLUMN_ACTION, action.targetStatus.name)
                 putNull(DBHelper.RulesTable.COLUMN_LEVEL)
+            } else {
+                throw IllegalArgumentException("Invalid action type: $action")
             }
         }
 
