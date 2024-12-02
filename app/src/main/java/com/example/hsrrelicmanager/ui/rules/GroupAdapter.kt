@@ -50,7 +50,8 @@ class GroupAdapter(val groupData: MutableList<ActionGroup>, private val ruleBody
                     .replace(R.id.header_fragment_container, GroupHeaderFragment())
                     .replace(R.id.body_fragment_container, GroupBodyFragment(
                         GroupChangeHandler(group),
-                        ruleBodyFragment as GroupChangeListener
+                        ruleBodyFragment as GroupChangeListener,
+                        false
                     ))
                     .addToBackStack(null)
                     .commit()

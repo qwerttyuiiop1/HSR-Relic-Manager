@@ -239,7 +239,7 @@ class GroupBodyFragment(
                         R.anim.fade_in_delayed,
                         R.anim.slide_out)
                     .replace(R.id.body_fragment_container, GroupBodyFragment(
-                        group
+                        group, this@GroupBodyFragment
                     ))
                     .addToBackStack(null)
                     .commit()

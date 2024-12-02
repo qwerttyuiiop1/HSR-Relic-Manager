@@ -83,6 +83,9 @@ class GroupChangeHandler(
         }
         if (ret) return
         group.filters[filter.filterType] = filter
+        dbManager.open()
+        dbManager.updateGroup(group)
+        dbManager.close()
     }
 
     override fun onCancel() {
@@ -98,13 +101,13 @@ class GroupChangeHandler(
 
     override fun onUpdateAction(action: Action?) {
         group.action = action
+        dbManager.open()
+        dbManager.updateGroup(group)
+        dbManager.close()
     }
 
     override fun onChildChange(i: Int, group: ActionGroup) {
         this.group.groupList[i] = group
-        for (i in this.group.groupList.indices) {
-            this.group.groupList[i].position = i
-        }
     }
 
     override fun onChildDelete(i: Int, group: ActionGroup) {
@@ -112,6 +115,13 @@ class GroupChangeHandler(
         for (i in this.group.groupList.indices) {
             this.group.groupList[i].position = i
         }
+        val mgr = this.dbManager
+        mgr.open()
+        mgr.deleteGroup(group.id)
+        for (i in this.group.groupList.indices) {
+            mgr.updateGroup(this.group.groupList[i])
+        }
+        mgr.close()
     }
 
     override fun onChildCreate(group: ActionGroup) {
