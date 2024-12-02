@@ -26,6 +26,9 @@ class DBManager(private val context: Context) {
 
     private lateinit var dbHelper: DBHelper
     private lateinit var database: SQLiteDatabase
+    val json = Json {
+        allowStructuredMapKeys = true
+    }
 
     @Throws(SQLException::class)
     fun open(): DBManager {
@@ -52,7 +55,7 @@ class DBManager(private val context: Context) {
     ): Long {
         val values = ContentValues().apply {
             put(DBHelper.RulesTable.COLUMN_POS, position)
-            put(DBHelper.RulesTable.COLUMN_FILTERS, Json.encodeToString(filters))
+            put(DBHelper.RulesTable.COLUMN_FILTERS, json.encodeToString(filters))
 
             if (parentId != null) {
                 put(DBHelper.RulesTable.COLUMN_PARENT_ID, parentId)
@@ -122,7 +125,7 @@ class DBManager(private val context: Context) {
                     }
                 }
                 val id = cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper.RulesTable._ID))
-                val filters = Json.decodeFromString<FilterMap>(
+                val filters = json.decodeFromString<FilterMap>(
                     cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_FILTERS))
                 )
                 val pos = cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.RulesTable.COLUMN_POS))
@@ -164,7 +167,7 @@ class DBManager(private val context: Context) {
     fun updateGroup(group: ActionGroup): Int {
         val values = ContentValues().apply {
             put(DBHelper.RulesTable.COLUMN_POS, group.position)
-            put(DBHelper.RulesTable.COLUMN_FILTERS, Json.encodeToString(group.filters))
+            put(DBHelper.RulesTable.COLUMN_FILTERS, json.encodeToString(group.filters))
 
             if (group.parentGroup != null) {
                 put(DBHelper.RulesTable.COLUMN_PARENT_ID, group.parentGroup!!.id)
