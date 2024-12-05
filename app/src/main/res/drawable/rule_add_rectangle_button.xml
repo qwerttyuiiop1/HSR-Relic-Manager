@@ -1,4 +1,5 @@
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#ffdddddd">
     <item android:top="0dp" android:left="0dp" android:right="0dp" android:bottom="0dp">
         <shape>
             <solid android:color="#FFFFFF"/>
@@ -6,4 +7,4 @@
             <stroke android:width="2dp" android:color="#E0E0E0"/>
         </shape>
     </item>
-</layer-list>
+</ripple>
